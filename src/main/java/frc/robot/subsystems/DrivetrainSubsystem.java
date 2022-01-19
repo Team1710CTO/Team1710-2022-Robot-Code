@@ -5,17 +5,22 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -39,8 +44,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-          SdsModuleConfigurations.MK4_L1.getDriveReduction() *
-          SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI;
+          SdsModuleConfigurations.MK4_L2.getDriveReduction() *
+          SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
@@ -65,9 +70,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
   // FIXME Remove if you are using a Pigeon
-  private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
+  //private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
-//  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+  private final AHRS m_navx = new AHRS(); // NavX connected over MXP
 
   // These are our modules. We initialize them in the constructor.
   private final SwerveModule m_frontLeftModule;
@@ -76,6 +81,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final SwerveModule m_backRightModule;
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+
+  public static SwerveDriveOdometry m_odometry;
+
+  public static Pose2d m_pose;
+
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -106,7 +116,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     .withSize(2, 4)
                     .withPosition(0, 0),
             // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4SwerveModuleHelper.GearRatio.L1,
+            Mk4SwerveModuleHelper.GearRatio.L2,
             // This is the ID of the drive motor
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
             // This is the ID of the steer motor
@@ -122,7 +132,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(2, 0),
-            Mk4SwerveModuleHelper.GearRatio.L1,
+            Mk4SwerveModuleHelper.GearRatio.L2,
             FRONT_RIGHT_MODULE_DRIVE_MOTOR,
             FRONT_RIGHT_MODULE_STEER_MOTOR,
             FRONT_RIGHT_MODULE_STEER_ENCODER,
@@ -133,7 +143,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(4, 0),
-            Mk4SwerveModuleHelper.GearRatio.L1,
+            Mk4SwerveModuleHelper.GearRatio.L2,
             BACK_LEFT_MODULE_DRIVE_MOTOR,
             BACK_LEFT_MODULE_STEER_MOTOR,
             BACK_LEFT_MODULE_STEER_ENCODER,
@@ -144,12 +154,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
             tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(6, 0),
-            Mk4SwerveModuleHelper.GearRatio.L1,
+            Mk4SwerveModuleHelper.GearRatio.L2,
             BACK_RIGHT_MODULE_DRIVE_MOTOR,
             BACK_RIGHT_MODULE_STEER_MOTOR,
             BACK_RIGHT_MODULE_STEER_ENCODER,
             BACK_RIGHT_MODULE_STEER_OFFSET
     );
+
+    m_odometry = new SwerveDriveOdometry(
+            m_kinematics, 
+            getGyroscopeRotation(), 
+            new Pose2d(5.0, 13.5, new Rotation2d())  
+    );
+
   }
 
   /**
@@ -158,24 +175,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void zeroGyroscope() {
     // FIXME Remove if you are using a Pigeon
-    m_pigeon.setFusedHeading(0.0);
+    //m_pigeon.setFusedHeading(0.0);
 
     // FIXME Uncomment if you are using a NavX
-//    m_navx.zeroYaw();
+    m_navx.zeroYaw();
   }
 
   public Rotation2d getGyroscopeRotation() {
     // FIXME Remove if you are using a Pigeon
-    return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+    //return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
 
     // FIXME Uncomment if you are using a NavX
-//    if (m_navx.isMagnetometerCalibrated()) {
+    if (m_navx.isMagnetometerCalibrated()) {
 //      // We will only get valid fused headings if the magnetometer is calibrated
-//      return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-//    }
+      return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+    }
 //
 //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-//    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
@@ -191,5 +208,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+
+    m_pose = m_odometry.update(
+            getGyroscopeRotation(), 
+            states[0], 
+            states[1],
+            states[2], 
+            states[3]
+        );
+
+        SmartDashboard.putNumber("estimated position X", m_pose.getX());
+        SmartDashboard.putNumber("estimated position Y", m_pose.getY());
   }
 }
