@@ -70,9 +70,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
   // FIXME Remove if you are using a Pigeon
-  //private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
+  private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
-  private final AHRS m_navx = new AHRS(); // NavX connected over MXP
+  //private final AHRS m_navx = new AHRS(); // NavX connected over MXP
 
   // These are our modules. We initialize them in the constructor.
   private final SwerveModule m_frontLeftModule;
@@ -175,24 +175,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void zeroGyroscope() {
     // FIXME Remove if you are using a Pigeon
-    //m_pigeon.setFusedHeading(0.0);
+    m_pigeon.setFusedHeading(0.0);
 
     // FIXME Uncomment if you are using a NavX
-    m_navx.zeroYaw();
+    //m_navx.zeroYaw();
   }
 
   public Rotation2d getGyroscopeRotation() {
     // FIXME Remove if you are using a Pigeon
-    //return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+    return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
 
     // FIXME Uncomment if you are using a NavX
-    if (m_navx.isMagnetometerCalibrated()) {
+    //if (m_navx.isMagnetometerCalibrated()) {
 //      // We will only get valid fused headings if the magnetometer is calibrated
-      return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-    }
+      //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+    //}
 //
 //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+    //return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
