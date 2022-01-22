@@ -50,5 +50,6 @@ public final class Constants {
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 11; // FIXME Set back left steer encoder ID
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(239.3); // FIXME Measure and set back left steer offset
 
+    public static final int SERVO_CHANNEL = 0; //Test servo channel on PWM
     
 }
