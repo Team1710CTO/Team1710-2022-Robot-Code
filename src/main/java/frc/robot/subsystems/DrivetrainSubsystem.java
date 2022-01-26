@@ -183,7 +183,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public Rotation2d getGyroscopeRotation() {
     // FIXME Remove if you are using a Pigeon
-    return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+    return Rotation2d.fromDegrees(-m_pigeon.getFusedHeading());
 
     // FIXME Uncomment if you are using a NavX
     //if (m_navx.isMagnetometerCalibrated()) {

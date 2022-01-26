@@ -51,6 +51,7 @@ public class RobotContainer {
             .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
     new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
+    
     new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
   
   }

@@ -29,6 +29,10 @@ public class ServoSubsystem extends SubsystemBase {
 		return instance;	
 	}
 
+  public static double getClimberActuatorAngle() {
+    return climberServo.getAngle();
+  }
+
   public static void setClimberAngle(double degrees) { 
 		
 		climberServo.setAngle(degrees);
