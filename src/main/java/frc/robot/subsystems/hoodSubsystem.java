@@ -34,13 +34,7 @@ public class hoodSubsystem extends SubsystemBase {
 
     m_hoodEncoder = m_hood.getEncoder();
 
-    kP = 0.1; 
-    kI = 1e-4;
-    kD = 1; 
-    kIz = 0; 
-    kFF = 0; 
-    kMaxOutput = 1; 
-    kMinOutput = -1;
+    
 
     // set PID coefficients
     m_hoodPidController.setP(kP);
