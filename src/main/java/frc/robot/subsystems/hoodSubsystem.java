@@ -24,7 +24,7 @@ public class hoodSubsystem extends SubsystemBase {
   private CANSparkMax m_hood;
   private static SparkMaxPIDController m_hoodPidController;
   private RelativeEncoder m_hoodEncoder;
-  public static double rotAcctual, dutyCyclePile, dutyCylcePos, initialRot, rotationalError;
+  public static double rotAcctual, dutyCyclePile, dutyCylcePos, initialRot, rotationalError, zeroPos;
   private static boolean isZeroed;
 
   public hoodSubsystem() {
@@ -40,6 +40,7 @@ public class hoodSubsystem extends SubsystemBase {
 
     initialRot = getHoodPos();
     
+    isZeroed = false;
 
     // set PID coefficients
     m_hoodPidController.setP(Constants.HOOD_kP);
@@ -100,29 +101,44 @@ public class hoodSubsystem extends SubsystemBase {
 
     }
     
-    SmartDashboard.putNumber("SetPoint", rotations);
-    SmartDashboard.putNumber("ProcessVariable", m_hoodEncoder.getPosition());
+    zeroHoodPeriodic();
+
+    SmartDashboard.putNumber("Hood SetPoint", rotations);
+    SmartDashboard.putNumber("Hood Rotations", m_hoodEncoder.getPosition());
+
   }
 
   public void setHoodAngle(double pos){
     m_hoodPidController.setReference(pos, CANSparkMax.ControlType.kPosition);
   }
 
-  public double getHoodPos(){
-    return m_hoodEncoder.getPosition();
-  }
+  
 
-  public static void zeroHood(){
+  public void zeroHoodPeriodic(){
 
     if(!isZeroed){
       
       dutyCylcePos += Constants.HOOD_zero_dutyCycle__gain;
       m_hoodPidController.setReference(dutyCylcePos, CANSparkMax.ControlType.kDutyCycle);
-      if(PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= 10){
+
+      if(PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.HOOD_abnormal_abnormal_current_draw){
+
+        zeroPos = getHoodPos();
+        isZeroed = true;
 
       }
-    }
+    } 
 
+  }
+
+  public void zeroHood(){
+
+    isZeroed = false;
+
+  }
+
+  public double getHoodPos(){
+    return m_hoodEncoder.getPosition();
   }
 
 }
