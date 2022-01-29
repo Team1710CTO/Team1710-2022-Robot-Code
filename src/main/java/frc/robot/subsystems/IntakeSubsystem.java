@@ -9,10 +9,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.swervedrivespecialties.swervelib.DriveController;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 
@@ -101,7 +104,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     }
     
-    zeroHoodPeriodic();
+    zeroIntakePeriodic();
 
     SmartDashboard.putNumber("Intake SetPoint", rotations);
     SmartDashboard.putNumber("Intake Rotations", m_intakeLeftEncoder.getPosition());
@@ -122,14 +125,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
   
 
-  public void zeroHoodPeriodic(){
+  public void zeroIntakePeriodic(){
 
     if(!isZeroed){
       
-      dutyCylcePos += Constants.INTAKE_LEFT_zero_dutyCycle__gain;
+     dutyCylcePos += Constants.INTAKE_LEFT_zero_dutyCycle__gain;
+
+     dutyCylcePos = RobotContainer.m_controller.getRightTriggerAxis(); //fix me for automated
      setIntakeDutyCycle(dutyCylcePos);
 
-      if(PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.INTAKE_LEFT_abnormal_abnormal_current_draw){
+      if(RobotContainer.m_controller.getXButton()){//PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.INTAKE_LEFT_abnormal_abnormal_current_draw
 
         zeroPos = getIntakePos();
         
@@ -139,6 +144,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
       }
     } 
+
+    if(RobotContainer.m_controller.getYButton()){
+      zeroIntake();                                         // keep to trigger action
+    }
 
   }
 
