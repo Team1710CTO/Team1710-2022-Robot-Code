@@ -74,5 +74,15 @@ public final class Constants {
     public static final int INTAKE_RUNNER_PDP_SLOT = 14;
     public static final int INTAKE_RUNNER_CAN_ID = 33;
 
+    public static double HOOD_kP = 0.1; 
+    public static double HOOD_kI = 1e-4;
+    public static double HOOD_kD = 1; 
+    public static double HOOD_kIz = 0; 
+    public static double HOOD_kFF = 0; 
+    public static double HOOD_kMaxOutput = 1; 
+    public static double HOOD_kMinOutput = -1;
+
+    public static double HOOD_zero_dutyCycle__gain = 1e-5;
+
 
 }

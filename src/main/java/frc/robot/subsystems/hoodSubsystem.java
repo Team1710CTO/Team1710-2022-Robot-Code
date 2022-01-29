@@ -22,11 +22,15 @@ public class hoodSubsystem extends SubsystemBase {
   private static hoodSubsystem instance = null;
 
   private CANSparkMax m_hood;
-  private SparkMaxPIDController m_hoodPidController;
+  private static SparkMaxPIDController m_hoodPidController;
   private RelativeEncoder m_hoodEncoder;
-  public static double rotAcctual;
+  public static double rotAcctual, dutyCyclePile, dutyCylcePos, initialRot;
+  private static boolean isZeroed;
 
   public hoodSubsystem() {
+
+    dutyCylcePos = 0;
+
     m_hood = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
     m_hood.restoreFactoryDefaults();
 
@@ -34,6 +38,7 @@ public class hoodSubsystem extends SubsystemBase {
 
     m_hoodEncoder = m_hood.getEncoder();
 
+    initialRot = m_hoodEncoder.getPosition();
     
 
     // set PID coefficients
@@ -79,29 +84,40 @@ public class hoodSubsystem extends SubsystemBase {
     double min = SmartDashboard.getNumber("Min Output", 0);
     double rotations = SmartDashboard.getNumber("Set Rotations", 0);
 
-    
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != Constants.HOOD_kP)) { m_hoodPidController.setP(p); Constants.HOOD_kP = p; } //bro I klnow we are changing "constants" but this fucntionality is only for testing
-    if((i != Constants.HOOD_kI)) { m_hoodPidController.setI(i); Constants.HOOD_kI = i; } //once we enter comps we can disable this feature
-    if((d != Constants.HOOD_kD)) { m_hoodPidController.setD(d); Constants.HOOD_kD = d; } // if we can get over the convetions of it all then we can all be happy :)
-    if((iz != Constants.HOOD_kIz)) { m_hoodPidController.setIZone(iz); Constants.HOOD_kIz = iz; }
-    if((ff != Constants.HOOD_kFF)) { m_hoodPidController.setFF(ff); Constants.HOOD_kFF = ff; }
-    if((max != Constants.HOOD_kMaxOutput) || (min != Constants.HOOD_kMinOutput)) { 
-      m_hoodPidController.setOutputRange(min, max); 
-      Constants.HOOD_kMinOutput = min; Constants.HOOD_kMaxOutput = max; 
-      }
+    if(ControlModeSubsystem.isDeveloperOrTestMode()) {
 
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+      if((p != Constants.HOOD_kP)) { m_hoodPidController.setP(p); Constants.HOOD_kP = p; } //bro I klnow we are changing "constants" but this fucntionality is only for testing
+      if((i != Constants.HOOD_kI)) { m_hoodPidController.setI(i); Constants.HOOD_kI = i; } //once we enter comps we can disable this feature
+      if((d != Constants.HOOD_kD)) { m_hoodPidController.setD(d); Constants.HOOD_kD = d; } // if we can get over the convetions of it all then we can all be happy :)
+      if((iz != Constants.HOOD_kIz)) { m_hoodPidController.setIZone(iz); Constants.HOOD_kIz = iz; }
+      if((ff != Constants.HOOD_kFF)) { m_hoodPidController.setFF(ff); Constants.HOOD_kFF = ff; }
+      if((max != Constants.HOOD_kMaxOutput) || (min != Constants.HOOD_kMinOutput)) { 
+        m_hoodPidController.setOutputRange(min, max); 
+        Constants.HOOD_kMinOutput = min; Constants.HOOD_kMaxOutput = max; 
+        }
+
+    }
     
     SmartDashboard.putNumber("SetPoint", rotations);
     SmartDashboard.putNumber("ProcessVariable", m_hoodEncoder.getPosition());
   }
 
   public void setHoodAngle(double pos){
+
     m_hoodPidController.setReference(pos, CANSparkMax.ControlType.kPosition);
+
   }
 
-  public void zeroHood(){
-    
+  public static void zeroHood(){
+
+    if(!isZeroed){
+      
+      dutyCylcePos += Constants.HOOD_zero_dutyCycle__gain;
+      m_hoodPidController.setReference(dutyCylcePos, CANSparkMax.ControlType.kDutyCycle);
+
+    }
+
   }
 
 }
