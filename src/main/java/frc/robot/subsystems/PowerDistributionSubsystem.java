@@ -82,7 +82,13 @@ public class PowerDistributionSubsystem extends SubsystemBase {
   public static double getIntakeRunnerCurrent(){
 
     return pdp.getCurrent(Constants.INTAKE_RUNNER_PDP_SLOT);
-    
+
+  }
+
+  public static double getintakeActuatorCurrent(){
+
+    return (getRightIntakeActuatorCurrent() + getLeftIntakeActuatorCurrent());
+
   }
 
 
