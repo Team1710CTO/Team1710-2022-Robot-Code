@@ -50,4 +50,15 @@ public class ControlModeSubsystem extends SubsystemBase {
     }
 
   }
+
+  public static boolean isDeveloperOrTestMode(){
+    
+    if(developerMode || testMode){
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
 }

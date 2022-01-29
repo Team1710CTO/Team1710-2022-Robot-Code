@@ -24,7 +24,7 @@ public class hoodSubsystem extends SubsystemBase {
   private CANSparkMax m_hood;
   private SparkMaxPIDController m_hoodPidController;
   private RelativeEncoder m_hoodEncoder;
-  public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, rotAcctual;
+  public static double rotAcctual;
 
   public hoodSubsystem() {
     m_hood = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
@@ -37,22 +37,22 @@ public class hoodSubsystem extends SubsystemBase {
     
 
     // set PID coefficients
-    m_hoodPidController.setP(kP);
-    m_hoodPidController.setI(kI);
-    m_hoodPidController.setD(kD);
-    m_hoodPidController.setIZone(kIz);
-    m_hoodPidController.setFF(kFF);
-    m_hoodPidController.setOutputRange(kMinOutput, kMaxOutput);
+    m_hoodPidController.setP(Constants.HOOD_kP);
+    m_hoodPidController.setI(Constants.HOOD_kI);
+    m_hoodPidController.setD(Constants.HOOD_kD);
+    m_hoodPidController.setIZone(Constants.HOOD_kIz);
+    m_hoodPidController.setFF(Constants.HOOD_kFF);
+    m_hoodPidController.setOutputRange(Constants.HOOD_kMinOutput, Constants.HOOD_kMaxOutput);
 
     // display PID coefficients on SmartDashboard
     
-    SmartDashboard.putNumber("Hood P Gain", kP);
-    SmartDashboard.putNumber("Hood I Gain", kI);
-    SmartDashboard.putNumber("Hood D Gain", kD);
-    SmartDashboard.putNumber("Hood I Zone", kIz);
-    SmartDashboard.putNumber("Hood Feed Forward", kFF);
-    SmartDashboard.putNumber("Hood Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Hood Min Output", kMinOutput);
+    SmartDashboard.putNumber("Hood P Gain", Constants.HOOD_kP);
+    SmartDashboard.putNumber("Hood I Gain", Constants.HOOD_kI);
+    SmartDashboard.putNumber("Hood D Gain", Constants.HOOD_kD);
+    SmartDashboard.putNumber("Hood I Zone", Constants.HOOD_kIz);
+    SmartDashboard.putNumber("Hood Feed Forward", Constants.HOOD_kFF);
+    SmartDashboard.putNumber("Hood Max Output", Constants.HOOD_kMaxOutput);
+    SmartDashboard.putNumber("Hood Min Output", Constants.HOOD_kMinOutput);
     SmartDashboard.putNumber("Hood Set Rotations", 0);
 
     rotAcctual = m_hoodEncoder.getPosition();
@@ -79,16 +79,19 @@ public class hoodSubsystem extends SubsystemBase {
     double min = SmartDashboard.getNumber("Min Output", 0);
     double rotations = SmartDashboard.getNumber("Set Rotations", 0);
 
+    
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { m_hoodPidController.setP(p); kP = p; }
-    if((i != kI)) { m_hoodPidController.setI(i); kI = i; }
-    if((d != kD)) { m_hoodPidController.setD(d); kD = d; }
-    if((iz != kIz)) { m_hoodPidController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_hoodPidController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
+    if((p != Constants.HOOD_kP)) { m_hoodPidController.setP(p); Constants.HOOD_kP = p; } //bro I klnow we are changing "constants" but this fucntionality is only for testing
+    if((i != Constants.HOOD_kI)) { m_hoodPidController.setI(i); Constants.HOOD_kI = i; } //once we enter comps we can disable this feature
+    if((d != Constants.HOOD_kD)) { m_hoodPidController.setD(d); Constants.HOOD_kD = d; } // if we can get over the convetions of it all then we can all be happy :)
+    if((iz != Constants.HOOD_kIz)) { m_hoodPidController.setIZone(iz); Constants.HOOD_kIz = iz; }
+    if((ff != Constants.HOOD_kFF)) { m_hoodPidController.setFF(ff); Constants.HOOD_kFF = ff; }
+    if((max != Constants.HOOD_kMaxOutput) || (min != Constants.HOOD_kMinOutput)) { 
       m_hoodPidController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
+      Constants.HOOD_kMinOutput = min; Constants.HOOD_kMaxOutput = max; 
       }
+
+    
     SmartDashboard.putNumber("SetPoint", rotations);
     SmartDashboard.putNumber("ProcessVariable", m_hoodEncoder.getPosition());
   }
