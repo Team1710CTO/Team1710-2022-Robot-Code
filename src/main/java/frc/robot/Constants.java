@@ -67,4 +67,12 @@ public final class Constants {
     public static final int HOOD_CAN_ID = 30;
     public static final int HOOD_PDP_SLOT = 11; //fixme
 
+    public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 12;
+    public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
+    public static final int RIGHT_INTAKE_ACTUATOR_PDP_SLOT = 13;
+    public static final int RIGHT_INTAKE_ACTUATOR_CAN_ID = 32;
+    public static final int INTAKE_RUNNER_PDP_SLOT = 14;
+    public static final int INTAKE_RUNNER_CAN_ID = 33;
+
+
 }
