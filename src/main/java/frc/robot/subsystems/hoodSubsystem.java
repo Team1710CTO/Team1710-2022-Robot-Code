@@ -109,7 +109,9 @@ public class hoodSubsystem extends SubsystemBase {
   }
 
   public void setHoodAngle(double pos){
+
     m_hoodPidController.setReference(pos, CANSparkMax.ControlType.kPosition);
+
   }
 
   
@@ -124,6 +126,9 @@ public class hoodSubsystem extends SubsystemBase {
       if(PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.HOOD_abnormal_abnormal_current_draw){
 
         zeroPos = getHoodPos();
+        
+        Constants.HOOD_down = zeroPos;
+
         isZeroed = true;
 
       }

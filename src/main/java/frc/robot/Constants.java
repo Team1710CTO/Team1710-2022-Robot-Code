@@ -64,8 +64,7 @@ public final class Constants {
 
     public static final int SERVO_CHANNEL = 0; //Test servo channel on PWM
     
-    public static final int HOOD_CAN_ID = 30;
-    public static final int HOOD_PDP_SLOT = 11; //fixme
+    
 
     public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 12;
     public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
@@ -73,6 +72,23 @@ public final class Constants {
     public static final int RIGHT_INTAKE_ACTUATOR_CAN_ID = 32;
     public static final int INTAKE_RUNNER_PDP_SLOT = 14;
     public static final int INTAKE_RUNNER_CAN_ID = 33;
+
+    public static double INTAKE_LEFT_kP = 0.1; 
+    public static double INTAKE_LEFT_kI = 1e-4;
+    public static double INTAKE_LEFT_kD = 1; 
+    public static double INTAKE_LEFT_kIz = 0; 
+    public static double INTAKE_LEFT_kFF = 0; 
+    public static double INTAKE_LEFT_kMaxOutput = 1; 
+    public static double INTAKE_LEFT_kMinOutput = -1;
+    public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
+    public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
+    public static final double Intake_up = .5 ; // roations from zero FIXME
+    public static double INTAKE_LEFT_down = 0; // set by the zero functionality
+
+
+
+    public static final int HOOD_CAN_ID = 30;
+    public static final int HOOD_PDP_SLOT = 11; //fixme
 
     public static double HOOD_kP = 0.1; 
     public static double HOOD_kI = 1e-4;
@@ -83,6 +99,10 @@ public final class Constants {
     public static double HOOD_kMinOutput = -1;
 
     public static double HOOD_zero_dutyCycle__gain = 1e-5;
+    public static double HOOD_abnormal_abnormal_current_draw = 10;
+
+    public static final double HOOD_up = .5 ; // roations from zero FIXME
+    public static double HOOD_down = 0; // set by the zero functionality
 
 
 }
