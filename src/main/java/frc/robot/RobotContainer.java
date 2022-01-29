@@ -19,7 +19,7 @@ import frc.robot.subsystems.ServoSubsystem;
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final ServoSubsystem servoSubsystem = new ServoSubsystem();
-  private final XboxController m_controller = new XboxController(0);
+  public final static XboxController m_controller = new XboxController(0);
 
   public RobotContainer() {
     // Set up the default command for the drivetrain.

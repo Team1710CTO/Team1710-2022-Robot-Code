@@ -108,9 +108,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public void setHoodAngle(double pos){
+  public void setIntakeAngle(double pos){
 
     m_intakeLeftPidController.setReference(pos, CANSparkMax.ControlType.kPosition);
+
+  }
+
+  public void setIntakeDutyCycle(double cycle){
+
+    m_intakeLeftPidController.setReference(cycle, CANSparkMax.ControlType.kDutyCycle);
 
   }
 
@@ -121,7 +127,7 @@ public class IntakeSubsystem extends SubsystemBase {
     if(!isZeroed){
       
       dutyCylcePos += Constants.INTAKE_LEFT_zero_dutyCycle__gain;
-      m_intakeLeftPidController.setReference(dutyCylcePos, CANSparkMax.ControlType.kDutyCycle);
+     setIntakeDutyCycle(dutyCylcePos);
 
       if(PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.INTAKE_LEFT_abnormal_abnormal_current_draw){
 
