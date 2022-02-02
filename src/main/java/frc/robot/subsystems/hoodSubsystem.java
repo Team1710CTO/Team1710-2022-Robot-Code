@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
@@ -114,6 +117,11 @@ public class hoodSubsystem extends SubsystemBase {
 
   }
 
+  public void setHoodDutyCycle(double cycle){
+
+    m_hoodPidController.setReference(cycle, CANSparkMax.ControlType.kDutyCycle);
+  
+  }
   
 
   public void zeroHoodPeriodic(){
@@ -121,9 +129,12 @@ public class hoodSubsystem extends SubsystemBase {
     if(!isZeroed){
       
       dutyCylcePos += Constants.HOOD_zero_dutyCycle__gain;
-      m_hoodPidController.setReference(dutyCylcePos, CANSparkMax.ControlType.kDutyCycle);
 
-      if(PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.HOOD_abnormal_abnormal_current_draw){
+      dutyCylcePos = RobotContainer.m_controller.getRightTriggerAxis();
+      
+      setHoodDutyCycle(dutyCylcePos);
+
+      if(RobotContainer.m_controller.getAButton()){ // PowerDistributionSubsystem.getRightIntakeActuatorCurrent() >= Constants.HOOD_abnormal_abnormal_current_draw
 
         zeroPos = getHoodPos();
         
@@ -134,12 +145,15 @@ public class hoodSubsystem extends SubsystemBase {
       }
     } 
 
+    if(RobotContainer.m_controller.getBButton()){
+      zeroHood();
+    }
+
+
   }
 
   public void zeroHood(){
-
     isZeroed = false;
-
   }
 
   public double getHoodPos(){

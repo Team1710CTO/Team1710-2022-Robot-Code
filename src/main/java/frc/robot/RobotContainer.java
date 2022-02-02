@@ -50,9 +50,9 @@ public class RobotContainer {
             // No requirements because we don't need to interrupt anything
             .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
-    new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
+    //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
     
-    new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
+    //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
   
   }
 
