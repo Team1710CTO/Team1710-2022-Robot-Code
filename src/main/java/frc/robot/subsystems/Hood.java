@@ -4,32 +4,27 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class IntakeTwo extends SubsystemBase {
-  /** Creates a new Intake. */
-  private static final int deviceID = 30;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+
+public class Hood extends SubsystemBase {
+  private static final int deviceID = 41;
     private static CANSparkMax m_motor;
     private static SparkMaxPIDController m_pidController;
     private static RelativeEncoder m_encoder;
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-
-  public IntakeTwo() {
-
+  /** Creates a new Hood. */
+  public Hood() {
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
         
-    m_motor.setIdleMode(IdleMode.kCoast);
-
-        m_motor.setIdleMode(IdleMode.kBrake);
-
         /**
          * The restoreFactoryDefaults method can be used to reset the configuration parameters
          * in the SPARK MAX to their factory default state. If no argument is passed, these
@@ -67,28 +62,28 @@ public class IntakeTwo extends SubsystemBase {
         m_pidController.setOutputRange(kMinOutput, kMaxOutput);
     
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("Indexer P Gain", kP);
-        SmartDashboard.putNumber("Indexer I Gain", kI);
-        SmartDashboard.putNumber("Indexer D Gain", kD);
-        SmartDashboard.putNumber("Indexer I Zone", kIz);
-        SmartDashboard.putNumber("Indexer Feed Forward", kFF);
-        SmartDashboard.putNumber("Indexer Max Output", kMaxOutput);
-        SmartDashboard.putNumber("Indexer Min Output", kMinOutput);
-        SmartDashboard.putNumber("Indexer Set Rotations", 0);
+        SmartDashboard.putNumber("Hood P Gain", kP);
+        SmartDashboard.putNumber("Hood I Gain", kI);
+        SmartDashboard.putNumber("Hood D Gain", kD);
+        SmartDashboard.putNumber("Hood I Zone", kIz);
+        SmartDashboard.putNumber("Hood Feed Forward", kFF);
+        SmartDashboard.putNumber("Hood Max Output", kMaxOutput);
+        SmartDashboard.putNumber("Hood Min Output", kMinOutput);
+        SmartDashboard.putNumber("Hood Set Rotations", 0);
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double p = SmartDashboard.getNumber("Indexer P Gain", 0);
-        double i = SmartDashboard.getNumber("Indexer I Gain", 0);
-        double d = SmartDashboard.getNumber("Indexer D Gain", 0);
-        double iz = SmartDashboard.getNumber("Indexer I Zone", 0);
-        double ff = SmartDashboard.getNumber("Indexer Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Indexer Max Output", 0);
-        double min = SmartDashboard.getNumber("Indexer Min Output", 0);
-        double rotations = SmartDashboard.getNumber("Indexer Set Rotations", 0);
+    double p = SmartDashboard.getNumber("Hood P Gain", 0);
+        double i = SmartDashboard.getNumber("Hood I Gain", 0);
+        double d = SmartDashboard.getNumber("Hood D Gain", 0);
+        double iz = SmartDashboard.getNumber("Hood I Zone", 0);
+        double ff = SmartDashboard.getNumber("Hood Feed Forward", 0);
+        double max = SmartDashboard.getNumber("Hood Max Output", 0);
+        double min = SmartDashboard.getNumber("Hood Min Output", 0);
+        double rotations = SmartDashboard.getNumber("Hood Set Rotations", 0);
 
         // if PID coefficients on SmartDashboard have changed, write new values to controller
         if((p != kP)) { m_pidController.setP(p); kP = p; }
@@ -115,15 +110,17 @@ public class IntakeTwo extends SubsystemBase {
          *  com.revrobotics.CANSparkMax.ControlType.kVelocity
          *  com.revrobotics.CANSparkMax.ControlType.kVoltage
          */
+        if(RobotContainer.m_controller.getAButton()){
+          m_pidController.setReference(.5, CANSparkMax.ControlType.kPosition);
+        } else {
+          m_pidController.setReference(0.05, CANSparkMax.ControlType.kPosition);
+        }
         
         
         
-        m_pidController.setReference((RobotContainer.m_controller.getLeftTriggerAxis() - RobotContainer.m_controller.getRightTriggerAxis()), CANSparkMax.ControlType.kDutyCycle);
-      
         
-        
-        SmartDashboard.putNumber("Indexer SetPoint", rotations);
-        SmartDashboard.putNumber("Indexer ProcessVariable", m_encoder.getPosition());
-
+        SmartDashboard.putNumber(" put Hood SetPoint", rotations);
+        SmartDashboard.putNumber("put Hood ProcessVariable", m_encoder.getPosition());
   }
 }
+

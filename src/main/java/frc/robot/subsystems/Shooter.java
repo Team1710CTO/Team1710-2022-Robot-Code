@@ -12,24 +12,22 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
 
-public class IntakeTwo extends SubsystemBase {
-  /** Creates a new Intake. */
-  private static final int deviceID = 30;
+
+public class Shooter extends SubsystemBase {
+  /** Creates a new Shooter. */
+  private static final int deviceID = 40;
     private static CANSparkMax m_motor;
     private static SparkMaxPIDController m_pidController;
     private static RelativeEncoder m_encoder;
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
-  public IntakeTwo() {
-
+  public Shooter() {
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
+
+        m_motor.setIdleMode(IdleMode.kCoast);
         
-    m_motor.setIdleMode(IdleMode.kCoast);
-
-        m_motor.setIdleMode(IdleMode.kBrake);
-
         /**
          * The restoreFactoryDefaults method can be used to reset the configuration parameters
          * in the SPARK MAX to their factory default state. If no argument is passed, these
@@ -48,7 +46,7 @@ public class IntakeTwo extends SubsystemBase {
         m_encoder = m_motor.getEncoder();
     
         // PID coefficients
-        kP = 0.7; 
+        kP = 0.1; 
         kI = 5e-4;
         kD = 1; 
         kIz = 0; 
@@ -67,28 +65,27 @@ public class IntakeTwo extends SubsystemBase {
         m_pidController.setOutputRange(kMinOutput, kMaxOutput);
     
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("Indexer P Gain", kP);
-        SmartDashboard.putNumber("Indexer I Gain", kI);
-        SmartDashboard.putNumber("Indexer D Gain", kD);
-        SmartDashboard.putNumber("Indexer I Zone", kIz);
-        SmartDashboard.putNumber("Indexer Feed Forward", kFF);
-        SmartDashboard.putNumber("Indexer Max Output", kMaxOutput);
-        SmartDashboard.putNumber("Indexer Min Output", kMinOutput);
-        SmartDashboard.putNumber("Indexer Set Rotations", 0);
-
+        SmartDashboard.putNumber("Shooter P Gain", kP);
+        SmartDashboard.putNumber("Shooter I Gain", kI);
+        SmartDashboard.putNumber("Shooter D Gain", kD);
+        SmartDashboard.putNumber("Shooter I Zone", kIz);
+        SmartDashboard.putNumber("Shooter Feed Forward", kFF);
+        SmartDashboard.putNumber("Shooter Max Output", kMaxOutput);
+        SmartDashboard.putNumber("Shooter Min Output", kMinOutput);
+        SmartDashboard.putNumber("Shooter Set Rotations", 0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double p = SmartDashboard.getNumber("Indexer P Gain", 0);
-        double i = SmartDashboard.getNumber("Indexer I Gain", 0);
-        double d = SmartDashboard.getNumber("Indexer D Gain", 0);
-        double iz = SmartDashboard.getNumber("Indexer I Zone", 0);
-        double ff = SmartDashboard.getNumber("Indexer Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Indexer Max Output", 0);
-        double min = SmartDashboard.getNumber("Indexer Min Output", 0);
-        double rotations = SmartDashboard.getNumber("Indexer Set Rotations", 0);
+    double p = SmartDashboard.getNumber("Shooter P Gain", 0);
+        double i = SmartDashboard.getNumber("Shooter I Gain", 0);
+        double d = SmartDashboard.getNumber("Shooter D Gain", 0);
+        double iz = SmartDashboard.getNumber("Shooter I Zone", 0);
+        double ff = SmartDashboard.getNumber("Shooter Feed Forward", 0);
+        double max = SmartDashboard.getNumber("Shooter Max Output", 0);
+        double min = SmartDashboard.getNumber("Shooter Min Output", 0);
+        double rotations = SmartDashboard.getNumber("Shooter Set Rotations", 0);
 
         // if PID coefficients on SmartDashboard have changed, write new values to controller
         if((p != kP)) { m_pidController.setP(p); kP = p; }
@@ -115,15 +112,16 @@ public class IntakeTwo extends SubsystemBase {
          *  com.revrobotics.CANSparkMax.ControlType.kVelocity
          *  com.revrobotics.CANSparkMax.ControlType.kVoltage
          */
+        if(RobotContainer.m_controller.getAButton()){
+          m_pidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
+        } else {
+          m_pidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
+        }
         
         
         
-        m_pidController.setReference((RobotContainer.m_controller.getLeftTriggerAxis() - RobotContainer.m_controller.getRightTriggerAxis()), CANSparkMax.ControlType.kDutyCycle);
-      
         
-        
-        SmartDashboard.putNumber("Indexer SetPoint", rotations);
-        SmartDashboard.putNumber("Indexer ProcessVariable", m_encoder.getPosition());
-
+        SmartDashboard.putNumber("Shooter SetPoint", rotations);
+        SmartDashboard.putNumber("Shooter ProcessVariable", m_encoder.getPosition());
   }
 }

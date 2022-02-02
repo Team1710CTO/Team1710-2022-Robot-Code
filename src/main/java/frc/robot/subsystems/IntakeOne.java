@@ -25,7 +25,7 @@ public class IntakeOne extends SubsystemBase {
   public IntakeOne() {
 
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
-        
+    m_motor.setIdleMode(IdleMode.kBrake);
         m_motor.setIdleMode(IdleMode.kBrake);
 
         /**
@@ -116,7 +116,7 @@ public class IntakeOne extends SubsystemBase {
         
         
         
-        m_pidController.setReference(RobotContainer.m_controller.getRightTriggerAxis() - RobotContainer.m_controller.getRightTriggerAxis(), CANSparkMax.ControlType.kDutyCycle);
+        m_pidController.setReference(-(RobotContainer.m_controller.getLeftTriggerAxis() - RobotContainer.m_controller.getRightTriggerAxis()), CANSparkMax.ControlType.kDutyCycle);
       
         
         

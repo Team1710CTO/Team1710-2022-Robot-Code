@@ -11,9 +11,27 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.IntakeOne;
+import frc.robot.subsystems.IntakeTwo;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.intakeRunner;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  
+  private final intakeRunner  m_intakeRunner = new intakeRunner();
+
+  private final IntakeOne m_IntakeOne = new IntakeOne();
+
+  private final IntakeTwo m_IntakeTwo = new IntakeTwo();
+
+  private final Shooter m_shooter = new Shooter();
+
+  private final Hood m_Hood = new Hood();
+
+  private final Indexer m_iIndexer = new Indexer();
 
   public static XboxController m_controller = new XboxController(0);
 

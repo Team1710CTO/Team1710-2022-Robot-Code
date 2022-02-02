@@ -18,7 +18,7 @@ public class intakeRunner extends SubsystemBase {
   public static TalonFX mytalon;
 
   public intakeRunner() {
-    mytalon = new TalonFX(10); //fixme
+    mytalon = new TalonFX(43); //fixme
   }
 
   @Override
