@@ -25,12 +25,10 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
   public PowerDistributionSubsystem() {
 
-
     pdp = new PowerDistribution(0, ModuleType.kCTRE);
 
     SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
     
-
   }
 
   @Override
@@ -61,9 +59,11 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
   public static boolean driveCurrentDrawIsAbnormal(){
 
-    
 
-    return false;
+
+    return false; //TODO
+
+
   }
 
 
@@ -89,6 +89,12 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
     return (getRightIntakeActuatorCurrent() + getLeftIntakeActuatorCurrent());
 
+  }
+
+  public static double getintakeActuatorCurrentDiff(){
+
+    return Math.abs((getRightIntakeActuatorCurrent() - getLeftIntakeActuatorCurrent()));
+    
   }
 
 
