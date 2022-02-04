@@ -28,7 +28,7 @@ public class IntakeTwo extends SubsystemBase {
         
     m_motor.setIdleMode(IdleMode.kCoast);
 
-        m_motor.setIdleMode(IdleMode.kBrake);
+
 
         /**
          * The restoreFactoryDefaults method can be used to reset the configuration parameters

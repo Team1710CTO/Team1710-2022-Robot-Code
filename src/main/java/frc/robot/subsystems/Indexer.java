@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 import com.revrobotics.CANSparkMax;
@@ -110,8 +111,10 @@ SmartDashboard.putNumber("Hood Set Rotations", 0);
      *  com.revrobotics.CANSparkMax.ControlType.kVelocity
      *  com.revrobotics.CANSparkMax.ControlType.kVoltage
      */
-    if(RobotContainer.m_controller.getLeftBumper()){
+    if(RobotContainer.m_controller.getRightBumper()){
       m_pidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
+    } else if (RobotContainer.m_controller.getLeftBumper()){
+      m_pidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
     } else {
       m_pidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
     }

@@ -122,6 +122,6 @@ public class Shooter extends SubsystemBase {
         
         
         SmartDashboard.putNumber("Shooter SetPoint", rotations);
-        SmartDashboard.putNumber("Shooter ProcessVariable", m_encoder.getPosition());
+        SmartDashboard.putNumber("Shooter ProcessVariable", m_encoder.getVelocity());
   }
 }

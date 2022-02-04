@@ -25,8 +25,8 @@ public class IntakeOne extends SubsystemBase {
   public IntakeOne() {
 
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
-    m_motor.setIdleMode(IdleMode.kBrake);
-        m_motor.setIdleMode(IdleMode.kBrake);
+    m_motor.setIdleMode(IdleMode.kCoast);
+    
 
         /**
          * The restoreFactoryDefaults method can be used to reset the configuration parameters

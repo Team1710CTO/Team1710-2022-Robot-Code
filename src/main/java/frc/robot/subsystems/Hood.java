@@ -69,7 +69,7 @@ public class Hood extends SubsystemBase {
         SmartDashboard.putNumber("Hood Feed Forward", kFF);
         SmartDashboard.putNumber("Hood Max Output", kMaxOutput);
         SmartDashboard.putNumber("Hood Min Output", kMinOutput);
-        SmartDashboard.putNumber("Hood Set Rotations", 0);
+        SmartDashboard.putNumber("Hood Set Rotations", 0.5);
 
   }
 
@@ -83,7 +83,7 @@ public class Hood extends SubsystemBase {
         double ff = SmartDashboard.getNumber("Hood Feed Forward", 0);
         double max = SmartDashboard.getNumber("Hood Max Output", 0);
         double min = SmartDashboard.getNumber("Hood Min Output", 0);
-        double rotations = SmartDashboard.getNumber("Hood Set Rotations", 0);
+        double rotations = SmartDashboard.getNumber("Hood Set Rotations", 0.05);
 
         // if PID coefficients on SmartDashboard have changed, write new values to controller
         if((p != kP)) { m_pidController.setP(p); kP = p; }
@@ -111,7 +111,7 @@ public class Hood extends SubsystemBase {
          *  com.revrobotics.CANSparkMax.ControlType.kVoltage
          */
         if(RobotContainer.m_controller.getAButton()){
-          m_pidController.setReference(.5, CANSparkMax.ControlType.kPosition);
+          m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
         } else {
           m_pidController.setReference(0.05, CANSparkMax.ControlType.kPosition);
         }
@@ -119,8 +119,7 @@ public class Hood extends SubsystemBase {
         
         
         
-        SmartDashboard.putNumber(" put Hood SetPoint", rotations);
-        SmartDashboard.putNumber("put Hood ProcessVariable", m_encoder.getPosition());
+  
   }
 }
 

@@ -24,7 +24,9 @@ public class intakeRunner extends SubsystemBase {
   @Override
   public void periodic() {
     if(RobotContainer.m_controller.getRightBumper()){
-      mytalon.set(ControlMode.PercentOutput, 1);
+      mytalon.set(ControlMode.PercentOutput, .75);
+  } else if(RobotContainer.m_controller.getLeftBumper()){
+      mytalon.set(ControlMode.PercentOutput, -.3);
   } else {
       mytalon.set(ControlMode.PercentOutput, 0);
   }
