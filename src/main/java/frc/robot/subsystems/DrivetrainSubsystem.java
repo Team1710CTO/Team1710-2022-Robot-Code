@@ -191,5 +191,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
-  }
+    m_pose = m_odometry.update(
+        getGyroscopeRotation(), 
+        states[0], 
+        states[1],
+        states[2], 
+        states[3]
+    );
+
+
+
+    SmartDashboard.putNumber("estimated position X", m_pose.getX());
+    SmartDashboard.putNumber("estimated position Y", m_pose.getY());
+
+}
 }
