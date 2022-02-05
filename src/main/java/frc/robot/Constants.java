@@ -28,7 +28,7 @@ public final class Constants {
      */
     public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(24.0); // FIXME Measure and set wheelbase
 
-    public static final int DRIVETRAIN_PIGEON_ID = 13; // FIXME Set Pigeon ID
+    
 
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1; // FIXME Set front left module drive motor ID g
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2; // FIXME Set front left steer encoder ID
@@ -37,16 +37,12 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR_PDP_SLOT = 1; //fixme
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR_PDP_SLOT = 3; //fixme
 
-    
-
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 4; // FIXME Set front right drive motor ID
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 5; // FIXME Set front right steer encoder ID
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 6; // FIXME Set front right steer motor ID
     public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(196.7 - 180); // FIXME Measure and set front right steer offset
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR_PDP_SLOT = 4; // FIXME 
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT = 6; // FIXME 
-
-
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; // FIXME Set back right drive motor ID
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 8; // FIXME Set back right steer encoder ID
@@ -55,26 +51,29 @@ public final class Constants {
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR_PDP_SLOT = 7; //fixme
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT = 9; //fixme
 
-
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 10; // FIXME Set back left drive motor ID
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 11; // FIXME Set back left steer encoder ID
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 12; // FIXME Set back left steer motor ID
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0); // FIXME Measure and set back left steer offset
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR_PDP_SLOT = 10; // FIXME Set back left drive motor ID
-    public static final int BACK_LEFT_MODULE_STEER_MOTOR_PDP_SLOT = 12;
-
-
-    public static final int SERVO_CHANNEL = 0; //Test servo channel on PWM
+    public static final int BACK_LEFT_MODULE_STEER_MOTOR_PDP_SLOT = 12;  
     
     
+    //Gyros
 
-    public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 12;
-    public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
-    public static final int RIGHT_INTAKE_ACTUATOR_PDP_SLOT = 13;
-    public static final int RIGHT_INTAKE_ACTUATOR_CAN_ID = 30;
+    public static final int RIGHT_PIGEON_ID = 13; // FIXME Set Pigeon ID
+    public static final int LEFT_PIGEON_ID = 15; // FIXME Set Pigeon ID
+    
+
+    //intake
+
+    // intake runner
     public static final int INTAKE_RUNNER_PDP_SLOT = 14;
     public static final int INTAKE_RUNNER_CAN_ID = 33;
 
+    //intake Left
+    public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 12;
+    public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
     public static double INTAKE_LEFT_kP = 0.1; 
     public static double INTAKE_LEFT_kI = 1e-4;
     public static double INTAKE_LEFT_kD = 1; 
@@ -84,14 +83,29 @@ public final class Constants {
     public static double INTAKE_LEFT_kMinOutput = -1;
     public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
     public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
-    public static final double Intake_up = .5 ; // roations from zero FIXME
-    public static double INTAKE_LEFT_down = 0; // set by the zero functionality
+    public static final double Intake_LEFT_up = .5 ; // roations from zero FIXME
+    public static final double INTAKE_LEFT_down = 0; // set by the zero functionality
 
 
+    //intake Right
+    public static final int RIGHT_INTAKE_ACTUATOR_PDP_SLOT = 13;
+    public static final int RIGHT_INTAKE_ACTUATOR_CAN_ID = 30;
+    public static double INTAKE_RIGHT_kP = 0.1; 
+    public static double INTAKE_RIGHT_kI = 1e-4;
+    public static double INTAKE_RIGHT_kD = 1; 
+    public static double INTAKE_RIGHT_kIz = 0; 
+    public static double INTAKE_RIGHT_kFF = 0; 
+    public static double INTAKE_RIGHT_kMaxOutput = 1; 
+    public static double INTAKE_RIGHT_kMinOutput = -1;
+    public static double INTAKE_RIGHT_zero_dutyCycle__gain = 1e-5;
+    public static double INTAKE_RIGHT_abnormal_abnormal_current_draw = 10;
+    public static final double INTAKE_RIGHT_up = -.5; // set by the zero functionality
+    public static final double INTAKE_RIGHT_down = 0; // set by the zero functionality
 
+
+    //hood
     public static final int HOOD_CAN_ID = 30;
     public static final int HOOD_PDP_SLOT = 11; //fixme
-
     public static double HOOD_kP = 0.1; 
     public static double HOOD_kI = 1e-4;
     public static double HOOD_kD = 1; 
@@ -99,12 +113,12 @@ public final class Constants {
     public static double HOOD_kFF = 0; 
     public static double HOOD_kMaxOutput = 1; 
     public static double HOOD_kMinOutput = -1;
-
     public static double HOOD_zero_dutyCycle__gain = 1e-5;
     public static double HOOD_abnormal_abnormal_current_draw = 10;
-
     public static final double HOOD_up = .5 ; // roations from zero FIXME
-    public static double HOOD_down = 0; // set by the zero functionality
+    public static final double HOOD_down = 0; // set by the zero functionality
 
+
+    
 
 }
