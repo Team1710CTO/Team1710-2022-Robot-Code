@@ -11,14 +11,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.climberActuatorIn;
-import frc.robot.commands.climberActuatorOut;
+
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.ServoSubsystem;
+
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final ServoSubsystem servoSubsystem = new ServoSubsystem();
+
   public final static XboxController m_controller = new XboxController(0);
 
   public RobotContainer() {
