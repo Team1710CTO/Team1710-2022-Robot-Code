@@ -65,9 +65,9 @@ public final class Constants {
     public static final int LEFT_PIGEON_ID = 15; // FIXME Set Pigeon ID
     
 
-    public static final double ROTATION_PID_CONTOLLER_kP = .01;
-    public static final double ROTATION_PID_CONTOLLER_kI = 0.001;
-    public static final double ROTATION_PID_CONTOLLER_kD = 0;
+    public static double ROTATION_PID_CONTOLLER_kP = .075;
+    public static double ROTATION_PID_CONTOLLER_kI = 0.001;
+    public static double ROTATION_PID_CONTOLLER_kD = 0;
 
     //intake
 

@@ -9,7 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-
+import java.util.Timer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -25,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.controller.PIDController;
+
+import java.util.TreeSet;
 
 import static frc.robot.Constants.*;
 
@@ -49,12 +52,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
   public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
-  public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP, 
-                                                                     Constants.ROTATION_PID_CONTOLLER_kI,
-                                                                     Constants.ROTATION_PID_CONTOLLER_kD
-  );
+  public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP, Constants.ROTATION_PID_CONTOLLER_kI, Constants.ROTATION_PID_CONTOLLER_kD);
 
+   
   
+  //public static double situRotation_kP = Constants.ROTATION_PID_CONTOLLER_kP;
+  //public static double situRotation_kI = Constants.ROTATION_PID_CONTOLLER_kI;
+  //public static double situRotation_kD = Constants.ROTATION_PID_CONTOLLER_kD;
+  //public static double frames = 100;
+
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
           SdsModuleConfigurations.MK4_L2.getDriveReduction() *
@@ -97,8 +103,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static Pose2d m_pose;
 
+  public static int counter = 0;
 
   public DrivetrainSubsystem() {
+       
+    
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // There are 4 methods you can call to create your swerve modules.
@@ -178,6 +187,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
             new Pose2d(5.0, 13.5, new Rotation2d())  
     );
 
+    rotationPidController.enableContinuousInput(360, 0);
+
   }
 
   
@@ -197,16 +208,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         lastGyro = GyroSubsystem.getBestRotation2d();
         
-        if(Math.abs(RobotContainer.m_controller.getRightX()) > 0.2){
+        if(Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())) > 0.005 || RobotContainer.m_controller.getBackButton()){
                 SmartDashboard.putBoolean("Rotation PID Enabled", false);
                 goalGyro = lastGyro;
+                //situRotation_kP = 0;
+                //situRotation_kI = 0;
+                counter = 0;
         } else {
-                SmartDashboard.putBoolean("Rotation PID Enabled", true);
+                //if(situRotation_kP != Constants.ROTATION_PID_CONTOLLER_kP){ situRotation_kP += Constants.ROTATION_PID_CONTOLLER_kP/frames; }
+                //if(situRotation_kI != Constants.ROTATION_PID_CONTOLLER_kI){ situRotation_kP += Constants.ROTATION_PID_CONTOLLER_kI/frames; }
+                //rotationPidController.setPID(situRotation_kP, situRotation_kI, situRotation_kD);
+                counter += 1;
+                SmartDashboard.putNumber("counter", counter);
                 
-                m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                if(counter > 17){
+
+                        SmartDashboard.putBoolean("Rotation PID Enabled", true);
+                
+                        m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                } else {
+                        goalGyro = lastGyro;
+                }
+                
                 
         }
-        SmartDashboard.putNumber("rotation Supplier", RobotContainer.m_controller.getRightX());
+        SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
         SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
 
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
