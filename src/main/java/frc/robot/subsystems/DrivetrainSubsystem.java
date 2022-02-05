@@ -162,7 +162,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     m_odometry = new SwerveDriveOdometry(
             m_kinematics, 
-            GyroSubsystem.getRightPigeonGyroscopeRotation(), 
+            GyroSubsystem.getBestRotation2d(), 
             new Pose2d(5.0, 13.5, new Rotation2d())  
     );
 
@@ -190,7 +190,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
     m_pose = m_odometry.update(
-            GyroSubsystem.getRightPigeonGyroscopeRotation(), 
+            GyroSubsystem.getBestRotation2d(), 
             states[0], 
             states[1],
             states[2], 

@@ -15,8 +15,7 @@ public class GyroSubsystem extends SubsystemBase {
   /** Creates a new GyroSubsystem. */
   private final static PigeonIMU m_rightPigeon = new PigeonIMU(Constants.RIGHT_PIGEON_ID);
   private final static PigeonIMU m_leftPigeon = new PigeonIMU(Constants.LEFT_PIGEON_ID);
-  // FIXME Uncomment if you are using a NavX
-  private final static AHRS m_navx = new AHRS(); // NavX connected over MXP
+  private final static AHRS m_navx = new AHRS(); 
 
   public GyroSubsystem() {
     
@@ -26,6 +25,13 @@ public class GyroSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public static Rotation2d getBestRotation2d(){ //TODO
+
+    return getRightPigeonGyroscopeRotation();
+
+  }
+
 
   public static Rotation2d getRightPigeonGyroscopeRotation() {
 
@@ -64,7 +70,7 @@ public class GyroSubsystem extends SubsystemBase {
   public void zeroNavXGyroscope() { // keep non static!
     
     m_navx.zeroYaw();
-    
+
   }
   
 }
