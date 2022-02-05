@@ -132,6 +132,18 @@ public class PowerDistributionSubsystem extends SubsystemBase {
     
   }
 
+  public static double getHoodCurrent(){
+
+    return pdp.getCurrent(Constants.HOOD_PDP_SLOT);
+
+  }
+
+  public static double getShooterCurrent(){
+
+    return pdp.getCurrent(Constants.SHOOTER_PDP_SLOT);
+
+  }
+
 
 
 
