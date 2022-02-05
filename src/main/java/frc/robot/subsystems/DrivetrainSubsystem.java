@@ -103,7 +103,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static Pose2d m_pose;
 
-  public static int counter = 0;
+  public static int pidActivationIterator = 0;
 
   public DrivetrainSubsystem() {
        
@@ -208,30 +208,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         lastGyro = GyroSubsystem.getBestRotation2d();
         
-        if(Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())) > 0.005 || RobotContainer.m_controller.getBackButton()){
+        if(Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())) > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || RobotContainer.m_controller.getBackButton()){
+                
                 SmartDashboard.putBoolean("Rotation PID Enabled", false);
                 goalGyro = lastGyro;
-                //situRotation_kP = 0;
-                //situRotation_kI = 0;
-                counter = 0;
-        } else {
-                //if(situRotation_kP != Constants.ROTATION_PID_CONTOLLER_kP){ situRotation_kP += Constants.ROTATION_PID_CONTOLLER_kP/frames; }
-                //if(situRotation_kI != Constants.ROTATION_PID_CONTOLLER_kI){ situRotation_kP += Constants.ROTATION_PID_CONTOLLER_kI/frames; }
-                //rotationPidController.setPID(situRotation_kP, situRotation_kI, situRotation_kD);
-                counter += 1;
-                SmartDashboard.putNumber("counter", counter);
-                
-                if(counter > 17){
+                pidActivationIterator = 0;
 
-                        SmartDashboard.putBoolean("Rotation PID Enabled", true);
-                
+        } else {
+
+                pidActivationIterator += 1;      
+                          
+                if(pidActivationIterator > Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION){
+
+                        SmartDashboard.putBoolean("Heading Control Enabled", true);
                         m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+
                 } else {
                         goalGyro = lastGyro;
-                }
-                
-                
+                }      
         }
+
         SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
         SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
 

@@ -68,6 +68,8 @@ public final class Constants {
     public static double ROTATION_PID_CONTOLLER_kP = .075;
     public static double ROTATION_PID_CONTOLLER_kI = 0.001;
     public static double ROTATION_PID_CONTOLLER_kD = 0;
+    public static int ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION = 17;
+    public static double ROTATION_PID_DEADZONE_ACTIVATOR = 0.005;
 
     //intake
 
