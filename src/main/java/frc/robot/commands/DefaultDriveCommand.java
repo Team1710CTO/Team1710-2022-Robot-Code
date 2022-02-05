@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
@@ -9,7 +10,7 @@ import java.util.function.DoubleSupplier;
 
 public class DefaultDriveCommand extends CommandBase {
     private final DrivetrainSubsystem m_drivetrainSubsystem;
-    
+
     private final DoubleSupplier m_translationXSupplier;
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
@@ -29,7 +30,6 @@ public class DefaultDriveCommand extends CommandBase {
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        
         m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                         m_translationXSupplier.getAsDouble(),
@@ -38,6 +38,8 @@ public class DefaultDriveCommand extends CommandBase {
                         GyroSubsystem.getBestRotation2d()
                 )
         );
+        SmartDashboard.putNumber("Controller X", m_translationXSupplier.getAsDouble());
+        SmartDashboard.putNumber("Controller Y", m_translationYSupplier.getAsDouble());
     }
 
     @Override

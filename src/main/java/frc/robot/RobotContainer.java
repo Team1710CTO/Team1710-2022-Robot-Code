@@ -5,23 +5,29 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
-
+import frc.robot.commands.autonomousCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 
-
+/**
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and button mappings) should be declared here.
+ */
 public class RobotContainer {
+  // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
-  public final static XboxController m_controller = new XboxController(0);
+  private final XboxController m_controller = new XboxController(0);
 
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -49,12 +55,8 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
             // No requirements because we don't need to interrupt anything
+            .whenPressed(m_drivetrainSubsystem::resetFieldOriented)
             .whenPressed(m_GyroSubsystem::zeroRightPigeonGyroscope);
-
-    //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
-    
-    //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
-  
   }
 
   /**
@@ -63,8 +65,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return new autonomousCommand(m_drivetrainSubsystem);
   }
 
   private static double deadband(double value, double deadband) {
