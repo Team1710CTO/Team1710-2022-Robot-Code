@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import edu.wpi.first.math.controller.PIDController;
 
 import static frc.robot.Constants.*;
 
@@ -44,6 +46,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * <p>
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
+
+  public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
+  public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
+  public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP, 
+                                                                     Constants.ROTATION_PID_CONTOLLER_kI,
+                                                                     Constants.ROTATION_PID_CONTOLLER_kD
+  );
+
+  
+
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
           SdsModuleConfigurations.MK4_L2.getDriveReduction() *
           SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
@@ -168,6 +180,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   }
 
+  
   /**
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
@@ -181,6 +194,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+        lastGyro = GyroSubsystem.getBestRotation2d();
+        
+        if(Math.abs(RobotContainer.m_controller.getRightX()) > 0.2){
+                SmartDashboard.putBoolean("Rotation PID Enabled", false);
+                goalGyro = lastGyro;
+        } else {
+                SmartDashboard.putBoolean("Rotation PID Enabled", true);
+                
+                m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                
+        }
+        SmartDashboard.putNumber("rotation Supplier", RobotContainer.m_controller.getRightX());
+        SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
+
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 

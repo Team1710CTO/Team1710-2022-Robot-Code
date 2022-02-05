@@ -49,7 +49,7 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
             // No requirements because we don't need to interrupt anything
-            .whenPressed(m_GyroSubsystem::zeroRightPigeonGyroscope);
+            .whenPressed(m_GyroSubsystem::zeroBestGyro);
 
     //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
     

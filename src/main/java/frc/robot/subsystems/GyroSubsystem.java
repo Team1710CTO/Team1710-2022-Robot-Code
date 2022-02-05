@@ -14,7 +14,7 @@ import frc.robot.Constants;
 public class GyroSubsystem extends SubsystemBase {
   /** Creates a new GyroSubsystem. */
   private final static PigeonIMU m_rightPigeon = new PigeonIMU(Constants.RIGHT_PIGEON_ID);
-  private final static PigeonIMU m_leftPigeon = new PigeonIMU(Constants.LEFT_PIGEON_ID);
+  //private final static PigeonIMU m_leftPigeon = new PigeonIMU(Constants.LEFT_PIGEON_ID);
   private final static AHRS m_navx = new AHRS(); 
 
   public GyroSubsystem() {
@@ -28,7 +28,20 @@ public class GyroSubsystem extends SubsystemBase {
 
   public static Rotation2d getBestRotation2d(){ //TODO
 
-    return getRightPigeonGyroscopeRotation();
+    return getNavXGyroscopeRotation();
+
+  }
+
+  public static Rotation2d getBestRotationInDegrees(){ //TODO
+
+    return getNavXGyroscopeRotation();
+
+  }
+
+  public void zeroBestGyro(){
+    
+    m_navx.zeroYaw();
+
 
   }
 
@@ -47,13 +60,15 @@ public class GyroSubsystem extends SubsystemBase {
 
   public static Rotation2d getLeftPigeonGyroscopeRotation() {
 
-    return Rotation2d.fromDegrees(-m_leftPigeon.getFusedHeading());
+    //Rotation2d.fromDegrees(-m_leftPigeon.getFusedHeading());
+
+    return Rotation2d.fromDegrees(0.0); //fixme
 
   }
 
   public void zeroLeftPigeonGyroscope() { // keep non static!
 
-    m_leftPigeon.setFusedHeading(0.0);
+    //m_leftPigeon.setFusedHeading(0.0);
 
   }
 
@@ -64,7 +79,7 @@ public class GyroSubsystem extends SubsystemBase {
       return Rotation2d.fromDegrees(m_navx.getFusedHeading());
     }
 
-    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+    return Rotation2d.fromDegrees(-(360.0 - m_navx.getYaw()));
   }
 
   public void zeroNavXGyroscope() { // keep non static!

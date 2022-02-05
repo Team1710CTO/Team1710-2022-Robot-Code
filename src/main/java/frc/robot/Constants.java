@@ -40,21 +40,21 @@ public final class Constants {
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 4; // FIXME Set front right drive motor ID
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 5; // FIXME Set front right steer encoder ID
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 6; // FIXME Set front right steer motor ID
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(196.7 - 180); // FIXME Measure and set front right steer offset
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(15); // FIXME Measure and set front right steer offset
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR_PDP_SLOT = 4; // FIXME 
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT = 6; // FIXME 
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; // FIXME Set back right drive motor ID
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 8; // FIXME Set back right steer encoder ID
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 9; // FIXME Set back right steer motor ID
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0); // FIXME Measure and set back right steer offset
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(332); // FIXME Measure and set back right steer offset
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR_PDP_SLOT = 7; //fixme
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT = 9; //fixme
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 10; // FIXME Set back left drive motor ID
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 11; // FIXME Set back left steer encoder ID
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 12; // FIXME Set back left steer motor ID
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0); // FIXME Measure and set back left steer offset
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(238); // FIXME Measure and set back left steer offset
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR_PDP_SLOT = 10; // FIXME Set back left drive motor ID
     public static final int BACK_LEFT_MODULE_STEER_MOTOR_PDP_SLOT = 12;  
     
@@ -64,6 +64,10 @@ public final class Constants {
     public static final int RIGHT_PIGEON_ID = 13; // FIXME Set Pigeon ID
     public static final int LEFT_PIGEON_ID = 15; // FIXME Set Pigeon ID
     
+
+    public static final double ROTATION_PID_CONTOLLER_kP = .01;
+    public static final double ROTATION_PID_CONTOLLER_kI = 0.001;
+    public static final double ROTATION_PID_CONTOLLER_kD = 0;
 
     //intake
 
