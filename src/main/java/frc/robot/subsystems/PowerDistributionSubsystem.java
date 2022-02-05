@@ -18,11 +18,6 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
   private static PowerDistributionSubsystem instance = null;
 
-
-
-
-
-
   public PowerDistributionSubsystem() {
 
     pdp = new PowerDistribution(0, ModuleType.kCTRE);
