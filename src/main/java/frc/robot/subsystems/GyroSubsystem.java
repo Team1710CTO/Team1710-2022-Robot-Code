@@ -14,6 +14,7 @@ import frc.robot.Constants;
 public class GyroSubsystem extends SubsystemBase {
   /** Creates a new GyroSubsystem. */
   private final static PigeonIMU m_rightPigeon = new PigeonIMU(Constants.RIGHT_PIGEON_ID);
+  private final static PigeonIMU m_leftPigeon = new PigeonIMU(Constants.LEFT_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
   private final static AHRS m_navx = new AHRS(); // NavX connected over MXP
 
@@ -27,25 +28,43 @@ public class GyroSubsystem extends SubsystemBase {
   }
 
   public static Rotation2d getRightPigeonGyroscopeRotation() {
-    // FIXME Remove if you are using a Pigeon
+
     return Rotation2d.fromDegrees(-m_rightPigeon.getFusedHeading());
 
-    // FIXME Uncomment if you are using a NavX
-    //if (m_navx.isMagnetometerCalibrated()) {
-//      // We will only get valid fused headings if the magnetometer is calibrated
-      //return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-    //}
-//
-//    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-    //return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
   }
 
-  public void zeroRightPigeonGyroscope() {
-    // FIXME Remove if you are using a Pigeon
+  public void zeroRightPigeonGyroscope() { // keep non static!
+
     m_rightPigeon.setFusedHeading(0.0);
 
-    // FIXME Uncomment if you are using a NavX
-    //m_navx.zeroYaw();
+  }
+
+  public static Rotation2d getLeftPigeonGyroscopeRotation() {
+
+    return Rotation2d.fromDegrees(-m_leftPigeon.getFusedHeading());
+
+  }
+
+  public void zeroLeftPigeonGyroscope() { // keep non static!
+
+    m_leftPigeon.setFusedHeading(0.0);
+
+  }
+
+  public static Rotation2d getNavXGyroscopeRotation() {
+    
+    if (m_navx.isMagnetometerCalibrated()) {
+    // We will only get valid fused headings if the magnetometer is calibrated
+      return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+    }
+
+    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+  }
+
+  public void zeroNavXGyroscope() { // keep non static!
+    
+    m_navx.zeroYaw();
+    
   }
   
 }

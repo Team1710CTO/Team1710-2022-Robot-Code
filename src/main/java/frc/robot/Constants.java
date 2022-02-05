@@ -61,8 +61,8 @@ public final class Constants {
     
     //Gyros
 
-    public static final int DRIVETRAIN_RIGHT_PIGEON_ID = 13; // FIXME Set Pigeon ID
-    public static final int DRIVETRAIN_LEFT_PIGEON_ID = 15; // FIXME Set Pigeon ID
+    public static final int RIGHT_PIGEON_ID = 13; // FIXME Set Pigeon ID
+    public static final int LEFT_PIGEON_ID = 15; // FIXME Set Pigeon ID
     
 
     //intake
