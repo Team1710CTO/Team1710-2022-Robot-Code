@@ -28,11 +28,11 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
-    
 
+    SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
 
   }
+
   public static double getTotalSwerveCurrentDraw() {
 
 
@@ -54,13 +54,53 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
   public static boolean driveCurrentDrawIsAbnormal(){
 
-
-
     return false; //TODO
-
 
   }
 
+  public static double getFrontLeftDriveCurrent(){
+
+    return pdp.getCurrent(Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR_PDP_SLOT);
+
+  }
+  public static double getFrontLeftSteerCurrent(){
+
+    return pdp.getCurrent(Constants.BACK_LEFT_MODULE_STEER_MOTOR_PDP_SLOT);
+
+  }
+
+  public static double getFrontRightDriveCurrent(){
+
+    return pdp.getCurrent(Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR_PDP_SLOT);
+
+  }
+  public static double getFrontRightSteerCurrent(){
+
+    return pdp.getCurrent(Constants.FRONT_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT);
+
+  }
+
+  public static double getBackLeftDriveCurrent(){
+
+    return pdp.getCurrent(Constants.BACK_LEFT_MODULE_DRIVE_MOTOR_PDP_SLOT);
+
+  }
+  public static double getBackLeftSteerCurrent(){
+
+    return pdp.getCurrent(Constants.BACK_LEFT_MODULE_STEER_MOTOR_PDP_SLOT);
+
+  }
+
+  public static double getBackRightDriveCurrent(){
+
+    return pdp.getCurrent(Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR_PDP_SLOT);
+
+  }
+  public static double getBackRightSteerCurrent(){
+
+    return pdp.getCurrent(Constants.BACK_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT);
+
+  }
 
   public static double getLeftIntakeActuatorCurrent(){
 
