@@ -184,7 +184,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_odometry = new SwerveDriveOdometry(
             m_kinematics, 
             GyroSubsystem.getBestRotation2d(), 
-            new Pose2d(5.0, 13.5, new Rotation2d())  
+            new Pose2d(0, 0, new Rotation2d())  
     );
 
     rotationPidController.enableContinuousInput(360, 0);

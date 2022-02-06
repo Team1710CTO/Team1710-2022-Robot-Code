@@ -22,14 +22,14 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
     pdp = new PowerDistribution(0, ModuleType.kCTRE);
 
-    SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
+    SmartDashboard.putNumber("Battery Voltage", getBatteryVoltage());
     
   }
 
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("Battery Voltage", pdp.getVoltage());
+    SmartDashboard.putNumber("Battery Voltage", getBatteryVoltage());
 
   }
 
@@ -49,6 +49,12 @@ public class PowerDistributionSubsystem extends SubsystemBase {
     double FRS = pdp.getCurrent(Constants.FRONT_RIGHT_MODULE_STEER_MOTOR_PDP_SLOT); 
 
     return (BLD + BLS + FLD + FLS + BRD + BRS + FRD + FRS);
+
+  }
+
+  public static double getBatteryVoltage(){
+
+    return pdp.getVoltage();
 
   }
 
