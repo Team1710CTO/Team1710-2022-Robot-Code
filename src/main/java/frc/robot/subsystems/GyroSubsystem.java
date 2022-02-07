@@ -17,6 +17,8 @@ public class GyroSubsystem extends SubsystemBase {
   //private final static PigeonIMU m_leftPigeon = new PigeonIMU(Constants.LEFT_PIGEON_ID);
   private final static AHRS m_navx = new AHRS(); 
 
+  public static boolean isZeroing = false;
+
   public GyroSubsystem() {
     
   }
@@ -41,6 +43,8 @@ public class GyroSubsystem extends SubsystemBase {
   public void zeroBestGyro(){
     
     m_navx.zeroYaw();
+
+    isZeroing = true;
 
 
   }
@@ -88,4 +92,10 @@ public class GyroSubsystem extends SubsystemBase {
 
   }
   
+  public void setIsZeroingFalse(){
+    
+    isZeroing = false;
+
+  }
+
 }

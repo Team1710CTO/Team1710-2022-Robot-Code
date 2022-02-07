@@ -206,27 +206,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-        lastGyro = GyroSubsystem.getBestRotation2d();
+
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControl(true, m_chassisSpeeds); // heading control
         
-        if(Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())) > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || RobotContainer.m_controller.getBackButton()){
-                
-                SmartDashboard.putBoolean("Rotation PID Enabled", false);
-                goalGyro = lastGyro;
-                pidActivationIterator = 0;
-
-        } else {
-
-                pidActivationIterator += 1;      
-                          
-                if(pidActivationIterator > Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION){
-
-                        SmartDashboard.putBoolean("Heading Control Enabled", true);
-                        m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
-
-                } else {
-                        goalGyro = lastGyro;
-                }      
-        }
 
         SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
         SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
@@ -253,4 +235,29 @@ public class DrivetrainSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
   }
+
+
+  public static double headingControl(boolean active, ChassisSpeeds h_ChassisSpeeds){
+        lastGyro = GyroSubsystem.getBestRotation2d();
+        if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || GyroSubsystem.isZeroing){
+                SmartDashboard.putBoolean("Rotation PID Enabled", false);
+                goalGyro = lastGyro;
+                pidActivationIterator = 0;
+                return h_ChassisSpeeds.omegaRadiansPerSecond;
+        } else {
+                pidActivationIterator += 1;             
+                if(pidActivationIterator > Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION){
+                        SmartDashboard.putBoolean("Heading Control Enabled", true);
+                        return h_ChassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                } else {
+                        goalGyro = lastGyro;
+                        return h_ChassisSpeeds.omegaRadiansPerSecond;
+                }  
+
+        }
+
+        
+  }
+  
+
 }
