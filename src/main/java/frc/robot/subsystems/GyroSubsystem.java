@@ -44,7 +44,7 @@ public class GyroSubsystem extends SubsystemBase {
     
     m_navx.zeroYaw();
 
-    isZeroing = true;
+    isZeroing = true; // sets global varible to true... used in drivetrain subsystem
 
 
   }
@@ -94,7 +94,8 @@ public class GyroSubsystem extends SubsystemBase {
   
   public void setIsZeroingFalse(){
     
-    isZeroing = false;
+    // sets global varible to false... used in drivetrain subsystem
+    isZeroing = false; 
 
   }
 

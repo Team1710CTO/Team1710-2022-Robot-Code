@@ -206,8 +206,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControl(true, m_chassisSpeeds); // heading control
+    //modify heading control
+    m_chassisSpeeds.omegaRadiansPerSecond = headingControl(true, m_chassisSpeeds); // heading control
         
 
     SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
@@ -274,7 +274,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         return h_ChassisSpeeds.omegaRadiansPerSecond; //pass value that came in
 
                 }  
-                
+
         }
 
         
