@@ -210,8 +210,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_chassisSpeeds.omegaRadiansPerSecond = headingControl(true, m_chassisSpeeds); // heading control
         
 
-        SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
-        SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
+    SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
+    SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
 
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
@@ -229,8 +229,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
             states[3]
         );
 
-
-
         SmartDashboard.putNumber("estimated position X", m_pose.getX());
         SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
@@ -239,34 +237,44 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static double headingControl(boolean active, ChassisSpeeds h_ChassisSpeeds){
 
-        lastGyro = GyroSubsystem.getBestRotation2d();
+        lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
 
-        if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || GyroSubsystem.isZeroing){
+        // below is the ignore case... 
+        // that being if we are zeroing our gyro or "telling" our robot to turn 
+        // do not maintain heading with pid and move on
+        if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || GyroSubsystem.isZeroing){ 
                 
-                goalGyro = lastGyro;
-                pidActivationIterator = 0;
-                SmartDashboard.putBoolean("Rotation PID Enabled", false);
+                goalGyro = lastGyro; //store Gyro
+                pidActivationIterator = 0; //set iterator to zero
+                SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
 
-                return h_ChassisSpeeds.omegaRadiansPerSecond;
+                return h_ChassisSpeeds.omegaRadiansPerSecond; //return
 
         } else {
 
-                pidActivationIterator += 1;     
+                //iterate iterator if its not already over our iterator threshold
+                if(pidActivationIterator < (Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION += 1)){
+                        //iterate
+                        pidActivationIterator += 1;  
 
+                }   
+
+                //if our iterator is greater than threshold modify our omegaRadiansPerSecond and return
                 if(pidActivationIterator > Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION){
                         
-                        SmartDashboard.putBoolean("Heading Control Enabled", true);
+                        SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
 
+                        //PID Error computed using last gyro and goal gyros stored from other loops and current
                         return h_ChassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
                
                 } else {
 
-                        goalGyro = lastGyro;
+                        goalGyro = lastGyro; //store gyro
 
-                        return h_ChassisSpeeds.omegaRadiansPerSecond;
+                        return h_ChassisSpeeds.omegaRadiansPerSecond; //pass value that came in
 
                 }  
-
+                
         }
 
         
