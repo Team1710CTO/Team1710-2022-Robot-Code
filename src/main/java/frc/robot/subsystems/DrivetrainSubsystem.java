@@ -238,20 +238,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
   public static double headingControl(boolean active, ChassisSpeeds h_ChassisSpeeds){
+
         lastGyro = GyroSubsystem.getBestRotation2d();
+
         if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || GyroSubsystem.isZeroing){
-                SmartDashboard.putBoolean("Rotation PID Enabled", false);
+                
                 goalGyro = lastGyro;
                 pidActivationIterator = 0;
+                SmartDashboard.putBoolean("Rotation PID Enabled", false);
+
                 return h_ChassisSpeeds.omegaRadiansPerSecond;
+
         } else {
-                pidActivationIterator += 1;             
+
+                pidActivationIterator += 1;     
+
                 if(pidActivationIterator > Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION){
+                        
                         SmartDashboard.putBoolean("Heading Control Enabled", true);
+
                         return h_ChassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+               
                 } else {
+
                         goalGyro = lastGyro;
+
                         return h_ChassisSpeeds.omegaRadiansPerSecond;
+
                 }  
 
         }
