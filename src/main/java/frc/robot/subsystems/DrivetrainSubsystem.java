@@ -207,7 +207,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
 
     //modify heading control
-    m_chassisSpeeds.omegaRadiansPerSecond = headingControl(true, m_chassisSpeeds); // heading control
+    m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true, m_chassisSpeeds); // heading control
         
 
     SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
@@ -235,14 +235,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
 
-  public static double headingControl(boolean active, ChassisSpeeds h_ChassisSpeeds){
+  public static double headingControlModifier(boolean active, ChassisSpeeds h_ChassisSpeeds){
 
         lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
 
         // below is the ignore case... 
         // that being if we are zeroing our gyro or "telling" our robot to turn 
         // do not maintain heading with pid and move on
-        if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_DEADZONE_ACTIVATOR || GyroSubsystem.isZeroing){ 
+        if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_SUPPLIER_ACTIVATION_THRESHOLD || GyroSubsystem.isZeroing){ 
                 
                 goalGyro = lastGyro; //store Gyro
                 pidActivationIterator = 0; //set iterator to zero
@@ -253,14 +253,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
         } else {
 
                 //iterate iterator if its not already over our iterator threshold
-                if(pidActivationIterator < (Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION += 1)){
+                if(pidActivationIterator < (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
                         //iterate
                         pidActivationIterator += 1;  
 
                 }   
 
                 //if our iterator is greater than threshold modify our omegaRadiansPerSecond and return
-                if(pidActivationIterator > Constants.ROTATION_PID_ITERATIONS_UNTIL_REACTIVATION){
+                if(pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD){
                         
                         SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
 
