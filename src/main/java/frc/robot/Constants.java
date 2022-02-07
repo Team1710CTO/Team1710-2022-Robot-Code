@@ -65,8 +65,8 @@ public final class Constants {
     public static final int LEFT_PIGEON_ID = 15; // FIXME Set Pigeon ID
     
 
-    public static double ROTATION_PID_CONTOLLER_kP = .075;
-    public static double ROTATION_PID_CONTOLLER_kI = 0.01;
+    public static double ROTATION_PID_CONTOLLER_kP = .1;
+    public static double ROTATION_PID_CONTOLLER_kI = 0.03;
     public static double ROTATION_PID_CONTOLLER_kD = 0;
     public static int ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD = 17;
     public static double ROTATION_PID_SUPPLIER_ACTIVATION_THRESHOLD = 0.005;
@@ -138,6 +138,14 @@ public final class Constants {
     public static double SHOOTER_kMaxOutput = 1; 
     public static double SHOOTER_kMinOutput = -1;
     public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
-    public static double SHOOTER_abnormal_abnormal_current_draw = 10;    
+    public static double SHOOTER_abnormal_abnormal_current_draw = 10;   
+    
+    
+
+    public static final int CLIMBER_SERVO_PWM_CHANNEL = 0;
+
+    public static final int CLIMBER_SERVO_LOCK_POSITION = 0;
+    public static final int CLIMBER_SERVO_DISENGAGE_POSITION = 10;
+
 
 }

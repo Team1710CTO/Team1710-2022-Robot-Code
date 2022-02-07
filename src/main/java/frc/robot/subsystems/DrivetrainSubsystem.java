@@ -52,6 +52,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
   public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
+  
   public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP, Constants.ROTATION_PID_CONTOLLER_kI, Constants.ROTATION_PID_CONTOLLER_kD);
 
    
@@ -97,7 +98,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final SwerveModule m_backLeftModule;
   private final SwerveModule m_backRightModule;
 
-  private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  private static ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public static SwerveDriveOdometry m_odometry;
 
@@ -106,88 +107,87 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static int pidActivationIterator = 0;
 
   public DrivetrainSubsystem() {
-       
     
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+        ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
-    // There are 4 methods you can call to create your swerve modules.
-    // The method you use depends on what motors you are using.
-    //
-    // Mk3SwerveModuleHelper.createFalcon500(...)
-    //   Your module has two Falcon 500s on it. One for steering and one for driving.
-    //
-    // Mk3SwerveModuleHelper.createNeo(...)
-    //   Your module has two NEOs on it. One for steering and one for driving.
-    //
-    // Mk3SwerveModuleHelper.createFalcon500Neo(...)
-    //   Your module has a Falcon 500 and a NEO on it. The Falcon 500 is for driving and the NEO is for steering.
-    //
-    // Mk3SwerveModuleHelper.createNeoFalcon500(...)
-    //   Your module has a NEO and a Falcon 500 on it. The NEO is for driving and the Falcon 500 is for steering.
-    //
-    // Similar helpers also exist for Mk4 modules using the Mk4SwerveModuleHelper class.
+        // There are 4 methods you can call to create your swerve modules.
+        // The method you use depends on what motors you are using.
+        //
+        // Mk3SwerveModuleHelper.createFalcon500(...)
+        //   Your module has two Falcon 500s on it. One for steering and one for driving.
+        //
+        // Mk3SwerveModuleHelper.createNeo(...)
+        //   Your module has two NEOs on it. One for steering and one for driving.
+        //
+        // Mk3SwerveModuleHelper.createFalcon500Neo(...)
+        //   Your module has a Falcon 500 and a NEO on it. The Falcon 500 is for driving and the NEO is for steering.
+        //
+        // Mk3SwerveModuleHelper.createNeoFalcon500(...)
+        //   Your module has a NEO and a Falcon 500 on it. The NEO is for driving and the Falcon 500 is for steering.
+        //
+        // Similar helpers also exist for Mk4 modules using the Mk4SwerveModuleHelper class.
 
-    // By default we will use Falcon 500s in standard configuration. But if you use a different configuration or motors
-    // you MUST change it. If you do not, your code will crash on startup.
-    // FIXME Setup motor configuration
-    m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
-            // This parameter is optional, but will allow you to see the current state of the module on the dashboard.
-            tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(0, 0),
-            // This can either be STANDARD or FAST depending on your gear configuration
-            Mk4SwerveModuleHelper.GearRatio.L2,
-            // This is the ID of the drive motor
-            FRONT_LEFT_MODULE_DRIVE_MOTOR,
-            // This is the ID of the steer motor
-            FRONT_LEFT_MODULE_STEER_MOTOR,
-            // This is the ID of the steer encoder
-            FRONT_LEFT_MODULE_STEER_ENCODER,
-            // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
-            FRONT_LEFT_MODULE_STEER_OFFSET
-    );
+        // By default we will use Falcon 500s in standard configuration. But if you use a different configuration or motors
+        // you MUST change it. If you do not, your code will crash on startup.
+        // FIXME Setup motor configuration
+        m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+                // This parameter is optional, but will allow you to see the current state of the module on the dashboard.
+                tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(0, 0),
+                // This can either be STANDARD or FAST depending on your gear configuration
+                Mk4SwerveModuleHelper.GearRatio.L2,
+                // This is the ID of the drive motor
+                FRONT_LEFT_MODULE_DRIVE_MOTOR,
+                // This is the ID of the steer motor
+                FRONT_LEFT_MODULE_STEER_MOTOR,
+                // This is the ID of the steer encoder
+                FRONT_LEFT_MODULE_STEER_ENCODER,
+                // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
+                FRONT_LEFT_MODULE_STEER_OFFSET
+        );
 
-    // We will do the same for the other modules
-    m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
-            tab.getLayout("Front Right Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(2, 0),
-            Mk4SwerveModuleHelper.GearRatio.L2,
-            FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-            FRONT_RIGHT_MODULE_STEER_MOTOR,
-            FRONT_RIGHT_MODULE_STEER_ENCODER,
-            FRONT_RIGHT_MODULE_STEER_OFFSET
-    );
+        // We will do the same for the other modules
+        m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(2, 0),
+                Mk4SwerveModuleHelper.GearRatio.L2,
+                FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+                FRONT_RIGHT_MODULE_STEER_MOTOR,
+                FRONT_RIGHT_MODULE_STEER_ENCODER,
+                FRONT_RIGHT_MODULE_STEER_OFFSET
+        );
 
-    m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
-            tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(4, 0),
-            Mk4SwerveModuleHelper.GearRatio.L2,
-            BACK_LEFT_MODULE_DRIVE_MOTOR,
-            BACK_LEFT_MODULE_STEER_MOTOR,
-            BACK_LEFT_MODULE_STEER_ENCODER,
-            BACK_LEFT_MODULE_STEER_OFFSET
-    );
+        m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(4, 0),
+                Mk4SwerveModuleHelper.GearRatio.L2,
+                BACK_LEFT_MODULE_DRIVE_MOTOR,
+                BACK_LEFT_MODULE_STEER_MOTOR,
+                BACK_LEFT_MODULE_STEER_ENCODER,
+                BACK_LEFT_MODULE_STEER_OFFSET
+        );
 
-    m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
-            tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                    .withSize(2, 4)
-                    .withPosition(6, 0),
-            Mk4SwerveModuleHelper.GearRatio.L2,
-            BACK_RIGHT_MODULE_DRIVE_MOTOR,
-            BACK_RIGHT_MODULE_STEER_MOTOR,
-            BACK_RIGHT_MODULE_STEER_ENCODER,
-            BACK_RIGHT_MODULE_STEER_OFFSET
-    );
+        m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(6, 0),
+                Mk4SwerveModuleHelper.GearRatio.L2,
+                BACK_RIGHT_MODULE_DRIVE_MOTOR,
+                BACK_RIGHT_MODULE_STEER_MOTOR,
+                BACK_RIGHT_MODULE_STEER_ENCODER,
+                BACK_RIGHT_MODULE_STEER_OFFSET
+        );
 
-    m_odometry = new SwerveDriveOdometry(
-            m_kinematics, 
-            GyroSubsystem.getBestRotation2d(), 
-            new Pose2d(0, 0, new Rotation2d())  
-    );
+        m_odometry = new SwerveDriveOdometry(
+                m_kinematics, 
+                GyroSubsystem.getBestRotation2d(), 
+                new Pose2d(0, 0, new Rotation2d())  
+        );
 
-    rotationPidController.enableContinuousInput(360, 0);
+        rotationPidController.enableContinuousInput(360, 0);
 
   }
 
@@ -200,81 +200,93 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   
   public void drive(ChassisSpeeds chassisSpeeds) {
-    m_chassisSpeeds = chassisSpeeds;
+
+        m_chassisSpeeds = chassisSpeeds;
+
   }
 
   @Override
   public void periodic() {
 
-    //modify heading control
-    m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true, m_chassisSpeeds); // heading control
+        //temp
         
+        //modify heading control
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true); // heading control
+        
+        SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 
-    SmartDashboard.putNumber("rotation Supplier diff", m_chassisSpeeds.omegaRadiansPerSecond - Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
-    SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
+    
+        //SmartDashboard.putNumber("rotation PID output", headingControlModifier(true, m_chassisSpeeds));
 
-    SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
+        SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
-    m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-    m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-    m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-    m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+        m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+        m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+        m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+        m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
-    m_pose = m_odometry.update(
-            GyroSubsystem.getBestRotation2d(), 
-            states[0], 
-            states[1],
-            states[2], 
-            states[3]
-        );
+        m_pose = m_odometry.update(
+                GyroSubsystem.getBestRotation2d(), 
+                states[0], 
+                states[1],
+                states[2], 
+                states[3]
+            );
 
-        SmartDashboard.putNumber("estimated position X", m_pose.getX());
-        SmartDashboard.putNumber("estimated position Y", m_pose.getY());
+            SmartDashboard.putNumber("estimated position X", m_pose.getX());
+            SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
   }
 
 
-  public static double headingControlModifier(boolean active, ChassisSpeeds h_ChassisSpeeds){
+  public static double headingControlModifier(boolean active){
 
-        lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
+        if(active){
 
-        // below is the ignore case... 
-        // that being if we are zeroing our gyro or "telling" our robot to turn 
-        // do not maintain heading with pid and move on
-        if(h_ChassisSpeeds.omegaRadiansPerSecond > Constants.ROTATION_PID_SUPPLIER_ACTIVATION_THRESHOLD || GyroSubsystem.isZeroing){ 
-                
-                goalGyro = lastGyro; //store Gyro
-                pidActivationIterator = 0; //set iterator to zero
-                SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
+                lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
 
-                return h_ChassisSpeeds.omegaRadiansPerSecond; //return
-
-        } else {
-
-                //iterate iterator if its not already over our iterator threshold
-                if(pidActivationIterator < (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
-                        //iterate
-                        pidActivationIterator += 1;  
-
-                }   
-
-                //if our iterator is greater than threshold modify our omegaRadiansPerSecond and return
-                if(pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD){
+                // below is the ignore case... 
+                // that being if we are zeroing our gyro or "telling" our robot to turn 
+                // do not maintain heading with pid and move on
+                if(Math.abs(m_chassisSpeeds.omegaRadiansPerSecond) > Constants.ROTATION_PID_SUPPLIER_ACTIVATION_THRESHOLD || GyroSubsystem.isZeroing){ 
                         
-                        SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
+                        goalGyro = lastGyro; //store Gyro
+                        pidActivationIterator = 0; //set iterator to zero
+                        SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
 
-                        //PID Error computed using last gyro and goal gyros stored from other loops and current
-                        return h_ChassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
-               
+                        return m_chassisSpeeds.omegaRadiansPerSecond; //return
+
                 } else {
 
-                        goalGyro = lastGyro; //store gyro
+                        //iterate iterator if its not already over our iterator threshold
+                        //if(pidActivationIterator < (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
+                                //iterate
+                        pidActivationIterator += 1;  
 
-                        return h_ChassisSpeeds.omegaRadiansPerSecond; //pass value that came in
+                        //}   
 
-                }  
+                        //if our iterator is greater than threshold modify our omegaRadiansPerSecond and return
+                        if(pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD){
+                                
+                                SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
+                                SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
+                                SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+                                //PID Error computed using last gyro and goal gyros stored from other loops and current
+                                return m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                
+                        } else {
 
+                                goalGyro = lastGyro; //store gyro
+
+                                return m_chassisSpeeds.omegaRadiansPerSecond; //pass value that came in
+
+                        }  
+
+                }
+        
+        } else {
+                return m_chassisSpeeds.omegaRadiansPerSecond;
         }
 
         
