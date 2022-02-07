@@ -210,7 +210,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true, m_chassisSpeeds); // heading control
         
 
-    SmartDashboard.putNumber("rotation Supplier", Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
+    SmartDashboard.putNumber("rotation Supplier diff", m_chassisSpeeds.omegaRadiansPerSecond - Math.abs(RobotContainer.modifyAxis(RobotContainer.m_controller.getRightX())));
     SmartDashboard.putNumber("rotation PID output", m_chassisSpeeds.omegaRadiansPerSecond);
 
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
