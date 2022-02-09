@@ -22,22 +22,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   public ShooterSubsystem(){
-
     // initialize motor
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
-
-    /*
-     * The RestoreFactoryDefaults method can be used to reset the configuration parameters
-     * in the SPARK MAX to their factory default state. If no argument is passed, these
-     * parameters will not persist between power cycles
-     */
     m_motor.restoreFactoryDefaults();
 
-    /**
-     * In order to use PID functionality for a controller, a SparkMaxPIDController object
-     * is constructed by calling the getPIDController() method on an existing
-     * CANSparkMax object
-     */
     m_pidController = m_motor.getPIDController();
 
     // Encoder object created to display position values
@@ -69,7 +57,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
-    
   }
 
   @Override
@@ -84,7 +71,6 @@ public class ShooterSubsystem extends SubsystemBase {
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
     
-
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if((p != kP)) { m_pidController.setP(p); kP = p; }
     if((i != kI)) { m_pidController.setI(i); kI = i; }
@@ -96,25 +82,8 @@ public class ShooterSubsystem extends SubsystemBase {
       kMinOutput = min; kMaxOutput = max; 
     }
 
-    /**
-     * PIDController objects are commanded to a set point using the 
-     * SetReference() method.
-     * 
-     * The first parameter is the value of the set point, whose units vary
-     * depending on the control type set in the second parameter.
-     * 
-     * The second parameter is the control type can be set to one of four 
-     * parameters:
-     *  com.revrobotics.CANSparkMax.ControlType.kDutyCycle
-     *  com.revrobotics.CANSparkMax.ControlType.kPosition
-     *  com.revrobotics.CANSparkMax.ControlType.kVelocity
-     *  com.revrobotics.CANSparkMax.ControlType.kVoltage
-     */
-
-    
-    
     SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
-  
+
   }
 
   public void setSpeed(double setPoint){
