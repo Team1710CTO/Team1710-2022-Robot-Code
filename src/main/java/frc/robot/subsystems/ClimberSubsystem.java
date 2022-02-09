@@ -15,18 +15,47 @@ import edu.wpi.first.wpilibj.Servo;
 public class ClimberSubsystem extends SubsystemBase {
 
   private TalonFX climberTalonTop, climberTalonBottom;
-  private Servo lockingServo;
+  private static Servo lockingServo;
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
 
-    lockingServo = new Servo(0);
+    lockingServo = new Servo(Constants.CLIMBER_SERVO_PWM_CHANNEL);
     lockingServo.setPosition(Constants.CLIMBER_SERVO_LOCK_POSITION);
-    lockingServo.getPosition();
+    lockingServo.setDisabled();
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+
+
   }
+
+  public static void lockClimber(){
+
+    lockingServo.setAngle(Constants.CLIMBER_SERVO_LOCK_POSITION);
+
+  }
+
+  public static void disengageClimber(){
+
+    lockingServo.setAngle(Constants.CLIMBER_SERVO_DISENGAGE_POSITION);
+
+  }
+
+  public static void disableClimber(){
+
+    lockingServo.setDisabled();
+
+  }
+
+  public static boolean climberDrumIsRotating(){
+
+    return false;
+
+  }
+
+
 }
