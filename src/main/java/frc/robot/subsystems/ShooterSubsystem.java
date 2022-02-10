@@ -1,20 +1,13 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class ShooterSubsystem extends SubsystemBase {
-  /** Creates a new ShooterSubsystem. */
-
   private static final int deviceID = 2;
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
@@ -37,9 +30,9 @@ public class ShooterSubsystem extends SubsystemBase {
     kD = 0; 
     kIz = 0; 
     kFF = 0.000015; 
-    kMaxOutput = .2; 
-    kMinOutput = 0;
-    maxRPM = 5700;
+    kMaxOutput = .2; //will change later kinda buggy with the PID stuff
+    kMinOutput = 0; //so it won't pass 0 on the way down
+    maxRPM = 5700; //TEST
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -61,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic(){
-    // This method will be called once per scheduler run
+    //SmartDashboard PID values will probably be removed after testing and tuning :)
     // read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
@@ -72,24 +65,24 @@ public class ShooterSubsystem extends SubsystemBase {
     double min = SmartDashboard.getNumber("Min Output", 0);
     
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { m_pidController.setP(p); kP = p; }
-    if((i != kI)) { m_pidController.setI(i); kI = i; }
-    if((d != kD)) { m_pidController.setD(d); kD = d; }
-    if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
+    if(p != kP) { m_pidController.setP(p); kP = p; }
+    if(i != kI) { m_pidController.setI(i); kI = i; }
+    if(d != kD) { m_pidController.setD(d); kD = d; }
+    if(iz != kIz) { m_pidController.setIZone(iz); kIz = iz; }
+    if(ff != kFF) { m_pidController.setFF(ff); kFF = ff; }
     if((max != kMaxOutput) || (min != kMinOutput)) { 
       m_pidController.setOutputRange(min, max); 
       kMinOutput = min; kMaxOutput = max; 
     }
 
     SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
-
   }
 
   public void setSpeed(double setPoint){
     SmartDashboard.putNumber("Setpoint", setPoint);
     m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
   }
+
   public void disableShooter(){
     m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
