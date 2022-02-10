@@ -147,5 +147,9 @@ public final class Constants {
     public static final int CLIMBER_SERVO_LOCK_POSITION = 0;
     public static final int CLIMBER_SERVO_DISENGAGE_POSITION = 10;
 
+    public static final int CLIMBER_TOP_TALON_CAN_ID = 45;
+    public static final int CLIMBER_BOTTOM_TALON_CAN_ID = 46;
+    
+
 
 }

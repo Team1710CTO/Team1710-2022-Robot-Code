@@ -19,6 +19,11 @@ public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
 
+    //climberTalonTop = new TalonFX(Constants.CLIMBER_TOP_TALON_CAN_ID);
+    //climberTalonBottom = new TalonFX(Constants.CLIMBER_BOTTOM_TALON_CAN_ID);
+
+    
+
     lockingServo = new Servo(Constants.CLIMBER_SERVO_PWM_CHANNEL);
     lockingServo.setPosition(Constants.CLIMBER_SERVO_LOCK_POSITION);
     lockingServo.setDisabled();
