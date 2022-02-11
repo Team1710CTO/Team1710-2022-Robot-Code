@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -17,7 +18,6 @@ import edu.wpi.first.wpilibj.XboxController;
 public class HoodSubsystem extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
-  private static final int deviceID = 2;
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
@@ -27,7 +27,7 @@ public class HoodSubsystem extends SubsystemBase {
 
   public HoodSubsystem() {
     // initialize motor
-    m_motor = new CANSparkMax(2, MotorType.kBrushless);
+    m_motor = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
     m_motor.setIdleMode(IdleMode.kBrake);
     Controller = new XboxController(0);
 
@@ -52,13 +52,13 @@ public class HoodSubsystem extends SubsystemBase {
     m_encoder = m_motor.getEncoder();
 
     // PID coefficients
-    kP = 0.001;
-    kI = 0.00001;
-    kD = 0;
-    kIz = 0;
-    kFF = 0;
-    kMaxOutput = 1;
-    kMinOutput = -1;
+    kP = Constants.HOOD_kP;
+    kI = Constants.HOOD_kI;
+    kD = Constants.HOOD_kD;
+    kIz = Constants.HOOD_kIz;
+    kFF = Constants.HOOD_kFF;
+    kMaxOutput = Constants.HOOD_kMaxOutput;
+    kMinOutput = Constants.HOOD_kMinOutput;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -69,14 +69,14 @@ public class HoodSubsystem extends SubsystemBase {
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
+    /*SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
     SmartDashboard.putNumber("D Gain", kD);
     SmartDashboard.putNumber("I Zone", kIz);
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
-    SmartDashboard.putNumber("Set Rotations", rotations);
+    SmartDashboard.putNumber("Set Rotations", rotations); */
 
   }
 
@@ -84,7 +84,7 @@ public class HoodSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
+   /* double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
     double d = SmartDashboard.getNumber("D Gain", 0);
     double iz = SmartDashboard.getNumber("I Zone", 0);
@@ -119,7 +119,7 @@ public class HoodSubsystem extends SubsystemBase {
       m_pidController.setOutputRange(min, max);
       kMinOutput = min;
       kMaxOutput = max;
-    }
+    } */
 
     if (Controller.getAButtonPressed()) {
       rotations = 1.2;
@@ -138,11 +138,11 @@ public class HoodSubsystem extends SubsystemBase {
 
     double position = m_encoder.getPosition();
 
-    if (position < 0) {
-      position = 0;
+    if (position < Constants.HOOD_min) {
+      position = Constants.HOOD_min;
     }
-    if (position > 1.2) {
-      position = 1.2;
+    if (position > Constants.HOOD_max) {
+      position = Constants.HOOD_max;
     }
 
     

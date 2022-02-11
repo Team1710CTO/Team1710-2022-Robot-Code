@@ -114,17 +114,17 @@ public final class Constants {
     //hood
     public static final int HOOD_CAN_ID = 30;
     public static final int HOOD_PDP_SLOT = 11; //fixme
-    public static double HOOD_kP = 0.1; 
-    public static double HOOD_kI = 1e-4;
-    public static double HOOD_kD = 1; 
+    public static double HOOD_kP = 0.001; 
+    public static double HOOD_kI = 0.00001; //or 0.00005? test
+    public static double HOOD_kD = 0; 
     public static double HOOD_kIz = 0; 
     public static double HOOD_kFF = 0; 
     public static double HOOD_kMaxOutput = 1; 
     public static double HOOD_kMinOutput = -1;
     public static double HOOD_zero_dutyCycle__gain = 1e-5;
     public static double HOOD_abnormal_abnormal_current_draw = 10;
-    public static final double HOOD_up = .5 ; // roations from zero FIXME
-    public static final double HOOD_down = 0; // set by the zero functionality
+    public static final double HOOD_max = 1.2 ; // roations from zero FIXME
+    public static final double HOOD_min = 0; // set by the zero functionality
 
 
     //shooter
