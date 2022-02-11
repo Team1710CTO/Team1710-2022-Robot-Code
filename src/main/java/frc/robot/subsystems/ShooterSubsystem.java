@@ -75,13 +75,12 @@ public class ShooterSubsystem extends SubsystemBase {
       m_pidController.setOutputRange(min, max); 
       kMinOutput = min; kMaxOutput = max; 
     }
-
-    SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
   }
 
   public void setSpeed(double setPoint){
-    SmartDashboard.putNumber("Setpoint", setPoint);
     m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+    SmartDashboard.putNumber("Setpoint", setPoint);
+    SmartDashboard.putNumber("CurrentPoint", m_encoder.getVelocity());
   }
 
   public void disableShooter(){
