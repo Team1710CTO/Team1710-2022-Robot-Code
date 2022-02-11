@@ -26,14 +26,14 @@ public class ShooterSubsystem extends SubsystemBase {
     m_encoder = m_motor.getEncoder();
 
     // PID coefficients
-    kP = 0.0001; 
-    kI = 0.000001;
+    kP = 0.0001; // TODO
+    kI = 0.000001; // TODO
     kD = 0; 
     kIz = 0; 
     kFF = 0.000015; 
-    kMaxOutput = .2; //will change later kinda buggy with the PID stuff
-    kMinOutput = 0; //so it won't pass 0 on the way down
-    maxRPM = 5700; //TEST
+    kMaxOutput = .5; // TODO
+    kMinOutput = 0; // TODO
+    maxRPM = 5700; // TODO
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -43,7 +43,8 @@ public class ShooterSubsystem extends SubsystemBase {
     m_pidController.setFF(kFF);
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
-    // display PID coefficients on SmartDashboard
+    // display PID coefficients on SmartDashboard 
+    //WILL REMOVE AFTER TESTING
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
     SmartDashboard.putNumber("D Gain", kD);
@@ -55,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic(){
-    //SmartDashboard PID values will probably be removed after testing and tuning :)
+    //WILL REMOVE AFTER TESTING 
     // read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
@@ -65,6 +66,7 @@ public class ShooterSubsystem extends SubsystemBase {
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
     
+    // WILL REMOVE AFTER TESTING
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if(p != kP) { m_pidController.setP(p); kP = p; }
     if(i != kI) { m_pidController.setI(i); kI = i; }
