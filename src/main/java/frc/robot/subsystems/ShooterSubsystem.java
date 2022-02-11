@@ -2,13 +2,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private static final int deviceID = 2;
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
@@ -16,7 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem(){
     // initialize motor
-    m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
+    m_motor = new CANSparkMax(Constants.SHOOTER_CAN_ID, MotorType.kBrushless);
     m_motor.restoreFactoryDefaults();
 
     m_pidController = m_motor.getPIDController();
