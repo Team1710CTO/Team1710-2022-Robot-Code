@@ -14,11 +14,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.XboxController;
 
-
 public class HoodSubsystem extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
-  private static final int deviceID = 1;
+  private static final int deviceID = 2;
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
@@ -60,8 +59,6 @@ public class HoodSubsystem extends SubsystemBase {
     kFF = 0;
     kMaxOutput = 1;
     kMinOutput = -1;
-    
-    
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -70,7 +67,6 @@ public class HoodSubsystem extends SubsystemBase {
     m_pidController.setIZone(kIz);
     m_pidController.setFF(kFF);
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
-
 
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
@@ -95,9 +91,8 @@ public class HoodSubsystem extends SubsystemBase {
     double ff = SmartDashboard.getNumber("Feed Forward", 0);
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
-    //double rotations = SmartDashboard.getNumber("Set Rotations", 0);
-    
- 
+    // double rotations = SmartDashboard.getNumber("Set Rotations", 0);
+
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
     if ((p != kP)) {
@@ -125,45 +120,41 @@ public class HoodSubsystem extends SubsystemBase {
       kMinOutput = min;
       kMaxOutput = max;
     }
-      
-    if(Controller.getAButtonPressed()){
+
+    if (Controller.getAButtonPressed()) {
       rotations = 1.2;
     }
-    if(Controller.getBButtonPressed()){
+    if (Controller.getBButtonPressed()) {
       rotations = 1;
     }
-    if(Controller.getYButtonPressed()){
+    if (Controller.getYButtonPressed()) {
       rotations = 0.2;
     }
-    if(Controller.getXButtonPressed()){
+    if (Controller.getXButtonPressed()) {
       rotations = 0;
     }
 
-      // must be CANsparkMax.controlType not just controlType
-      m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
-      
-      double position = m_encoder.getPosition();
-
-      if(position < 0){
-        position = 0;
-      }
-      if(position > 1.2){
-        position = 1.2;
-      }
-
-      // SmartDashboard.putNumber("SetPoint", setPoint);
-      SmartDashboard.putNumber("ProcessVariable", position);
-
-      if(position <= rotations + 0.03 && position >= rotations - 0.03){
-        m_motor.set(0);
-      }
-      
-
-    }
   
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+    double position = m_encoder.getPosition();
+
+    if (position < 0) {
+      position = 0;
+    }
+    if (position > 1.2) {
+      position = 1.2;
+    }
+
+    // SmartDashboard.putNumber("SetPoint", setPoint);
+    SmartDashboard.putNumber("ProcessVariable", position);
+
+    if (position <= rotations + 0.03 && position >= rotations - 0.03) {
+      m_motor.set(0);
+    }
+ 
   }
+  public void hoodAngle(double rotations){
+    m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+  }
+  
 }
