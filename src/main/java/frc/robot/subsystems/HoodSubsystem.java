@@ -145,8 +145,7 @@ public class HoodSubsystem extends SubsystemBase {
       position = 1.2;
     }
 
-    // SmartDashboard.putNumber("SetPoint", setPoint);
-    SmartDashboard.putNumber("ProcessVariable", position);
+    
 
     if (position <= rotations + 0.03 && position >= rotations - 0.03) {
       m_motor.set(0);
@@ -155,6 +154,7 @@ public class HoodSubsystem extends SubsystemBase {
   }
   public void hoodAngle(double rotations){
     m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    SmartDashboard.putNumber("ProcessVariable", m_encoder.getPosition());
   }
   
 }
