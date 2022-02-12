@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 import frc.robot.commands.DefaultDriveCommand;
-
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.PowerDistributionSubsystem;
@@ -26,6 +26,7 @@ public class RobotContainer {
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
   public final static XboxController m_controller = new XboxController(0);
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
+  
 
   public RobotContainer() {
     // Set up the default command for the drivetrain.
@@ -57,7 +58,8 @@ public class RobotContainer {
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
-    
+    new Button(m_controller::getRightBumper)
+            .whenHeld(new IntakeCommand());
     //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
     
     //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
