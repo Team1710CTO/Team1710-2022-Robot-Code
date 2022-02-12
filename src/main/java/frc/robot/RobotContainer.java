@@ -31,6 +31,7 @@ public class RobotContainer {
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
+  public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   
 
   public RobotContainer() {
@@ -41,9 +42,9 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(-m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     // Configure the button bindings
@@ -64,7 +65,10 @@ public class RobotContainer {
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
     new Button(m_controller::getRightBumper)
-            .whileHeld(new IntakeCommand());
+            .whileHeld(new IntakeCommand(mIntakeSubsystem));
+
+    new Button(m_controller::getStartButton)
+            .whenPressed(new ZeroIntake(mIntakeSubsystem));
 
     //new Button(m_controller::getStartButton)
     //        .whenPressed(new ZeroIntake());
