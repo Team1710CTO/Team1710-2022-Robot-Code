@@ -242,6 +242,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static double headingControlModifier(boolean active){
 
+        SmartDashboard.putNumber("goalGyro", goalGyro.getDegrees());
+        SmartDashboard.putNumber("lastGyro", lastGyro.getDegrees());
         if(active){
 
                 lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
