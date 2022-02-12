@@ -4,9 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.*;
+import java.util.ArrayList;
 import io.github.pseudoresonance.pixy2api.Pixy2Line;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
 import io.github.pseudoresonance.pixy2api.Pixy2Line.Vector;
 
@@ -92,12 +96,39 @@ public class PixySubsystem extends SubsystemBase {
 
   }
 
+  public void getBlocks(){
+
+  }
+
   public void start(){
 
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    /*SmartDashboard.putBoolean("Camera", hasLine); 
+    pixy.getCCC().getBlocks(false,255,255);
+    SmartDashboard.putBoolean("present", true);
+    SmartDashboard.putNumber("Xcoord", xcoord); */
+    
+    boolean isCamera = false;
+    SmartDashboard.putBoolean( "Camera" , isCamera);
+    pixy.getCCC().getBlocks( false , 255 , 255 ); 
+     int blocks = pixy.getCCC().getBlocks(); 
+     if (Block.size() > 0 )
+     {
+     double xcoord = blocks.get( 0 ).getX(); 
+     double ycoord = blocks.get( 0 ).getY(); 
+     String data = blocks.get( 0 ).toString(); 
+     SmartDashboard.putBoolean( "present" , true ); 
+     SmartDashboard.putNumber( "Xccord" ,xcoord);
+     SmartDashboard.putNumber( "Ycoord" , ycoord);
+     SmartDashboard.putString( "Data" , data );
+     }
+     else
+     SmartDashboard.putBoolean( "present" , false );
+     SmartDashboard.putNumber( "size" , blocks.size());
+  
+
   }
 }
