@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -16,6 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Indexer extends SubsystemBase {
   
+  public static DigitalInput beamBreak1, beamBreak2;
   private static final int deviceID = 42;
     private static CANSparkMax m_motor;
     private static SparkMaxPIDController m_pidController;
@@ -23,6 +26,9 @@ public class Indexer extends SubsystemBase {
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   /** Creates a new Indexer. */
   public Indexer() {
+
+    beamBreak1 = new DigitalInput(0);
+    beamBreak2 = new DigitalInput(1);
 // initialize motor
 m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
         
@@ -120,7 +126,8 @@ SmartDashboard.putNumber("Hood Set Rotations", 0);
     }
     
     
-    
+    SmartDashboard.putBoolean("beamBreak2", beamBreak2.get());
+    SmartDashboard.putBoolean("beamBreak1", beamBreak1.get());
     
     SmartDashboard.putNumber("Hood SetPoint", rotations);
     SmartDashboard.putNumber("Hood ProcessVariable", m_encoder.getPosition());

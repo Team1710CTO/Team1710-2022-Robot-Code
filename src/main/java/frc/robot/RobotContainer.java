@@ -4,36 +4,28 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+
 import frc.robot.commands.DefaultDriveCommand;
+
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Hood;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.IntakeOne;
-import frc.robot.subsystems.IntakeTwo;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.intakeRunner;
+import frc.robot.subsystems.GyroSubsystem;
+//import frc.robot.subsystems.PowerDistributionSubsystem;
+
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  
-  private final intakeRunner  m_intakeRunner = new intakeRunner();
-
-  private final IntakeOne m_IntakeOne = new IntakeOne();
-
-  private final IntakeTwo m_IntakeTwo = new IntakeTwo();
-
-  private final Shooter m_shooter = new Shooter();
-
-  private final Hood m_Hood = new Hood();
-
-  private final Indexer m_iIndexer = new Indexer();
-
-  public static XboxController m_controller = new XboxController(0);
+  private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
+  public final static XboxController m_controller = new XboxController(0);
+  //public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
 
   public RobotContainer() {
     // Set up the default command for the drivetrain.
@@ -62,7 +54,14 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
             // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+            .whenPressed(m_GyroSubsystem::zeroBestGyro)
+            .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
+
+    
+    //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
+    
+    //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
+  
   }
 
   /**
@@ -76,24 +75,35 @@ public class RobotContainer {
   }
 
   private static double deadband(double value, double deadband) {
+
     if (Math.abs(value) > deadband) {
+
       if (value > 0.0) {
+
         return (value - deadband) / (1.0 - deadband);
+
       } else {
+
         return (value + deadband) / (1.0 - deadband);
+
       }
+
     } else {
+
       return 0.0;
+      
     }
   }
 
-  private static double modifyAxis(double value) {
+  public static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.05);
+    value = deadband(value, 0.15);
 
     // Square the axis
     value = Math.copySign(value * value, value);
 
     return value;
   }
+
+
 }
