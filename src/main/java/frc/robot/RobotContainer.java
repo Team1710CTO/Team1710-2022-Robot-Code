@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ZeroIntake;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -60,8 +61,12 @@ public class RobotContainer {
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
-    //new Button(m_controller::getRightBumper)
-    //        .whileHeld(new IntakeCommand());
+    new Button(m_controller::getRightBumper)
+            .whileHeld(new IntakeCommand());
+
+    new Button(m_controller::getStartButton)
+            .whenPressed(new ZeroIntake());
+            
     //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
     
     //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));

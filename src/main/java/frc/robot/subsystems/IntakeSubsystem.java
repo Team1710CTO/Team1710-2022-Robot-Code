@@ -101,20 +101,40 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static void setIntakeUp(){
 
-    m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kDutyCycle);
-    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kPosition);
+    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kPosition);
  
   }
 
   public static void setintakeDown(){
 
-    m_actuatorLeft_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kDutyCycle);
-    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_down, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorLeft_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kPosition);
+    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_down, CANSparkMax.ControlType.kPosition);
+
+  }
+
+  public static void zeroRotations(){
+    m_actuatorRight_encoder.setPosition(0);
+    m_actuatorLeft_encoder.setPosition(0);
+  }
+
+  public static void runIntakeUp(){
+
+    m_actuatorLeft_PidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorRight_PidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
+
+
+  }
+
+  public static void runIntakeDown(){
+
+    m_actuatorLeft_PidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorRight_PidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
+
 
   }
 
   
-
 
 
 }
