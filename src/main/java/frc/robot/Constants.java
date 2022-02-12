@@ -82,7 +82,7 @@ public final class Constants {
     //intake Left
     public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 12;
     public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
-    public static double INTAKE_LEFT_kP = 0.3; 
+    public static double INTAKE_LEFT_kP = 0.03; 
     public static double INTAKE_LEFT_kI = 1e-4;
     public static double INTAKE_LEFT_kD = 1; 
     public static double INTAKE_LEFT_kIz = 0; 
@@ -91,24 +91,24 @@ public final class Constants {
     public static double INTAKE_LEFT_kMinOutput = -1;
     public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
     public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
-    public static final double Intake_LEFT_up = -19; // roations from zero FIXME
+    public static final double Intake_LEFT_up = -4.23; // roations from zero FIXME
     public static final double INTAKE_LEFT_down = 0; // set by the zero functionality
 
 
     //intake Right
     public static final int RIGHT_INTAKE_ACTUATOR_PDP_SLOT = 13;
     public static final int RIGHT_INTAKE_ACTUATOR_CAN_ID = 30;
-    public static double INTAKE_RIGHT_kP = 0.3; 
-    public static double INTAKE_RIGHT_kI = 1e-4;
-    public static double INTAKE_RIGHT_kD = 1; 
-    public static double INTAKE_RIGHT_kIz = 0; 
-    public static double INTAKE_RIGHT_kFF = 0; 
-    public static double INTAKE_RIGHT_kMaxOutput = 1; 
-    public static double INTAKE_RIGHT_kMinOutput = -1;
-    public static double INTAKE_RIGHT_zero_dutyCycle__gain = 1e-5;
+    public static double INTAKE_RIGHT_kP = INTAKE_LEFT_kP; 
+    public static double INTAKE_RIGHT_kI = INTAKE_LEFT_kI;
+    public static double INTAKE_RIGHT_kD = INTAKE_LEFT_kD; 
+    public static double INTAKE_RIGHT_kIz = INTAKE_LEFT_kIz; 
+    public static double INTAKE_RIGHT_kFF = INTAKE_LEFT_kFF; 
+    public static double INTAKE_RIGHT_kMaxOutput = INTAKE_LEFT_kMaxOutput; 
+    public static double INTAKE_RIGHT_kMinOutput = INTAKE_LEFT_kMinOutput;
+    public static double INTAKE_RIGHT_zero_dutyCycle__gain = INTAKE_LEFT_zero_dutyCycle__gain;
     public static double INTAKE_RIGHT_abnormal_abnormal_current_draw = 10;
-    public static final double INTAKE_RIGHT_up = 19; // set by the zero functionality
-    public static final double INTAKE_RIGHT_down = 0; // set by the zero functionality
+    public static final double INTAKE_RIGHT_up = -Intake_LEFT_up; // set by the zero functionality
+    public static final double INTAKE_RIGHT_down = INTAKE_LEFT_down; // set by the zero functionality
 
 
     //hood

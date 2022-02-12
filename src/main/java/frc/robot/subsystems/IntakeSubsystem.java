@@ -23,9 +23,9 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   
   public static TalonFX m_intakeRunner;
-  private static CANSparkMax m_actuatorLeft, m_actuatorRight;
-  private static SparkMaxPIDController m_actuatorLeft_PidController, m_actuatorRight_PidController;
-  private static RelativeEncoder m_actuatorLeft_encoder, m_actuatorRight_encoder;
+  public static CANSparkMax m_actuatorLeft, m_actuatorRight;
+  public static SparkMaxPIDController m_actuatorLeft_PidController, m_actuatorRight_PidController;
+  public static RelativeEncoder m_actuatorLeft_encoder, m_actuatorRight_encoder;
   public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public IntakeSubsystem() {
@@ -70,7 +70,9 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     
 
-    SmartDashboard.putNumber("intake rotations", m_actuatorLeft_encoder.getPosition());
+    
+
+    SmartDashboard.putNumber("intake Current draw", PowerDistributionSubsystem.getintakeActuatorCurrent());
     
         
    
