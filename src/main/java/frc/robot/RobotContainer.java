@@ -60,8 +60,8 @@ public class RobotContainer {
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
-    new Button(m_controller::getRightBumper)
-            .whenHeld(new IntakeCommand());
+    //new Button(m_controller::getRightBumper)
+    //        .whileHeld(new IntakeCommand());
     //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
     
     //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));

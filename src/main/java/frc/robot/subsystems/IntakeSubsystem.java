@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     m_actuatorLeft = new CANSparkMax(Constants.LEFT_INTAKE_ACTUATOR_CAN_ID, MotorType.kBrushless);
     m_actuatorLeft.restoreFactoryDefaults();
-    m_actuatorLeft.setIdleMode(IdleMode.kCoast);
+    m_actuatorLeft.setIdleMode(IdleMode.kBrake);
     m_actuatorLeft_PidController = m_actuatorLeft.getPIDController();
     m_actuatorLeft_encoder = m_actuatorLeft.getEncoder();
     m_actuatorLeft_PidController.setI(Constants.INTAKE_LEFT_kI);
@@ -44,7 +44,9 @@ public class IntakeSubsystem extends SubsystemBase {
     
     m_actuatorRight = new CANSparkMax(Constants.RIGHT_INTAKE_ACTUATOR_CAN_ID, MotorType.kBrushless);
     m_actuatorRight.restoreFactoryDefaults();
-    m_actuatorRight.setIdleMode(IdleMode.kCoast);
+    m_actuatorRight.setIdleMode(IdleMode.kBrake);
+    m_actuatorRight_PidController = m_actuatorRight.getPIDController();
+    m_actuatorRight_encoder = m_actuatorRight.getEncoder();
     m_actuatorRight_PidController.setI(Constants.INTAKE_RIGHT_kI);
     m_actuatorRight_PidController.setP(Constants.INTAKE_RIGHT_kP);
     m_actuatorRight_PidController.setIZone(Constants.INTAKE_RIGHT_kIz);
@@ -68,11 +70,10 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     
 
-
+    SmartDashboard.putNumber("intake rotations", m_actuatorLeft_encoder.getPosition());
     
         
-    SmartDashboard.putNumber("Indexer SetPoint", (-(RobotContainer.m_controller.getLeftTriggerAxis() - RobotContainer.m_controller.getRightTriggerAxis())));
-    SmartDashboard.putNumber("Indexer ProcessVariable", m_actuatorRight_encoder.getPosition());
+   
   }
 
 
@@ -100,15 +101,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static void setIntakeUp(){
 
-    m_actuatorLeft_PidController.setReference(-Constants.Intake_LEFT_up, CANSparkMax.ControlType.kDutyCycle);
-    m_actuatorRight_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kDutyCycle);
  
   }
 
   public static void setintakeDown(){
 
-    m_actuatorLeft_PidController.setReference(-Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kDutyCycle);
-    m_actuatorRight_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorLeft_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_down, CANSparkMax.ControlType.kDutyCycle);
 
   }
 
