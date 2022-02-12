@@ -26,7 +26,7 @@ public class IntakeTwo extends SubsystemBase {
 
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
         
-    m_motor.setIdleMode(IdleMode.kCoast);
+    m_motor.setIdleMode(IdleMode.kBrake);
 
 
 

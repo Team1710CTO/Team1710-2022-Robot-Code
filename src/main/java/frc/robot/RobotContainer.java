@@ -18,13 +18,21 @@ import frc.robot.commands.DefaultDriveCommand;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.Indexer;
 //import frc.robot.subsystems.PowerDistributionSubsystem;
+import frc.robot.subsystems.IntakeOne;
+import frc.robot.subsystems.IntakeTwo;
+import frc.robot.subsystems.intakeRunner;
 
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
   public final static XboxController m_controller = new XboxController(0);
+  public static final IntakeOne M_INTAKE_ONE = new IntakeOne();
+  public static final IntakeTwo M_INTAKE_TWO = new IntakeTwo();
+  public static final intakeRunner M_INTAKE_RUNNER = new intakeRunner();
+  public static final Indexer M_INDEXER = new Indexer();
   //public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
 
   public RobotContainer() {

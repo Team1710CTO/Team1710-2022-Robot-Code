@@ -28,7 +28,7 @@ public class IntakeOne extends SubsystemBase {
     mypDistribution = new PowerDistribution(0, ModuleType.kCTRE);
 
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
-    m_motor.setIdleMode(IdleMode.kCoast);
+    m_motor.setIdleMode(IdleMode.kBrake);
     
 
         /**
