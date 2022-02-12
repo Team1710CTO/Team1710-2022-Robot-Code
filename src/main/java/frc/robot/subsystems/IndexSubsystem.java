@@ -1,19 +1,19 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
- 
+
 package frc.robot.subsystems;
- 
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
- 
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
- 
+
 public class IndexSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private static final int deviceID = 1;
@@ -22,19 +22,13 @@ public class IndexSubsystem extends SubsystemBase {
   private RelativeEncoder m_encoder;
   private DigitalInput xSensor;
   private DigitalInput ySensor;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-  
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, setRPM;
+
   public IndexSubsystem() {
     // initialize motor
-    m_motor = new CANSparkMax(12, MotorType.kBrushless);
+    m_motor = new CANSparkMax(4, MotorType.kBrushless);
     xSensor = new DigitalInput(0);
-    ySensor = new DigitalInput(1);
-    
-    if (xSensor != null){
-      maxRPM = 0;
-    } else {
-      maxRPM = 600;
-    }
+    // ySensor = new DigitalInput(1);
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration
@@ -44,7 +38,7 @@ public class IndexSubsystem extends SubsystemBase {
      * parameters will not persist between power cycles
      */
     m_motor.restoreFactoryDefaults();
- 
+
     /**
      * In order to use PID functionality for a controller, a SparkMaxPIDController
      * object
@@ -52,10 +46,10 @@ public class IndexSubsystem extends SubsystemBase {
      * CANSparkMax object
      */
     m_pidController = m_motor.getPIDController();
- 
+
     // Encoder object created to display position values
     m_encoder = m_motor.getEncoder();
- 
+
     // PID coefficients
     kP = 0.0001;
     kI = 0.000001;
@@ -64,8 +58,7 @@ public class IndexSubsystem extends SubsystemBase {
     kFF = 0;
     kMaxOutput = 0.2;
     kMinOutput = -1;
-    
-    
+
     // set PID coefficients
     m_pidController.setP(kP);
     m_pidController.setI(kI);
@@ -73,7 +66,7 @@ public class IndexSubsystem extends SubsystemBase {
     m_pidController.setIZone(kIz);
     m_pidController.setFF(kFF);
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
- 
+
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
@@ -84,9 +77,10 @@ public class IndexSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Min Output", kMinOutput);
     SmartDashboard.putNumber("Set Rotations", maxRPM);
   }
- 
+
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
     // read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
@@ -97,9 +91,8 @@ public class IndexSubsystem extends SubsystemBase {
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
     double maxRPM = SmartDashboard.getNumber("Set Rotations", 0);
- 
 
-
+    SmartDashboard.putBoolean("Sensor Value", xSensor.get());
 
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
@@ -128,18 +121,19 @@ public class IndexSubsystem extends SubsystemBase {
       kMinOutput = min;
       kMaxOutput = max;
     }
- 
 
- 
-    m_pidController.setReference(maxRPM, ControlType.kVelocity);
+    if (xSensor.get()) {
+      m_pidController.setReference(100, ControlType.kVelocity);
+    } else {
+      m_pidController.setReference(0, ControlType.kVelocity);
+    }
+
     double velocity = m_encoder.getVelocity();
     SmartDashboard.putNumber("RPM Variable", velocity);
   }
- 
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
 }
- 
-
