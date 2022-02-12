@@ -4,6 +4,7 @@
  
 package frc.robot.subsystems;
  
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
  
@@ -19,12 +20,22 @@ public class IndexSubsystem extends SubsystemBase {
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
+  private DigitalInput xSensor;
+  private DigitalInput ySensor;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
- 
+  
   public IndexSubsystem() {
     // initialize motor
-    m_motor = new CANSparkMax(2, MotorType.kBrushless);
- 
+    m_motor = new CANSparkMax(12, MotorType.kBrushless);
+    xSensor = new DigitalInput(0);
+    ySensor = new DigitalInput(1);
+    
+    if (xSensor != null){
+      maxRPM = 0;
+    } else {
+      maxRPM = 600;
+    }
+
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration
      * parameters
@@ -53,8 +64,8 @@ public class IndexSubsystem extends SubsystemBase {
     kFF = 0;
     kMaxOutput = 0.2;
     kMinOutput = -1;
-    maxRPM = 600;
- 
+    
+    
     // set PID coefficients
     m_pidController.setP(kP);
     m_pidController.setI(kI);
@@ -87,6 +98,9 @@ public class IndexSubsystem extends SubsystemBase {
     double min = SmartDashboard.getNumber("Min Output", 0);
     double maxRPM = SmartDashboard.getNumber("Set Rotations", 0);
  
+
+
+
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
     if ((p != kP)) {
@@ -115,6 +129,7 @@ public class IndexSubsystem extends SubsystemBase {
       kMaxOutput = max;
     }
  
+
  
     m_pidController.setReference(maxRPM, ControlType.kVelocity);
     double velocity = m_encoder.getVelocity();
