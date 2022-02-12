@@ -13,7 +13,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 public class IntakeOne extends SubsystemBase {
   /** Creates a new Intake. */
   private static final int deviceID = 31;
@@ -21,8 +22,10 @@ public class IntakeOne extends SubsystemBase {
     private static SparkMaxPIDController m_pidController;
     private static RelativeEncoder m_encoder;
     public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-
+    public static PowerDistribution mypDistribution;
   public IntakeOne() {
+
+    mypDistribution = new PowerDistribution(0, ModuleType.kCTRE);
 
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
     m_motor.setIdleMode(IdleMode.kCoast);
@@ -119,7 +122,9 @@ public class IntakeOne extends SubsystemBase {
         m_pidController.setReference(-(RobotContainer.m_controller.getLeftTriggerAxis() - RobotContainer.m_controller.getRightTriggerAxis()), CANSparkMax.ControlType.kDutyCycle);
       
         
+        SmartDashboard.putNumber("Intake c draw", mypDistribution.getCurrent(9) + mypDistribution.getCurrent(10));
         
+
         SmartDashboard.putNumber("Indexer SetPoint", rotations);
         SmartDashboard.putNumber("Indexer ProcessVariable", m_encoder.getPosition());
 
