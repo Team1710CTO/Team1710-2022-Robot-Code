@@ -18,6 +18,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PowerDistributionSubsystem;
 
 
@@ -26,6 +27,7 @@ public class RobotContainer {
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
   public final static XboxController m_controller = new XboxController(0);
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
+  public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
   
 
   public RobotContainer() {

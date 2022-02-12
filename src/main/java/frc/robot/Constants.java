@@ -149,6 +149,22 @@ public final class Constants {
 
     public static final int CLIMBER_TOP_TALON_CAN_ID = 45;
     public static final int CLIMBER_BOTTOM_TALON_CAN_ID = 46;
+
+
+    public static final int INDEXER_CAN_ID = 42;
+
+    public static final int bottomBeamBreak_CAN_ID = 0;
+
+    public static final int topBeamBreak_CAN_ID = 1;
+
+    public static double INDEXER_kP = 0.01; //TODO
+    public static double INDEXER_kI = 1e-4; //TODO
+    public static double INDEXER_kD = 1; 
+    public static double INDEXER_kIz = 0; 
+    public static double INDEXER_kFF = 0; 
+    public static double INDEXER_kMaxOutput = 1; 
+    public static double INDEXER_kMinOutput = -1;
+      
     
 
 
