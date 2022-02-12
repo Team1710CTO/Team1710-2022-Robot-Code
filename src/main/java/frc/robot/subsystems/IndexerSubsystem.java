@@ -58,6 +58,7 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
 
+    
     if(bottomBeamBreak.get() && !topBeamBreak.get()){
       m_indexerRunner_PidController.setReference(.1, ControlType.kDutyCycle);
     } else {
