@@ -84,14 +84,18 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakeRunner.set(ControlMode.PercentOutput, .5);
 
     } else {
+
       stopIntake();
+
     }
+
   }
 
   public static void stopIntake(){
 
     m_intakeRunner.set(ControlMode.PercentOutput, 0);
 
+    
   }
 
   public static void setIntakeUp(){
