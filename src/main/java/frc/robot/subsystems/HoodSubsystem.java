@@ -69,14 +69,14 @@ public class HoodSubsystem extends SubsystemBase {
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    /*SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
     SmartDashboard.putNumber("D Gain", kD);
     SmartDashboard.putNumber("I Zone", kIz);
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
-    SmartDashboard.putNumber("Set Rotations", rotations); */
+    SmartDashboard.putNumber("Set Rotations", rotations); 
 
   }
 
@@ -84,7 +84,7 @@ public class HoodSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // read PID coefficients from SmartDashboard
-   /* double p = SmartDashboard.getNumber("P Gain", 0);
+    double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
     double d = SmartDashboard.getNumber("D Gain", 0);
     double iz = SmartDashboard.getNumber("I Zone", 0);
@@ -119,7 +119,7 @@ public class HoodSubsystem extends SubsystemBase {
       m_pidController.setOutputRange(min, max);
       kMinOutput = min;
       kMaxOutput = max;
-    } */
+    } 
 
     if (Controller.getAButtonPressed()) {
       rotations = 1.2;
@@ -135,8 +135,8 @@ public class HoodSubsystem extends SubsystemBase {
     }
 
   
-
     double position = m_encoder.getPosition();
+    
 
     if (position < Constants.HOOD_min) {
       position = Constants.HOOD_min;
@@ -146,7 +146,7 @@ public class HoodSubsystem extends SubsystemBase {
     }
 
     
-
+    //pid does this, dont need
     if (position <= rotations + 0.03 && position >= rotations - 0.03) {
       m_motor.set(0);
     }
