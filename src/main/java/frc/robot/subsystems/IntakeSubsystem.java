@@ -76,10 +76,16 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
 
+
   public static void runIntake(){
+    
+    if(Math.abs(m_actuatorRight_encoder.getPosition()) > .1){
 
     m_intakeRunner.set(ControlMode.PercentOutput, .5);
 
+    } else {
+      stopIntake();
+    }
   }
 
   public static void stopIntake(){
