@@ -128,15 +128,15 @@ public final class Constants {
 
 
     //shooter
-    public static final int SHOOTER_PDP_SLOT = 12; //TODO
-    public static final int SHOOTER_CAN_ID = 31; //TODO
-    public static double SHOOTER_kP = 0.01; //TODO
-    public static double SHOOTER_kI = 1e-4; //TODO
-    public static double SHOOTER_kD = 0; //TODO
+    public static final int SHOOTER_PDP_SLOT = 12; // TODO
+    public static final int SHOOTER_CAN_ID = 31; // TODO
+    public static double SHOOTER_kP = 0.01; // TODO
+    public static double SHOOTER_kI = 1e-4; // TODO
+    public static double SHOOTER_kD = 0; // TODO
     public static double SHOOTER_kIz = 0; 
-    public static double SHOOTER_kFF = 0; 
-    public static double SHOOTER_kMaxOutput = 1; //TODO
-    public static double SHOOTER_kMinOutput = -1; //TODO 
+    public static double SHOOTER_kFF = 0;  // TODO?
+    public static double SHOOTER_kMaxOutput = 1; // TODO
+    public static double SHOOTER_kMinOutput = -1; // TODO 
     public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
     public static double SHOOTER_abnormal_abnormal_current_draw = 10;   
     

@@ -22,15 +22,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     m_pidController = m_motor.getPIDController();
 
-    // Encoder object created to display position values
+    // Encoder object created to track and display current RPM
     m_encoder = m_motor.getEncoder();
 
     // PID coefficients
+    // WILL GET ALL PID VALUES FROM FROM THE CONSTANTS FILE AFTER TESTING
     kP = 0.0001; // TODO
     kI = 0.000001; // TODO
     kD = 0; 
-    kIz = 0; 
-    kFF = 0.000015; 
+    kIz = 0; // TODO?
+    kFF = 0; // TODO
     kMaxOutput = .5; // TODO
     kMinOutput = 0; // TODO
     maxRPM = 5700; // TODO
@@ -43,8 +44,8 @@ public class ShooterSubsystem extends SubsystemBase {
     m_pidController.setFF(kFF);
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
+    // WILL REMOVE AFTER TESTING
     // display PID coefficients on SmartDashboard 
-    //WILL REMOVE AFTER TESTING
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
     SmartDashboard.putNumber("D Gain", kD);
@@ -56,7 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic(){
-    //WILL REMOVE AFTER TESTING 
+    // WILL REMOVE ALL OF PERIODIC AFTER TESTING 
     // read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
@@ -80,12 +81,14 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double setPoint){
+    // Sets the requested RPM in the PID
     m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-    SmartDashboard.putNumber("Setpoint", setPoint);
-    SmartDashboard.putNumber("CurrentPoint", m_encoder.getVelocity());
+    SmartDashboard.putNumber("Setpoint", setPoint); // Puts the requested RPM to SmartDashboard
+    SmartDashboard.putNumber("CurrentPoint", m_encoder.getVelocity()); // Puts the actual RPM to SmartDashboard
   }
 
   public void disableShooter(){
+    // Sets the RPM to 0 for when we aren't shooting
     m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
 }
