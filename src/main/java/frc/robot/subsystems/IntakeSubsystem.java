@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -60,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_actuatorRight_PidController.setOutputRange(Constants.INTAKE_RIGHT_kMinOutput, Constants.INTAKE_RIGHT_kMaxOutput);
     m_actuatorRight_PidController.setD(Constants.INTAKE_RIGHT_kD);
 
-    m_intakeRunner = new TalonFX(43);
+    m_intakeRunner = new TalonFX(Constants.INTAKE_RUNNER_CAN_ID);
     
     SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
     SmartDashboard.putNumber("intake Current draw", PowerDistributionSubsystem.getintakeActuatorCurrent());
@@ -193,8 +195,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putString("Intake Status", "Holding Position");
 
   }
-
-  
 
 
 }
