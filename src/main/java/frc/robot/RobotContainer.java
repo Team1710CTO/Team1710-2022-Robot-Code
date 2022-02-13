@@ -14,14 +14,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ZeroIntake;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.GyroSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PowerDistributionSubsystem;
+
+import frc.robot.commands.*; // import all commands 
+
+
+import frc.robot.subsystems.*; // import all subsystems
+
 
 
 public class RobotContainer {
@@ -44,7 +42,7 @@ public class RobotContainer {
             m_drivetrainSubsystem,
             () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     // Configure the button bindings
@@ -60,16 +58,19 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
-            // No requirements because we don't need to interrupt anything
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
-    new Button(m_controller::getRightBumper)
-            .whileHeld(new IntakeCommand(mIntakeSubsystem));
+    
 
     new Button(m_controller::getStartButton)
             .whenPressed(new ZeroIntake(mIntakeSubsystem));
 
+    
+
+    
+
+    
     //new Button(m_controller::getStartButton)
     //        .whenPressed(new ZeroIntake());
             

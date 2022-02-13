@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IndexerSubsystem extends SubsystemBase {
@@ -53,16 +54,31 @@ public class IndexerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("bottomBeamBreak", bottomBeamBreak.get());
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
 
     
-    if(bottomBeamBreak.get() && !topBeamBreak.get()){
-      m_indexerRunner_PidController.setReference(.1, ControlType.kDutyCycle);
-    } else {
-      m_indexerRunner_PidController.setReference(0, ControlType.kDutyCycle);
-    }
+    //if(bottomBeamBreak.get() && !topBeamBreak.get()){
+    //  m_indexerRunner_PidController.setReference(.1, ControlType.kDutyCycle);
+    //} else {
+    //  m_indexerRunner_PidController.setReference(0, ControlType.kDutyCycle);
+    //}
+
   }
+
+  public static void runIn(){
+
+    m_indexerRunner_PidController.setReference(1, ControlType.kDutyCycle);
+
+  }
+
+  public static void runOut(){
+
+    m_indexerRunner_PidController.setReference(-1, ControlType.kDutyCycle);
+
+  }
+  
 }

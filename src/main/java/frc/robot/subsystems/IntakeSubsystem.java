@@ -15,6 +15,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import java.io.Console;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -27,6 +29,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public static SparkMaxPIDController m_actuatorLeft_PidController, m_actuatorRight_PidController;
   public static RelativeEncoder m_actuatorLeft_encoder, m_actuatorRight_encoder;
   public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+
+  public static boolean isZeroed = false;
+
+  public static double lastPositionLeft, lastPositionRight = 0;
 
   public IntakeSubsystem() {
 
@@ -55,69 +61,103 @@ public class IntakeSubsystem extends SubsystemBase {
     m_actuatorRight_PidController.setD(Constants.INTAKE_RIGHT_kD);
 
     m_intakeRunner = new TalonFX(43);
-
-
     
-
-
-
-    
+    SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
+    SmartDashboard.putNumber("intake Current draw", PowerDistributionSubsystem.getintakeActuatorCurrent());
 
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    
-
-    
 
     SmartDashboard.putNumber("intake Current draw", PowerDistributionSubsystem.getintakeActuatorCurrent());
+
+    SmartDashboard.putNumber("intake rotations position", m_actuatorLeft_encoder.getPosition());
     
-        
-   
   }
 
 
 
   public static void runIntake(){
-    
-    if(Math.abs(m_actuatorRight_encoder.getPosition()) > .1){
 
-    m_intakeRunner.set(ControlMode.PercentOutput, .5);
+    if(isZeroed){
+
+      if(Math.abs(m_actuatorRight_encoder.getPosition()) > .1){
+
+          runIntakeRunner();
+    
+        } else {
+    
+          stopIntakeRunner();
+    
+        }
 
     } else {
 
-      stopIntake();
+      stopIntakeRunner();
 
     }
 
   }
 
-  public static void stopIntake(){
+  public static void stopIntakeRunner(){
 
-    m_intakeRunner.set(ControlMode.PercentOutput, 0);
+    m_intakeRunner.set(ControlMode.PercentOutput, Constants.INTAKE_RUNNER_SPEED_OFF);
 
     
   }
 
+  public static void runIntakeRunner(){
+
+    m_intakeRunner.set(ControlMode.PercentOutput, Constants.INTAKE_RUNNER_SPEED_ON);
+
+    
+  }
+
+
   public static void setIntakeUp(){
 
-    m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kPosition);
-    m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kPosition);
+    if(isZeroed){
+
+      m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kPosition);
+      m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kPosition);
+
+      SmartDashboard.putString("Intake Status", "Up");
+  
+      } else {
+      
+        SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
+  
+      }
  
   }
 
   public static void setintakeDown(){
 
+    if(isZeroed){
+
     m_actuatorLeft_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kPosition);
     m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_down, CANSparkMax.ControlType.kPosition);
+
+    SmartDashboard.putString("Intake Status", "Down");
+
+    } else {
+    
+      SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
+
+    }
 
   }
 
   public static void zeroRotations(){
+
     m_actuatorRight_encoder.setPosition(0);
     m_actuatorLeft_encoder.setPosition(0);
+
+    isZeroed = true;
+
+    SmartDashboard.putString("Intake Status", "!!Zeroing!!");
+
   }
 
   public static void runIntakeUp(){
@@ -125,6 +165,10 @@ public class IntakeSubsystem extends SubsystemBase {
     m_actuatorLeft_PidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
     m_actuatorRight_PidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
 
+    lastPositionLeft = m_actuatorLeft_encoder.getPosition();
+    lastPositionRight = m_actuatorRight_encoder.getPosition();
+
+    SmartDashboard.putString("Intake Status", "!!Manual OverRide!!");
 
   }
 
@@ -133,6 +177,20 @@ public class IntakeSubsystem extends SubsystemBase {
     m_actuatorLeft_PidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
     m_actuatorRight_PidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
 
+
+    lastPositionLeft = m_actuatorLeft_encoder.getPosition();
+    lastPositionRight = m_actuatorRight_encoder.getPosition();
+
+    SmartDashboard.putString("Intake Status", "!!Manual OverRide!!");
+
+  }
+
+  public static void holdIntakePosition(){
+
+    m_actuatorLeft_PidController.setReference(lastPositionLeft, CANSparkMax.ControlType.kPosition);
+    m_actuatorRight_PidController.setReference(lastPositionRight, CANSparkMax.ControlType.kPosition);
+
+    SmartDashboard.putString("Intake Status", "Holding Position");
 
   }
 

@@ -109,6 +109,10 @@ public final class Constants {
     public static final double INTAKE_RIGHT_up = -Intake_LEFT_up; // set by the zero functionality
     public static final double INTAKE_RIGHT_down = INTAKE_LEFT_down; // set by the zero functionality
 
+    public static double INTAKE_RUNNER_SPEED_ON = .5;
+    public static double INTAKE_RUNNER_SPEED_OFF = 0;
+
+
 
     //hood
     public static final int HOOD_CAN_ID = 30;

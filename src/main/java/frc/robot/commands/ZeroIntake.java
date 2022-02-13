@@ -17,31 +17,46 @@ public class ZeroIntake extends CommandBase {
   public ZeroIntake(IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
+
     addRequirements(intakeSubsystem);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     intakeSubsystem.runIntakeDown();
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
     if(PowerDistributionSubsystem.getintakeActuatorCurrent() > (Constants.INTAKE_CURRENT_LIMIT-1)){
+
         intakeSubsystem.zeroRotations();
+
         return true;
+
     } else {
+
         return false;
+
     }
+
   }
 }
