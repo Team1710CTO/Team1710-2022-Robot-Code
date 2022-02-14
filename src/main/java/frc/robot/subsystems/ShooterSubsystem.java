@@ -55,6 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
+    SmartDashboard.putNumber("Setpoint", 0);
   }
 
   @Override

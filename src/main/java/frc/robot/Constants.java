@@ -134,7 +134,7 @@ public final class Constants {
 
     //shooter
     public static final int SHOOTER_PDP_SLOT = 12; // TODO
-    public static final int SHOOTER_CAN_ID = 31; // TODO
+    public static final int SHOOTER_CAN_ID = 40; // TODO
     public static double SHOOTER_kP = 0.01; // TODO
     public static double SHOOTER_kI = 1e-4; // TODO
     public static double SHOOTER_kD = 0; // TODO
