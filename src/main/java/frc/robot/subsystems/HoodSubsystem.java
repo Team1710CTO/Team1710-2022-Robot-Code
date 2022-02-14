@@ -122,6 +122,7 @@ public class HoodSubsystem extends SubsystemBase {
     } 
 
     
+    
   }
   public void hoodAngle(double rotations){
     double position = m_encoder.getPosition();
