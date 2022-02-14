@@ -9,16 +9,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.autonomousCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.GyroSubsystem;
-import frc.robot.subsystems.PowerDistributionSubsystem;
+import frc.robot.commands.*; // import all commands 
+
+import frc.robot.subsystems.*; // import all subsystems
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -27,6 +28,9 @@ public class RobotContainer {
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
   public final static XboxController m_controller = new XboxController(0);
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
+  public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
+
+  public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -38,28 +42,49 @@ public class RobotContainer {
     // Left stick X axis -> left and right movement
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-            m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));
+        m_drivetrainSubsystem,
+        () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
     // Configure the button bindings
     configureButtonBindings();
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::resetOdometry)
-            .whenPressed(m_GyroSubsystem::zeroRightPigeonGyroscope);
+        // No requirements because we don't need to interrupt anything
+        .whenPressed(m_drivetrainSubsystem::resetOdometry)
+        .whenPressed(m_GyroSubsystem::zeroBestGyro)
+        .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
+
+    new Button(m_controller::getStartButton)
+        .whenPressed(new ZeroIntake(mIntakeSubsystem));
+
+    new Button(m_controller::getRightBumper)
+        .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
+
+    new Button(m_controller::getLeftBumper)
+        .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
+
+    // new Button(m_controller::getStartButton)
+    // .whenPressed(new ZeroIntake());
+
+    // new Button(m_controller::getAButton).whenPressed(new
+    // climberActuatorIn(servoSubsystem));
+
+    // new Button(m_controller::getBButton).whenPressed(new
+    // climberActuatorOut(servoSubsystem));
+
   }
 
   /**
@@ -88,7 +113,7 @@ public class RobotContainer {
     } else {
 
       return 0.0;
-      
+
     }
   }
 
@@ -101,6 +126,5 @@ public class RobotContainer {
 
     return value;
   }
-
 
 }
