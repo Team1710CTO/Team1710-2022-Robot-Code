@@ -121,40 +121,18 @@ public class HoodSubsystem extends SubsystemBase {
       kMaxOutput = max;
     } 
 
-    if (Controller.getAButtonPressed()) {
-      rotations = 1.2;
-    }
-    if (Controller.getBButtonPressed()) {
-      rotations = 1;
-    }
-    if (Controller.getYButtonPressed()) {
-      rotations = 0.2;
-    }
-    if (Controller.getXButtonPressed()) {
-      rotations = 0;
-    }
-
-  
-    double position = m_encoder.getPosition();
     
-
+  }
+  public void hoodAngle(double rotations){
+    double position = m_encoder.getPosition();
     if (position < Constants.HOOD_min) {
       position = Constants.HOOD_min;
     }
     if (position > Constants.HOOD_max) {
       position = Constants.HOOD_max;
     }
-
-    
-    //pid does this, dont need
-    if (position <= rotations + 0.03 && position >= rotations - 0.03) {
-      m_motor.set(0);
-    }
- 
-  }
-  public void hoodAngle(double rotations){
     m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
-    SmartDashboard.putNumber("ProcessVariable", m_encoder.getPosition());
+    SmartDashboard.putNumber("ProcessVariable", position);
   }
   
 }
