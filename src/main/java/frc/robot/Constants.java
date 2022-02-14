@@ -65,7 +65,7 @@ public final class Constants {
     
 
     public static double ROTATION_PID_CONTOLLER_kP = .1;
-    public static double ROTATION_PID_CONTOLLER_kI = 0.03;
+    public static double ROTATION_PID_CONTOLLER_kI = 0.1;
     public static double ROTATION_PID_CONTOLLER_kD = 0;
     public static int ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD = 17;
     public static double ROTATION_PID_SUPPLIER_ACTIVATION_THRESHOLD = 0.005;

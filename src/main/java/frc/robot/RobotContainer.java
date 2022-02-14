@@ -69,6 +69,9 @@ public class RobotContainer {
     new Button(m_controller::getRightBumper)
             .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
 
+    new Button(m_controller::getLeftBumper)
+            .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
+
     
 
     
