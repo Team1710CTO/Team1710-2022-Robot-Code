@@ -52,6 +52,18 @@ public class PowerDistributionSubsystem extends SubsystemBase {
 
   }
 
+ // public static double getintakeActuatorCurrent(){
+//
+ //   return (getRightIntakeActuatorCurrent() + getLeftIntakeActuatorCurrent());
+//
+ // }
+//
+ // public static double getintakeActuatorCurrentDiff(){
+//
+ //   return Math.abs((getRightIntakeActuatorCurrent() - getLeftIntakeActuatorCurrent()));
+ //   
+ // }
+
   public static double getBatteryVoltage(){
 
     return pdp.getVoltage();
@@ -114,29 +126,18 @@ public class PowerDistributionSubsystem extends SubsystemBase {
   
   }
 
-  public static double getRightIntakeActuatorCurrent(){
+ // public static double getRightIntakeActuatorCurrent(){
+//
+ //   return pdp.getCurrent(Constants.RIGHT_INTAKE_ACTUATOR_PDP_SLOT);
+ // 
+ // }
 
-    return pdp.getCurrent(Constants.RIGHT_INTAKE_ACTUATOR_PDP_SLOT);
-  
-  }
+ // public static double getIntakeRunnerCurrent(){
+ // 
+ //   return pdp.getCurrent(Constants.INTAKE_RUNNER_PDP_SLOT);
+//
+ // }
 
-  public static double getIntakeRunnerCurrent(){
-
-    return pdp.getCurrent(Constants.INTAKE_RUNNER_PDP_SLOT);
-
-  }
-
-  public static double getintakeActuatorCurrent(){
-
-    return (getRightIntakeActuatorCurrent() + getLeftIntakeActuatorCurrent());
-
-  }
-
-  public static double getintakeActuatorCurrentDiff(){
-
-    return Math.abs((getRightIntakeActuatorCurrent() - getLeftIntakeActuatorCurrent()));
-    
-  }
 
   public static double getHoodCurrent(){
 
