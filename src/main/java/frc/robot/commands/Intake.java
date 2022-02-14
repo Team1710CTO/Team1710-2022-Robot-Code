@@ -5,34 +5,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PowerDistributionSubsystem;
 
-public class ZeroIntake extends CommandBase {
-  /** Creates a new ZeroIntake. */
+public class Intake extends CommandBase {
 
   public static IntakeSubsystem intakeSubsystem;
+  public static IndexerSubsystem indexerSubsystem;
+  /** Creates a new IntakeDown. */
+  public Intake(IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
 
-  public ZeroIntake(IntakeSubsystem intakeSubsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
+    this.indexerSubsystem = indexerSubsystem;
 
-    addRequirements(intakeSubsystem);
-
+    addRequirements(intakeSubsystem, indexerSubsystem);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    intakeSubsystem.runIntakeDown(-.1);
+    intakeSubsystem.setintakeDown();
+    intakeSubsystem.runIntake();
+    indexerSubsystem.runIn();
+    
 
   }
 
@@ -40,28 +41,15 @@ public class ZeroIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    intakeSubsystem.zeroRotations();
-    intakeSubsystem.runIntakeDown(0);
     intakeSubsystem.setIntakeUp();
+    intakeSubsystem.stopIntakeRunner();
+    indexerSubsystem.stopIndexer();
     
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(intakeSubsystem.isIntakeStalledCurrent()){
-
-      
-
-      return true;
-
-  } else {
-
-      return false;
-
-  }
-
+    return false;
   }
 }

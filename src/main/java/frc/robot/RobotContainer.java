@@ -66,6 +66,9 @@ public class RobotContainer {
     new Button(m_controller::getStartButton)
             .whenPressed(new ZeroIntake(mIntakeSubsystem));
 
+    new Button(m_controller::getRightBumper)
+            .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
+
     
 
     

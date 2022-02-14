@@ -65,17 +65,23 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakeRunner = new TalonFX(Constants.INTAKE_RUNNER_CAN_ID);
     
     SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
-    SmartDashboard.putNumber("intake Current draw", PowerDistributionSubsystem.getintakeActuatorCurrent());
+    SmartDashboard.putNumber("intake Current draw", getIntakeActuatorCurrent());
 
   }
 
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("intake Current draw", PowerDistributionSubsystem.getintakeActuatorCurrent());
+    SmartDashboard.putNumber("intake Current draw", getIntakeActuatorCurrent());
 
     SmartDashboard.putNumber("intake rotations position", m_actuatorLeft_encoder.getPosition());
     
+    SmartDashboard.putNumber("intake rotations velo", m_actuatorLeft_encoder.getVelocity());
+
+    SmartDashboard.putBoolean("is current bol treu", isIntakeStalledCurrent());
+
+    SmartDashboard.putBoolean("is velociuty basically zero", isIntakeVelocityBasicallyZero());
+
   }
 
 
@@ -153,8 +159,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static void zeroRotations(){
 
-    m_actuatorRight_encoder.setPosition(0);
-    m_actuatorLeft_encoder.setPosition(0);
+    m_actuatorRight_encoder.setPosition(-4);
+    m_actuatorLeft_encoder.setPosition(4);
 
     isZeroed = true;
 
@@ -162,28 +168,28 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public static void runIntakeUp(){
+  public static void runIntakeUp(double cycle){
 
-    m_actuatorLeft_PidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
-    m_actuatorRight_PidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorLeft_PidController.setReference(cycle, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorRight_PidController.setReference(-cycle, CANSparkMax.ControlType.kDutyCycle);
 
     lastPositionLeft = m_actuatorLeft_encoder.getPosition();
     lastPositionRight = m_actuatorRight_encoder.getPosition();
 
-    SmartDashboard.putString("Intake Status", "!!Manual OverRide!!");
+    SmartDashboard.putString("Intake Status", "!!DutyCycle OverRide!!");
 
   }
 
-  public static void runIntakeDown(){
+  public static void runIntakeDown(double cycle){
 
-    m_actuatorLeft_PidController.setReference(-1, CANSparkMax.ControlType.kDutyCycle);
-    m_actuatorRight_PidController.setReference(1, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorLeft_PidController.setReference(-cycle, CANSparkMax.ControlType.kDutyCycle);
+    m_actuatorRight_PidController.setReference(cycle, CANSparkMax.ControlType.kDutyCycle);
 
 
     lastPositionLeft = m_actuatorLeft_encoder.getPosition();
     lastPositionRight = m_actuatorRight_encoder.getPosition();
 
-    SmartDashboard.putString("Intake Status", "!!Manual OverRide!!");
+    SmartDashboard.putString("Intake Status", "!!DutyCycle OverRide!!");
 
   }
 
@@ -216,7 +222,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static boolean isIntakeVelocityBasicallyZero(){
 
-    if(Math.abs(getIntakeLeftActuatorVelocity() - getIntakeRightActuatorVelocity()) < .01){
+    if(Math.abs(getIntakeLeftActuatorVelocity()) < Constants.INTAKE_ZERO_VELOCITY_THRESHOLD_UB){
       
       return true;
 
@@ -230,7 +236,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static boolean isIntakeStalledCurrent(){
 
-    if(PowerDistributionSubsystem.getintakeActuatorCurrent() > (Constants.INTAKE_CURRENT_LIMIT-1)){
+    if(Math.abs(getIntakeActuatorCurrent()) > (Constants.INTAKE_CURRENT_LIMIT-1)){
       
       return true;
 
@@ -240,7 +246,15 @@ public class IntakeSubsystem extends SubsystemBase {
     
     }
 
+
   }
+
+  public static double getIntakeActuatorCurrent(){
+
+    return m_actuatorLeft.getOutputCurrent() + m_actuatorRight.getOutputCurrent();
+
+  }
+
 
 
 }

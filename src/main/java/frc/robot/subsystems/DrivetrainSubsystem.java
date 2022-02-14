@@ -110,26 +110,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
-        // There are 4 methods you can call to create your swerve modules.
-        // The method you use depends on what motors you are using.
-        //
-        // Mk3SwerveModuleHelper.createFalcon500(...)
-        //   Your module has two Falcon 500s on it. One for steering and one for driving.
-        //
-        // Mk3SwerveModuleHelper.createNeo(...)
-        //   Your module has two NEOs on it. One for steering and one for driving.
-        //
-        // Mk3SwerveModuleHelper.createFalcon500Neo(...)
-        //   Your module has a Falcon 500 and a NEO on it. The Falcon 500 is for driving and the NEO is for steering.
-        //
-        // Mk3SwerveModuleHelper.createNeoFalcon500(...)
-        //   Your module has a NEO and a Falcon 500 on it. The NEO is for driving and the Falcon 500 is for steering.
-        //
-        // Similar helpers also exist for Mk4 modules using the Mk4SwerveModuleHelper class.
-
-        // By default we will use Falcon 500s in standard configuration. But if you use a different configuration or motors
-        // you MUST change it. If you do not, your code will crash on startup.
-        // FIXME Setup motor configuration
         m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
                 // This parameter is optional, but will allow you to see the current state of the module on the dashboard.
                 tab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -193,8 +173,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   
   /**
-   * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
-   * 'forwards' direction.
+   * see gyro subsystem for all gyro stuff
+   * 
    */
   
 

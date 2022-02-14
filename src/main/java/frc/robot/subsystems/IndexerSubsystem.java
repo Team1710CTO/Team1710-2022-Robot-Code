@@ -80,5 +80,11 @@ public class IndexerSubsystem extends SubsystemBase {
     m_indexerRunner_PidController.setReference(-1, ControlType.kDutyCycle);
 
   }
+
+  public static void stopIndexer(){
+
+    m_indexerRunner_PidController.setReference(0, ControlType.kDutyCycle);
+
+  }
   
 }
