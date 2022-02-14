@@ -58,7 +58,7 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
             // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::resetFieldOriented)
+            .whenPressed(m_drivetrainSubsystem::resetOdometry)
             .whenPressed(m_GyroSubsystem::zeroRightPigeonGyroscope);
   }
 

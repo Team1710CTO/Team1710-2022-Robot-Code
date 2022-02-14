@@ -7,7 +7,8 @@ package frc.robot.subsystems;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-import java.util.Timer;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,11 +17,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import static frc.robot.Constants.*;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -75,6 +78,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	private final SwerveModule m_backLeftModule;
 	private final SwerveModule m_backRightModule;
 
+	public static int pidActivationIterator = 0;
+	public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
+	public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
+	public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP,
+			Constants.ROTATION_PID_CONTOLLER_kI, Constants.ROTATION_PID_CONTOLLER_kD);
+
 	private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
 	private final SwerveDriveOdometry odometry;
@@ -92,7 +101,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		estimatedY = odometryTab.add("Estimated Y", 0).getEntry();
 		rotation = odometryTab.add("\"Estimated\" Rotation", 0).getEntry();
 		odometryTab.add("NavX X", 0).getEntry();
-		
 
 		// There are 4 methods you can call to create your swerve modules.
 		// The method you use depends on what motors you are using.
@@ -117,7 +125,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		// By default we will use Falcon 500s in standard configuration. But if you use
 		// a different configuration or motors
 		// you MUST change it. If you do not, your code will crash on startup.
-		//  Setup motor configuration
+		// Setup motor configuration
 		m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
 				// This parameter is optional, but will allow you to see the current state of
 				// the module on the dashboard.
@@ -171,11 +179,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * Sets the gyroscope angle to zero. This can be used to set the direction the
+	 * Resets odometry. This can be used to set the direction the
 	 * robot is currently facing to the
 	 * 'forwards' direction.
 	 */
-	public void resetFieldOriented() {
+	public void resetOdometry() {
 		calculatedPose = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
 		odometry.resetPosition(calculatedPose, GyroSubsystem.getBestRotation2d());
 	}
@@ -190,6 +198,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true);
+
 		SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
@@ -203,24 +213,85 @@ public class DrivetrainSubsystem extends SubsystemBase {
 				states[3].angle.getRadians());
 
 		calculatedPose = odometry.update(GyroSubsystem.getBestRotation2d(), states);
-		//SmartDashboard.putNumber("Estimated X", calculatedPose.getX());
-		//SmartDashboard.putNumber("Estimated Y", calculatedPose.getY());
-		//SmartDashboard.putNumber("\"Estimated\" Rotation", calculatedPose.getRotation().getDegrees());
+		// SmartDashboard.putNumber("Estimated X", calculatedPose.getX());
+		// SmartDashboard.putNumber("Estimated Y", calculatedPose.getY());
+		// SmartDashboard.putNumber("\"Estimated\" Rotation",
+		// calculatedPose.getRotation().getDegrees());
 		estimatedX.setDouble(calculatedPose.getX());
 		estimatedY.setDouble(calculatedPose.getY());
 		rotation.setDouble(calculatedPose.getRotation().getDegrees());
 
-		//SmartDashboard.putNumber("NavX X", gyroPose.getX());
-		//SmartDashboard.putNumber("NavX Y", gyroPose.getY());
+		// SmartDashboard.putNumber("NavX X", gyroPose.getX());
+		// SmartDashboard.putNumber("NavX Y", gyroPose.getY());
 
 		// Not odometry
-		/*pigeon.getAccumGyro(xyz);
-		SmartDashboard.putNumber("Pigeon X", xyz[0]);
-		SmartDashboard.putNumber("Pigeon Y", xyz[1]);
-		SmartDashboard.putNumber("Pigeon Z", xyz[2]);*/
-		/*odometryTab.add("Pigeon W", xyz[0]);
-		odometryTab.add("Pigeon X", xyz[1]);
-		odometryTab.add("Pigeon Y", xyz[2]);
-		odometryTab.add("Pigeon Z", xyz[3]);*/
+		/*
+		 * pigeon.getAccumGyro(xyz);
+		 * SmartDashboard.putNumber("Pigeon X", xyz[0]);
+		 * SmartDashboard.putNumber("Pigeon Y", xyz[1]);
+		 * SmartDashboard.putNumber("Pigeon Z", xyz[2]);
+		 */
+		/*
+		 * odometryTab.add("Pigeon W", xyz[0]);
+		 * odometryTab.add("Pigeon X", xyz[1]);
+		 * odometryTab.add("Pigeon Y", xyz[2]);
+		 * odometryTab.add("Pigeon Z", xyz[3]);
+		 */
+	}
+
+	public double headingControlModifier(boolean active) {
+
+		if (active) {
+
+			lastGyro = GyroSubsystem.getBestRotation2d(); // store last gyro heading
+
+			// below is the ignore case...
+			// that being if we are zeroing our gyro or "telling" our robot to turn
+			// do not maintain heading with pid and move on
+			if (Math.abs(m_chassisSpeeds.omegaRadiansPerSecond) > Constants.ROTATION_PID_SUPPLIER_ACTIVATION_THRESHOLD
+					|| GyroSubsystem.isZeroing) {
+
+				goalGyro = lastGyro; // store Gyro
+				pidActivationIterator = 0; // set iterator to zero
+				SmartDashboard.putBoolean("Rotation PID Enabled", false); // put to dashboard
+
+				return m_chassisSpeeds.omegaRadiansPerSecond; // return
+
+			} else {
+
+				// iterate iterator if its not already over our iterator threshold
+				// if(pidActivationIterator <
+				// (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
+				// iterate
+				pidActivationIterator += 1;
+
+				// }
+
+				// if our iterator is greater than threshold modify our omegaRadiansPerSecond
+				// and return
+				if (pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD) {
+
+					SmartDashboard.putBoolean("Heading Control Enabled", true); // put to dashboard
+					SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
+					SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+					// PID Error computed using last gyro and goal gyros stored from other loops and
+					// current
+					return m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController
+							.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+
+				} else {
+
+					goalGyro = lastGyro; // store gyro
+
+					return m_chassisSpeeds.omegaRadiansPerSecond; // pass value that came in
+
+				}
+
+			}
+
+		} else {
+			return m_chassisSpeeds.omegaRadiansPerSecond;
+		}
+
 	}
 }

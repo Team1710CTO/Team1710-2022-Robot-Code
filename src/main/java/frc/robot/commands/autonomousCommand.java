@@ -40,7 +40,7 @@ public class autonomousCommand extends CommandBase {
 
     controller = new HolonomicDriveController(pid, pid, thetaController);
 
-    m_subsystem.resetFieldOriented();
+    m_subsystem.resetOdometry();
 
     timer.reset();
     timer.start();
