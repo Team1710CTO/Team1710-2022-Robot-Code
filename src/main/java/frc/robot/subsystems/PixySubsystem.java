@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.util.function.FloatConsumer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import io.github.pseudoresonance.pixy2api.Pixy2;
@@ -112,23 +113,21 @@ public class PixySubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Xcoord", xcoord); */
     
     boolean isCamera = false;
-    SmartDashboard.putBoolean( "Camera" , isCamera);
-    pixy.getCCC().getBlocks( false , 255 , 255 ); 
-     int blocks = pixy.getCCC().getBlocks(); 
-     if (Block.size() > 0 )
-     {
-     double xcoord = blocks.get( 0 ).getX(); 
-     double ycoord = blocks.get( 0 ).getY(); 
-     String data = blocks.get( 0 ).toString(); 
-     SmartDashboard.putBoolean( "present" , true ); 
-     SmartDashboard.putNumber( "Xccord" ,xcoord);
-     SmartDashboard.putNumber( "Ycoord" , ycoord);
-     SmartDashboard.putString( "Data" , data );
-     }
-     else
-     SmartDashboard.putBoolean( "present" , false );
-     SmartDashboard.putNumber( "size" , blocks.size());
-  
+    SmartDashboard.putBoolean ("Camera", isCamera);
+    ArrayList<Pixy2CCC.Block> blocks = pixy.getCCC().getBlockCache();
+    if (blocks.size() > 0) {
+      Pixy2CCC.Block firstBlock = blocks.get(0);
+      int xcoord = firstBlock.getX();
+      int ycoord = firstBlock.getY();
+      String data = firstBlock.toString();
 
+      SmartDashboard.putBoolean("present" , true);
+      SmartDashboard.putNumber("Xcoord" , xcoord);
+      SmartDashboard.putNumber("Ycoord" , ycoord);
+      SmartDashboard.putString("Data" , data);
+    }
+    
+    SmartDashboard.putBoolean("present", false);
+    SmartDashboard.putNumber("size" , blocks.size());
   }
 }
