@@ -196,5 +196,51 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
+  public static double getIntakeActuatorAverageVelocity(){
+
+    return (getIntakeLeftActuatorVelocity() + getIntakeRightActuatorVelocity())/2;
+
+  }
+
+  public static double getIntakeLeftActuatorVelocity(){
+
+    return m_actuatorLeft_encoder.getVelocity();
+
+  }
+
+  public static double getIntakeRightActuatorVelocity(){
+
+    return m_actuatorRight_encoder.getVelocity();
+    
+  }
+
+  public static boolean isIntakeVelocityBasicallyZero(){
+
+    if(Math.abs(getIntakeLeftActuatorVelocity() - getIntakeRightActuatorVelocity()) < .01){
+      
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
+
+  public static boolean isIntakeStalledCurrent(){
+
+    if(PowerDistributionSubsystem.getintakeActuatorCurrent() > (Constants.INTAKE_CURRENT_LIMIT-1)){
+      
+      return true;
+
+    } else { 
+      
+      return false;
+    
+    }
+
+  }
+
 
 }

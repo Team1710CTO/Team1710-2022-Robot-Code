@@ -46,7 +46,7 @@ public class ZeroIntake extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(PowerDistributionSubsystem.getintakeActuatorCurrent() > (Constants.INTAKE_CURRENT_LIMIT-1)){
+    if(intakeSubsystem.isIntakeStalledCurrent() || intakeSubsystem.isIntakeVelocityBasicallyZero()){
 
         intakeSubsystem.zeroRotations();
 
