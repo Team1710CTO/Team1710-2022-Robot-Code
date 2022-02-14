@@ -81,7 +81,7 @@ public final class Constants {
     //intake Left
     public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 8;
     public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
-    public static double INTAKE_LEFT_kP = 0.03; 
+    public static double INTAKE_LEFT_kP = 0.04; 
     public static double INTAKE_LEFT_kI = 1e-4;
     public static double INTAKE_LEFT_kD = 1; 
     public static double INTAKE_LEFT_kIz = 0; 
