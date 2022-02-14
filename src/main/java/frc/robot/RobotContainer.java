@@ -28,6 +28,7 @@ public class RobotContainer {
   public final static XboxController m_controller = new XboxController(0);
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
+  public static ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   
@@ -69,7 +70,10 @@ public class RobotContainer {
     new Button(m_controller::getRightBumper)
             .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
 
-    
+
+    new Button(m_controller::getAButton)
+            .whenHeld(new Shooter(m_ShooterSubsystem));
+            
 
     
 

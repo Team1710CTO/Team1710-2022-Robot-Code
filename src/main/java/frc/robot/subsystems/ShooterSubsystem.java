@@ -6,6 +6,7 @@ import frc.robot.Constants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -19,6 +20,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // initialize motor
     m_motor = new CANSparkMax(Constants.SHOOTER_CAN_ID, MotorType.kBrushless);
     m_motor.restoreFactoryDefaults();
+    m_motor.setIdleMode(IdleMode.kCoast);
 
     m_pidController = m_motor.getPIDController();
 
@@ -80,15 +82,16 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  public void setSpeed(double setPoint){
+  public void setSpeed(){
     // Sets the requested RPM in the PID
+    double setPoint = SmartDashboard.getNumber("Setpoint", 0);
     m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-    SmartDashboard.putNumber("Setpoint", setPoint); // Puts the requested RPM to SmartDashboard
+    //SmartDashboard.putNumber("Setpoint", setPoint); // Puts the requested RPM to SmartDashboard
     SmartDashboard.putNumber("CurrentPoint", m_encoder.getVelocity()); // Puts the actual RPM to SmartDashboard
   }
 
   public void disableShooter(){
     // Sets the RPM to 0 for when we aren't shooting
-    m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
+    m_pidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
   }
 }
