@@ -29,6 +29,9 @@ public class RobotContainer {
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
+  public static HoodSubsystem mHoodSubsystem = new HoodSubsystem();
+  public static ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
+
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   
 
@@ -71,6 +74,8 @@ public class RobotContainer {
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
+    
+    new Button(m_controller::getAButton).whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem));
 
     
 

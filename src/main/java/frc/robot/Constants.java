@@ -111,7 +111,6 @@ public final class Constants {
 
     public static double INTAKE_RUNNER_SPEED_ON = .5; //speed intake runner runs at
     public static double INTAKE_RUNNER_SPEED_OFF = 0; // read the var
-
     public static double INTAKE_ZERO_VELOCITY_THRESHOLD_UB = .01; // this is the upper bound for the is intake velocity near or at Zero threshold
 
 
@@ -119,8 +118,8 @@ public final class Constants {
     //hood
     public static final int HOOD_CAN_ID = 41;
     public static final int HOOD_PDP_SLOT = 9; //fixme
-    public static double HOOD_kP = 0.001; 
-    public static double HOOD_kI = 0.00001; //or 0.00005? test
+    public static double HOOD_kP = 0.02; 
+    public static double HOOD_kI = 0.0; //or 0.00005? test
     public static double HOOD_kD = 0; 
     public static double HOOD_kIz = 0; 
     public static double HOOD_kFF = 0; 
@@ -128,14 +127,18 @@ public final class Constants {
     public static double HOOD_kMinOutput = -1;
     public static double HOOD_zero_dutyCycle__gain = 1e-5;
     public static double HOOD_abnormal_abnormal_current_draw = 10;
+    public static final double HOOD_POSITION_MAX = 1.2 ; // roations from zero FIXME
+    public static final double HOOD_POSITION_MIN = .05; // set by the zero functionality
+    public static float HOOD_POSITION_MAX_FLOAT = (float)HOOD_POSITION_MAX; // needed for soft limits
+    public static float HOOD_POSITION_MIN_FLOAT = (float)HOOD_POSITION_MIN;// needed for soft limits
 
-    public static final double HOOD_max = 1.2 ; // roations from zero FIXME
-    public static final double HOOD_min = 0; // set by the zero functionality
+    public static final double HOOD_ZERO_CURRENT_DRAW = 20;
+    public static final double HOOD_ZERO_VELOCITY_THRESHOLD_UB = .05;
 
 
     //shooter
     public static final int SHOOTER_PDP_SLOT = 12; // TODO
-    public static final int SHOOTER_CAN_ID = 31; // TODO
+    public static final int SHOOTER_CAN_ID = 40; // TODO
     public static double SHOOTER_kP = 0.01; // TODO
     public static double SHOOTER_kI = 1e-4; // TODO
     public static double SHOOTER_kD = 0; // TODO
@@ -163,6 +166,8 @@ public final class Constants {
 
     public static final int topBeamBreak_CAN_ID = 0;
     public static final int INTAKE_CURRENT_LIMIT = 65;
+    
+    
 
     public static double INDEXER_kP = 0.01; //TODO
     public static double INDEXER_kI = 1e-4; //TODO
