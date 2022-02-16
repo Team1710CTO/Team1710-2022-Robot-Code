@@ -7,19 +7,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
+
 
 public class Shooter extends CommandBase {
   /** Creates a new Shooter. */
 public static ShooterSubsystem shootersubsystem;
+public static HoodSubsystem hoodsubsystem;
 //public static PhotonVisionSubsystem photonvisionsubsystem;
 
-  public Shooter(ShooterSubsystem shooterSubsystem) {
+  public Shooter(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
 this.shootersubsystem = shooterSubsystem;
+this.hoodsubsystem = hoodSubsystem;
 //this.photonvisionsubsystem = photonVisionSubsystem;
 
-    addRequirements(shooterSubsystem);
+    addRequirements(shooterSubsystem, hoodSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,6 +34,7 @@ this.shootersubsystem = shooterSubsystem;
   @Override
   public void execute() {
     shootersubsystem.setSpeed();
+    hoodsubsystem.hoodAngle();
   }
 
   // Called once the command ends or is interrupted.

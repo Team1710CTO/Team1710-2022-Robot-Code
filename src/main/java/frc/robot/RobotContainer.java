@@ -29,7 +29,7 @@ public class RobotContainer {
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
   public static ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-
+  public static HoodSubsystem m_HoodSubsystem = new HoodSubsystem();
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   
 
@@ -72,7 +72,7 @@ public class RobotContainer {
 
 
     new Button(m_controller::getAButton)
-            .whenHeld(new Shooter(m_ShooterSubsystem));
+            .whenHeld(new Shooter(m_ShooterSubsystem, m_HoodSubsystem));
             
 
     
