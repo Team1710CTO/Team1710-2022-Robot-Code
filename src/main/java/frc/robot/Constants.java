@@ -117,8 +117,8 @@ public final class Constants {
 
 
     //hood
-    public static final int HOOD_CAN_ID = 9;
-    public static final int HOOD_PDP_SLOT = 11; //fixme
+    public static final int HOOD_CAN_ID = 41;
+    public static final int HOOD_PDP_SLOT = 9; //fixme
     public static double HOOD_kP = 0.001; 
     public static double HOOD_kI = 0.00001; //or 0.00005? test
     public static double HOOD_kD = 0; 

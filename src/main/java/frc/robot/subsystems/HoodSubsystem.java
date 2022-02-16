@@ -29,7 +29,7 @@ public class HoodSubsystem extends SubsystemBase {
     // initialize motor
     m_motor = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
     m_motor.setIdleMode(IdleMode.kBrake);
-    Controller = new XboxController(0);
+    //Controller = new XboxController(0);
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration
@@ -77,6 +77,7 @@ public class HoodSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
     SmartDashboard.putNumber("Set Rotations", rotations); 
+
 
   }
 
