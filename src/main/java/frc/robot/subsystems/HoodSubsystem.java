@@ -68,6 +68,14 @@ public class HoodSubsystem extends SubsystemBase {
     m_hood_motor.setSoftLimit(SoftLimitDirection.kForward, Constants.HOOD_POSITION_MAX_FLOAT);
     m_hood_motor.setSoftLimit(SoftLimitDirection.kForward, Constants.HOOD_POSITION_MIN_FLOAT);
 
+    m_hood_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+
+  }
+
+  public static void disableSoftLimits(){
+
+    m_hood_motor.enableSoftLimit(SoftLimitDirection.kForward, false);
+
   }
 
   public static void runHoodUp(){
@@ -121,6 +129,14 @@ public class HoodSubsystem extends SubsystemBase {
     return m_hood_encoder.getVelocity();
 
   }
+
+  public static void zeroHood(){
+
+    m_hood_encoder.setPosition(0.0);
+
+  }
+
+
 
   
 
