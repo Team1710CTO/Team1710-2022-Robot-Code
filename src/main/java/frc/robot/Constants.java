@@ -166,6 +166,9 @@ public final class Constants {
 
     public static final int topBeamBreak_CAN_ID = 0;
     public static final int INTAKE_CURRENT_LIMIT = 65;
+    public static final double INDEXER_IN_SPEED = 1;
+    public static final double INDEXER_OUT_SPEED = -1;
+    public static final double INDEXER_STOP_SPEED = 0;
     
     
 

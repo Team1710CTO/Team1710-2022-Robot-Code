@@ -23,9 +23,13 @@ public class HoodSubsystem extends SubsystemBase {
   private static CANSparkMax m_hood_motor;
   public static SparkMaxPIDController m_hood_pidController;
   private static RelativeEncoder m_hood_encoder;
+
+  private static boolean isZeroed = false;
   
   /** Creates a new Hood. */
   public HoodSubsystem() {
+
+    isZeroed = false;
 
     m_hood_motor = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
         
@@ -132,6 +136,8 @@ public class HoodSubsystem extends SubsystemBase {
 
   public static void zeroHood(){
 
+    isZeroed = true;
+    
     m_hood_encoder.setPosition(0.0);
 
   }
