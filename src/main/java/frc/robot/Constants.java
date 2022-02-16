@@ -120,8 +120,8 @@ public final class Constants {
     public static final int HOOD_CAN_ID = 41;
     public static final int HOOD_PDP_SLOT = 9; //fixme
     public static double HOOD_kP = 0.1; 
-    public static double HOOD_kI = 1e-4;
-    public static double HOOD_kD = 1; 
+    public static double HOOD_kI = 0.0001;
+    public static double HOOD_kD = 0; 
     public static double HOOD_kIz = 0; 
     public static double HOOD_kFF = 0; 
     public static double HOOD_kMaxOutput = 1; 

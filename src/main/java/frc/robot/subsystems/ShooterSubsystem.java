@@ -34,13 +34,13 @@ public class ShooterSubsystem extends SubsystemBase {
     kD = 0; 
     kIz = 0; // TODO?
     kFF = 0; // TODO
-    kMaxOutput = .5; // TODO
+    kMaxOutput = 1; // TODO
     kMinOutput = 0; // TODO
     maxRPM = 5700; // TODO
 
     // set PID coefficients
-    m_pidController.setP(kP);
-    m_pidController.setI(kI);
+    m_pidController.setP(Constants.SHOOTER_kP);
+    m_pidController.setI(Constants.SHOOTER_kI);
     m_pidController.setD(kD);
     m_pidController.setIZone(kIz);
     m_pidController.setFF(kFF);
@@ -59,29 +59,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic(){
-    // WILL REMOVE ALL OF PERIODIC AFTER TESTING 
-    // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
-    
-    // WILL REMOVE AFTER TESTING
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if(p != kP) { m_pidController.setP(p); kP = p; }
-    if(i != kI) { m_pidController.setI(i); kI = i; }
-    if(d != kD) { m_pidController.setD(d); kD = d; }
-    if(iz != kIz) { m_pidController.setIZone(iz); kIz = iz; }
-    if(ff != kFF) { m_pidController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      m_pidController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
+  public void periodic(){ 
     }
-  }
+  
 
   public void setSpeed(){
     // Sets the requested RPM in the PID

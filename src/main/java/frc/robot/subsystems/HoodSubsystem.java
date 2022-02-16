@@ -22,14 +22,12 @@ public class HoodSubsystem extends SubsystemBase {
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-  public static XboxController Controller;
   double rotations;
 
   public HoodSubsystem() {
     // initialize motor
     m_motor = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
     m_motor.setIdleMode(IdleMode.kBrake);
-    Controller = new XboxController(0);
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration
@@ -82,52 +80,10 @@ public class HoodSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
-    // double rotations = SmartDashboard.getNumber("Set Rotations", 0);
-
-    // if PID coefficients on SmartDashboard have changed, write new values to
-    // controller
-    if ((p != kP)) {
-      m_pidController.setP(p);
-      kP = p;
-    }
-    if ((i != kI)) {
-      m_pidController.setI(i);
-      kI = i;
-    }
-    if ((d != kD)) {
-      m_pidController.setD(d);
-      kD = d;
-    }
-    if ((iz != kIz)) {
-      m_pidController.setIZone(iz);
-      kIz = iz;
-    }
-    if ((ff != kFF)) {
-      m_pidController.setFF(ff);
-      kFF = ff;
-    }
-    if ((max != kMaxOutput) || (min != kMinOutput)) {
-      m_pidController.setOutputRange(min, max);
-      kMinOutput = min;
-      kMaxOutput = max;
     } 
-
-    
-    
-  }
   public void hoodAngle(){
     double rotations = SmartDashboard.getNumber("Hood Setpoint", 0);
     double position = m_encoder.getPosition();
-    
     m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     SmartDashboard.putNumber("ProcessVariable", position);
   }
