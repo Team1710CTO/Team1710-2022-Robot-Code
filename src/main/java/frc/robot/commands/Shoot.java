@@ -13,14 +13,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class Shoot extends CommandBase {
   /** Creates a new Shoot. */
 
-  public static HoodSubsystem hoodSubsystem;
+  
   public static ShooterSubsystem shooterSubsystem;
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem) {
+  public Shoot(ShooterSubsystem shooterSubsystem) {
 
-    this.hoodSubsystem = hoodSubsystem;
+    
     this.shooterSubsystem = shooterSubsystem;
 
-    addRequirements(hoodSubsystem, shooterSubsystem);
+    addRequirements(shooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

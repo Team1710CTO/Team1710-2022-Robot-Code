@@ -20,7 +20,7 @@ import frc.robot.RobotContainer;
 
 public class HoodSubsystem extends SubsystemBase {
   
-  private static CANSparkMax m_hood_motor;
+  public static CANSparkMax m_hood_motor;
   public static SparkMaxPIDController m_hood_pidController;
   private static RelativeEncoder m_hood_encoder;
 
@@ -48,22 +48,35 @@ public class HoodSubsystem extends SubsystemBase {
     m_hood_pidController.setOutputRange(Constants.HOOD_kMinOutput, Constants.HOOD_kMaxOutput);
     
         
+
     
 
-    m_hood_pidController.setReference(Constants.HOOD_POSITION_MIN, ControlType.kPosition);
-
+    //m_hood_pidController.setReference(Constants.HOOD_POSITION_MIN, ControlType.kPosition);
+    SmartDashboard.putString("Hood Status", "!!Not Zeroed!!");
   }
 
   @Override
   public void periodic() {
 
         SmartDashboard.putNumber("hood pos", m_hood_encoder.getPosition());    
+
+        
         
   }
 
   public static void setHoodPosition(double position){
 
-    m_hood_pidController.setReference(position, ControlType.kPosition);
+    if(isZeroed){
+
+      m_hood_pidController.setReference(position, ControlType.kPosition);
+
+    } else {
+
+      SmartDashboard.putString("Hood Status", "Set to Pos");
+
+    }
+
+    
 
   }
 
@@ -86,11 +99,15 @@ public class HoodSubsystem extends SubsystemBase {
 
     m_hood_pidController.setReference(.1, ControlType.kDutyCycle);
 
+    SmartDashboard.putString("Hood Status", "!!Manual Override!!");
+
   }
 
   public static void runHoodDown(){
 
     m_hood_pidController.setReference(-.1, ControlType.kDutyCycle);
+
+    SmartDashboard.putString("Hood Status", "!!Manual Override!!");
 
   }
 
@@ -139,6 +156,8 @@ public class HoodSubsystem extends SubsystemBase {
     isZeroed = true;
     
     m_hood_encoder.setPosition(0.0);
+
+    SmartDashboard.putString("Hood Status", "Zeroed");
 
   }
 

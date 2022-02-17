@@ -81,8 +81,8 @@ public final class Constants {
     //intake Left
     public static final int LEFT_INTAKE_ACTUATOR_PDP_SLOT = 8;
     public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
-    public static double INTAKE_LEFT_kP = 0.04; 
-    public static double INTAKE_LEFT_kI = 1e-4;
+    public static double INTAKE_LEFT_kP = 0.15; 
+    public static double INTAKE_LEFT_kI = 0.0001;
     public static double INTAKE_LEFT_kD = 1; 
     public static double INTAKE_LEFT_kIz = 0; 
     public static double INTAKE_LEFT_kFF = 0; 
@@ -90,8 +90,8 @@ public final class Constants {
     public static double INTAKE_LEFT_kMinOutput = -1;
     public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
     public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
-    public static final double Intake_LEFT_up = 0; // roations from zero FIXME
-    public static final double INTAKE_LEFT_down = 3.8; // set by the zero functionality
+    public static final double Intake_LEFT_up = 0.5; // roations from zero FIXME
+    public static final double INTAKE_LEFT_down = 3; // set by the zero functionality
 
 
     //intake Right
@@ -106,7 +106,7 @@ public final class Constants {
     public static double INTAKE_RIGHT_kMinOutput = INTAKE_LEFT_kMinOutput;
     public static double INTAKE_RIGHT_zero_dutyCycle__gain = INTAKE_LEFT_zero_dutyCycle__gain;
     public static double INTAKE_RIGHT_abnormal_abnormal_current_draw = 10;
-    public static final double INTAKE_RIGHT_up = Intake_LEFT_up; // set by the zero functionality
+    public static final double INTAKE_RIGHT_up = -Intake_LEFT_up; // set by the zero functionality
     public static final double INTAKE_RIGHT_down = -INTAKE_LEFT_down; // set by the zero functionality
 
     public static double INTAKE_RUNNER_SPEED_ON = .5; //speed intake runner runs at
@@ -118,8 +118,8 @@ public final class Constants {
     //hood
     public static final int HOOD_CAN_ID = 41;
     public static final int HOOD_PDP_SLOT = 9; //fixme
-    public static double HOOD_kP = 0.02; 
-    public static double HOOD_kI = 0.0; //or 0.00005? test
+    public static double HOOD_kP = 0.6; 
+    public static double HOOD_kI = 0.001; //or 0.00005? test
     public static double HOOD_kD = 0; 
     public static double HOOD_kIz = 0; 
     public static double HOOD_kFF = 0; 
@@ -132,7 +132,7 @@ public final class Constants {
     public static float HOOD_POSITION_MAX_FLOAT = (float)HOOD_POSITION_MAX; // needed for soft limits
     public static float HOOD_POSITION_MIN_FLOAT = (float)HOOD_POSITION_MIN;// needed for soft limits
 
-    public static final double HOOD_ZERO_CURRENT_DRAW = 20;
+    public static final double HOOD_ZERO_CURRENT_DRAW = 32;
     public static final double HOOD_ZERO_VELOCITY_THRESHOLD_UB = .05;
 
 

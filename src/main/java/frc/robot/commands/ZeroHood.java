@@ -12,6 +12,7 @@ public class ZeroHood extends CommandBase {
   /** Creates a new ZeroHood. */
 
   public static HoodSubsystem hoodSubsystem;
+
   public ZeroHood(HoodSubsystem hoodSubsystem) {
 
     this.hoodSubsystem = hoodSubsystem;
@@ -24,7 +25,7 @@ public class ZeroHood extends CommandBase {
   @Override
   public void initialize() {
 
-    hoodSubsystem.disableSoftLimits();
+    //hoodSubsystem.disableSoftLimits();
 
   }
 
@@ -47,8 +48,9 @@ public class ZeroHood extends CommandBase {
     if(hoodSubsystem.isHoodCurrentOverZeroConstant()){
 
         hoodSubsystem.zeroHood();
-        hoodSubsystem.setSoftLimits();
+        //hoodSubsystem.setSoftLimits();
 
+        hoodSubsystem.setHoodPosition(.5);
         return true;
 
     } else {
