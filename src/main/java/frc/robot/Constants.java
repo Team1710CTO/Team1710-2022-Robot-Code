@@ -171,6 +171,7 @@ public final class Constants {
     public static final double INDEXER_IN_SPEED = 1;
     public static final double INDEXER_OUT_SPEED = -1;
     public static final double INDEXER_STOP_SPEED = 0;
+    public static final double INDEXER_CYCLE_ROTATIONS = 20;
     
     
     

@@ -17,6 +17,8 @@ public class PopBallOut extends CommandBase {
 
   public static boolean jamCleared = false;
 
+  public static int topBeamBreakCounter = 0;
+
   public PopBallOut(IndexerSubsystem indexerSubsystem, ShooterSubsystem shooterSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
@@ -63,6 +65,12 @@ public class PopBallOut extends CommandBase {
 
           indexerSubsystem.runIndexerIn();
 
+          if(!indexerSubsystem.isTopBeakBreakTripped()){
+
+            topBeamBreakCounter += 1;
+
+          }
+
         }
 
     } 
@@ -86,6 +94,12 @@ public class PopBallOut extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
+    if(topBeamBreakCounter >= 2 || indexerSubsystem.isIndexerCycled()){ // has top beam break been tripped twice 
+
+      return true;
+
+    }
     return false;
   }
 }
