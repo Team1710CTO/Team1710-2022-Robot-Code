@@ -98,7 +98,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public static void indexBall(){
+  public static void indexBallsBetweenBreaks(){
 
     if(isBottomBeakBreakTripped() && !isTopBeakBreakTripped()){
 

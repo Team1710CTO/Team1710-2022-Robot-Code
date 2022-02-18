@@ -15,6 +15,7 @@ public class Shoot extends CommandBase {
 
   
   public static ShooterSubsystem shooterSubsystem;
+  
   public Shoot(ShooterSubsystem shooterSubsystem) {
 
     

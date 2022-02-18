@@ -148,6 +148,8 @@ public final class Constants {
     public static double SHOOTER_kMinOutput = -1; // TODO 
     public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
     public static double SHOOTER_abnormal_abnormal_current_draw = 10;   
+
+    public static final double SHOOTER_GO_THRESHHOLD = 100;
     
     
 
@@ -169,6 +171,7 @@ public final class Constants {
     public static final double INDEXER_IN_SPEED = 1;
     public static final double INDEXER_OUT_SPEED = -1;
     public static final double INDEXER_STOP_SPEED = 0;
+    
     
     
 

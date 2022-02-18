@@ -12,8 +12,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class ShooterSubsystem extends SubsystemBase {
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
-  private RelativeEncoder m_encoder;
+  private static RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+
+  public static double goalSpeed = 0;
+
+  public static boolean isDisabled = true;
 
   public ShooterSubsystem(){
     // initialize motor
@@ -49,21 +53,70 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic(){
-    // WILL REMOVE ALL OF PERIODIC AFTER TESTING 
-    // read PID coefficients from SmartDashboard
    
-    
+    SmartDashboard.putNumber("Velo shooter", m_encoder.getVelocity()); // Puts the actual RPM to SmartDashboard
+    SmartDashboard.putNumber("GVelo shooter", goalSpeed);
   }
 
   public void setSpeed(double setPoint){
-    // Sets the requested RPM in the PID
-    m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-    //SmartDashboard.putNumber("Setpoint", setPoint); // Puts the requested RPM to SmartDashboard
-    SmartDashboard.putNumber("CurrentPoint shooter", m_encoder.getVelocity()); // Puts the actual RPM to SmartDashboard
+
+    if(setPoint != goalSpeed){
+
+      goalSpeed = setPoint;
+
+      m_pidController.setReference(goalSpeed, CANSparkMax.ControlType.kVelocity);
+
+    }
+    
+    isDisabled = false;
+
   }
 
   public void disableShooter(){
+
+    isDisabled = true;
+
+    goalSpeed = 0;
     // Sets the RPM to 0 for when we aren't shooting
+    setSpeed(0);
+
     m_pidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
+    
   }
+  public static boolean isShooterToSpeedAndNotDisabled(){
+
+    if(!isDisabled && isShooterToSpeed()){
+
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
+
+  public static boolean isShooterToSpeed(){
+
+    if(Math.abs(goalSpeed - m_encoder.getVelocity()) < Constants.SHOOTER_GO_THRESHHOLD){
+
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
+
+  public static double getShooterSpeed(){
+
+    return m_encoder.getVelocity();
+
+  }
+
+  
+  
 }

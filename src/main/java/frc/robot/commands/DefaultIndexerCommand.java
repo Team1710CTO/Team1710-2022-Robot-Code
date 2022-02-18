@@ -26,7 +26,7 @@ public class DefaultIndexerCommand extends CommandBase {
   @Override
   public void execute() {
 
-    indexerSubsystem.indexBall();
+    indexerSubsystem.indexBallsBetweenBreaks();
 
   }
 
