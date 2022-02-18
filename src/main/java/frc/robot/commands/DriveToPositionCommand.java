@@ -4,24 +4,21 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax.ControlType;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class Shoot extends CommandBase {
-  /** Creates a new Shoot. */
+public class DriveToPositionCommand extends CommandBase {
+  /** Creates a new DriveToPositionCommand. */
+  public static DrivetrainSubsystem drivetrainSubsystem;
+  public static Pose2d desiredPose2d;
+  public static Rotation2d desiredRot;
 
-  
-  public static ShooterSubsystem shooterSubsystem;
-  
-  public Shoot(ShooterSubsystem shooterSubsystem) {
 
-    
-    this.shooterSubsystem = shooterSubsystem;
+  public DriveToPositionCommand(DrivetrainSubsystem drivetrainSubsystem, Pose2d desiredPos, Rotation2d desiredRot) {
 
-    addRequirements(shooterSubsystem);
+    this.drivetrainSubsystem = drivetrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -31,19 +28,11 @@ public class Shoot extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    shooterSubsystem.setSpeed(3000);
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-    shooterSubsystem.disableShooter();
-
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

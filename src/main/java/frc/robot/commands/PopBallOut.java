@@ -95,7 +95,7 @@ public class PopBallOut extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(topBeamBreakCounter >= 2 || indexerSubsystem.isIndexerCycled()){ // has top beam break been tripped twice 
+    if(topBeamBreakCounter >= 2 || indexerSubsystem.isIndexerCycled()){ // has top beam break been tripped twice or has the indexer been running for more than 20 ish rotations
 
       return true;
 
