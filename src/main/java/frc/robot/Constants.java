@@ -135,19 +135,18 @@ public final class Constants {
     public static final double HOOD_ZERO_CURRENT_DRAW = 32;
     public static final double HOOD_ZERO_VELOCITY_THRESHOLD_UB = .05;
 
-
-    //shooter
-    public static final int SHOOTER_PDP_SLOT = 12; // TODO
-    public static final int SHOOTER_CAN_ID = 40; // TODO
-    public static double SHOOTER_kP = 0.01; // TODO
-    public static double SHOOTER_kI = 1e-4; // TODO
-    public static double SHOOTER_kD = 0; // TODO
-    public static double SHOOTER_kIz = 0; 
-    public static double SHOOTER_kFF = 0;  // TODO?
-    public static double SHOOTER_kMaxOutput = 1; // TODO
-    public static double SHOOTER_kMinOutput = -1; // TODO 
-    public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
-    public static double SHOOTER_abnormal_abnormal_current_draw = 10;   
+ //shooter
+ public static final int SHOOTER_PDP_SLOT = 12; // GOOD
+ public static final int SHOOTER_CAN_ID = 40; // GOOD
+ public static double SHOOTER_kP = 0.0001; // GOOD
+ public static double SHOOTER_kI = 0.0000005; // GOOD
+ public static double SHOOTER_kD = 0; // GOOD
+ public static double SHOOTER_kIz = 0; 
+ public static double SHOOTER_kFF = 0;  // GOOD
+ public static double SHOOTER_kMaxOutput = 1; // GOOD
+ public static double SHOOTER_kMinOutput = -1; // GOOD
+ public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
+ public static double SHOOTER_abnormal_abnormal_current_draw = 10;      
 
     public static final double SHOOTER_GO_THRESHHOLD = 100;
     
