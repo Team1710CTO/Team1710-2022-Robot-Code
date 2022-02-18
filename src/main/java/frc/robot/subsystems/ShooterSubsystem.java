@@ -31,14 +31,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // PID coefficients
     // WILL GET ALL PID VALUES FROM FROM THE CONSTANTS FILE AFTER TESTING
-    kP = 0.0001; // TODO
-    kI = 0.000001; // TODO
-    kD = 0; 
-    kIz = 0; // TODO?
-    kFF = 0; // TODO
-    kMaxOutput = .5; // TODO
-    kMinOutput = 0; // TODO
-    maxRPM = 5700; // TODO
+    kP = Constants.SHOOTER_kP; 
+    kI = Constants.SHOOTER_kI; 
+    kD = Constants.SHOOTER_kD; 
+    kIz = Constants.SHOOTER_kIz; 
+    kFF = Constants.SHOOTER_kFF;
+    kMaxOutput = Constants.SHOOTER_kMaxOutput;
+    kMinOutput = Constants.SHOOTER_kMinOutput;
+    maxRPM = 5700;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -114,7 +114,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public static double getShooterSpeed(){
 
     return m_encoder.getVelocity();
-
   }
 
   
