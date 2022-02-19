@@ -54,7 +54,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         var resultCamille = Camille.getLatestResult(); // Gets the camera's results
         if (resultCamille.hasTargets()) {
             // Distance to target calculation
-            double cameraHeightMeters = .9; // TODO
+            double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
             double targetHeightMeters = 0.15; // TODO
             double cameraPitchRadians = Units.degreesToRadians(20); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCamille.getBestTarget().getPitch());
