@@ -30,15 +30,16 @@ public class autonomousCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    trajectory = PathPlanner.loadPath("Test", 0.5, 1);
+    trajectory = PathPlanner.loadPath("Test", 0.8, 1);
 
-    ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0,
+    ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0,
         new TrapezoidProfile.Constraints(Math.PI, Math.PI));
-    PIDController pid = new PIDController(0, 0, 0);
+    PIDController pid1 = new PIDController(0, 0, 0);
+    PIDController pid2 = new PIDController(0, 0, 0);
 
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    controller = new HolonomicDriveController(pid, pid, thetaController);
+    controller = new HolonomicDriveController(pid1, pid2, thetaController);
 
     m_subsystem.resetOdometry();
 

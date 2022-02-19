@@ -57,10 +57,10 @@ public final class Constants {
     public static final int BACK_LEFT_MODULE_STEER_MOTOR_PDP_SLOT = 12;
 
     // Offsets
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0);
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0);
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0);
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0);
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(75);
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(16+180);
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(335+180);
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(60);
     // Gyros
 
     public static final int RIGHT_PIGEON_ID = 13;

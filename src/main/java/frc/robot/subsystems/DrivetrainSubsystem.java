@@ -175,7 +175,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 				BACK_RIGHT_MODULE_STEER_ENCODER,
 				BACK_RIGHT_MODULE_STEER_OFFSET);
 
-		odometry = new SwerveDriveOdometry(m_kinematics, GyroSubsystem.getBestRotation2d());
+		odometry = new SwerveDriveOdometry(m_kinematics, GyroSubsystem.getRightPigeonGyroscopeRotation());
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	 */
 	public void resetOdometry() {
 		calculatedPose = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
-		odometry.resetPosition(calculatedPose, GyroSubsystem.getBestRotation2d());
+		odometry.resetPosition(calculatedPose, GyroSubsystem.getRightPigeonGyroscopeRotation());
 	}
 
 	public Pose2d getPose() {
@@ -198,7 +198,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true);
+		m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false);
 
 		SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
@@ -212,7 +212,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
 				states[3].angle.getRadians());
 
-		calculatedPose = odometry.update(GyroSubsystem.getBestRotation2d(), states);
+		calculatedPose = odometry.update(GyroSubsystem.getRightPigeonGyroscopeRotation(), states);
 		// SmartDashboard.putNumber("Estimated X", calculatedPose.getX());
 		// SmartDashboard.putNumber("Estimated Y", calculatedPose.getY());
 		// SmartDashboard.putNumber("\"Estimated\" Rotation",
