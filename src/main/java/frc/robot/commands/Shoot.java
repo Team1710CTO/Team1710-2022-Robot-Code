@@ -6,10 +6,16 @@ package frc.robot.commands;
 
 import com.revrobotics.CANSparkMax.ControlType;
 
+import org.opencv.photo.Photo;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Shoot extends CommandBase {
@@ -21,13 +27,22 @@ public class Shoot extends CommandBase {
   public static HoodSubsystem hoodSubsystem;
 
   public static IndexerSubsystem indexerSubsystem;
+
+  public static DrivetrainSubsystem drivetrainSubsystem;
+
+  public static PhotonVisionSubsystem photonVisionSubsystem;
   
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
+  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
-    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem);
+
+    this.drivetrainSubsystem = drivetrainSubsystem;
+
+    this.photonVisionSubsystem = photonVisionSubsystem;
+
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, drivetrainSubsystem, photonVisionSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -44,6 +59,13 @@ public class Shoot extends CommandBase {
 
     shooterSubsystem.setSpeed(3500);
     hoodSubsystem.setHoodPosition(.3);
+
+    drivetrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
+        photonVisionSubsystem.getXDisplacementOfGoal() * .1,
+        photonVisionSubsystem.getYDisplacementOfGoal() * .1,
+        0,
+        GyroSubsystem.getBestRotation2d()
+      ));
 
     if(ShooterSubsystem.isShooterToSpeedAndNotDisabled()){
 

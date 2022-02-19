@@ -39,8 +39,25 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
     public double getXDisplacementOfGoal() {
         var resultsCameron = Cameron.getLatestResult();
-        double XDisplacementOfGoal = resultsCameron.getBestTarget().getYaw();
+        double XDisplacementOfGoal = 0;
+        if (resultsCameron.hasTargets()) {
+            XDisplacementOfGoal = resultsCameron.getBestTarget().getYaw();
+        } else {
+            XDisplacementOfGoal = 0;
+        }
         return XDisplacementOfGoal; // Returns the X displacement from the center of the camera's view to the goal
+    }
+
+    public double getYDisplacementOfGoal() {
+        var resultsCameron = Cameron.getLatestResult();
+        
+        double YDisplacementOfGoal = 0;
+        if (resultsCameron.hasTargets()) {
+            YDisplacementOfGoal = resultsCameron.getBestTarget().getPitch();
+        } else {
+            YDisplacementOfGoal = 0;
+        }
+        return YDisplacementOfGoal; // Returns the X displacement from the center of the camera's view to the goal
     }
 
     public void setAlliancePipelinesRed() {
