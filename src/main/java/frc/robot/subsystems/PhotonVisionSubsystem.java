@@ -13,9 +13,11 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        
         getDistanceToGoalMeters(0);
-        getXDisplacementOfGoal();
-        getDistanceToBallMeters();
+        //getXDisplacementOfGoal();
+        //getDistanceToBallMeters();
+
     }
     public static double getDistanceToGoalMeters(double odometryDistance) {
         double groundDisToTarget;
