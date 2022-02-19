@@ -34,6 +34,7 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   
+  public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
   public RobotContainer() {
     // Set up the default command for the drivetrain.
