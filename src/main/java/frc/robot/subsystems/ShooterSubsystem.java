@@ -78,7 +78,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     goalSpeed = 0;
     // Sets the RPM to 0 for when we aren't shooting
-    setSpeed(0);
+    //setSpeed(0);
 
     m_pidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
     

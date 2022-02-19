@@ -48,8 +48,9 @@ public class RobotContainer {
             () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
-    
+    m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
+    
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -69,17 +70,19 @@ public class RobotContainer {
     
 
     new Button(m_controller::getStartButton)
-            .whenPressed(new ZeroIntake(mIntakeSubsystem))
+            .whenPressed(new ZeroIntake(mIntakeSubsystem));
+
+    new Button(m_controller::getYButton)
             .whenPressed(new ZeroHood(mHoodSubsystem));
 
     new Button(m_controller::getRightBumper)
-            .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
+            .whenHeld(new Intake(mIntakeSubsystem));
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
     new Button(m_controller::getAButton)
-            .whenHeld(new Shoot(mShooterSubsystem));
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     
 
