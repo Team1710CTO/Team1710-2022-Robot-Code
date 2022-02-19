@@ -11,6 +11,12 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     static PhotonCamera Cameron = new PhotonCamera("Cameron"); // SHOOTER CAM
     static PhotonCamera Camille = new PhotonCamera("Camille"); // INTAKE CAM
 
+    @Override
+    public void periodic() {
+        getDistanceToGoalMeters(0);
+        getXDisplacementOfGoal();
+        getDistanceToBallMeters();
+    }
     public static double getDistanceToGoalMeters(double odometryDistance) {
         double groundDisToTarget;
         var resultCameron = Cameron.getLatestResult(); // Gets the camera's results
