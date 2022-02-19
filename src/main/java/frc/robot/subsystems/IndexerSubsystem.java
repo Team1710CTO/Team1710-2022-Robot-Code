@@ -102,7 +102,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static void indexBallsBetweenBreaks(){
 
-    if(isBottomBeakBreakTripped() && !isTopBeakBreakTripped()){
+    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped()){
 
       runIndexerIn();
 
@@ -123,7 +123,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static boolean isIndexerCycled(){
 
-    return (getIndexerRotations() > 20);
+    return (getIndexerRotations() > Constants.INDEXER_CYCLE_ROTATIONS);
 
   }
 

@@ -191,7 +191,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //temp
         
         //modify heading control
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true); // heading control
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false); // heading control
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 

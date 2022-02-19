@@ -4,21 +4,21 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class Intake extends CommandBase {
+public class DriveToPositionCommand extends CommandBase {
+  /** Creates a new DriveToPositionCommand. */
+  public static DrivetrainSubsystem drivetrainSubsystem;
+  public static Pose2d desiredPose2d;
+  public static Rotation2d desiredRot;
 
-  public static IntakeSubsystem intakeSubsystem;
-  
-  /** Creates a new IntakeDown. */
-  public Intake(IntakeSubsystem intakeSubsystem) {
 
-    this.intakeSubsystem = intakeSubsystem;
-    
+  public DriveToPositionCommand(DrivetrainSubsystem drivetrainSubsystem, Pose2d desiredPos, Rotation2d desiredRot) {
 
-    addRequirements(intakeSubsystem);
+    this.drivetrainSubsystem = drivetrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,24 +28,11 @@ public class Intake extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    intakeSubsystem.setintakeDown();
-    intakeSubsystem.runIntake();
-    //indexerSubsystem.runIndexerIn();
-    
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-    intakeSubsystem.setIntakeUp();
-    intakeSubsystem.stopIntakeRunner();
-    //indexerSubsystem.stopIndexer();
-    
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
