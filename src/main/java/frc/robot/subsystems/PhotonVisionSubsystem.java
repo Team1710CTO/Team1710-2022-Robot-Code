@@ -12,18 +12,21 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     static PhotonCamera Camille = new PhotonCamera("Camille"); // INTAKE CAM
 
     public static double getDistanceToGoalMeters(double odometryDistance) {
-        double DisToTargetMeters = odometryDistance; // Sets a default value when no targets are seen
+        double groundDisToTarget;
         var resultCameron = Cameron.getLatestResult(); // Gets the camera's results
         if (resultCameron.hasTargets()) {
             // Distance to target calculation
-            double cameraHeightMeters = .66; // TODO
+            double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
             double targetHeightMeters = 2.6035; // the actual height
-            double cameraPitchRadians = Units.degreesToRadians(20); // TODO
+            double cameraPitchRadians = Units.degreesToRadians(55); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCameron.getBestTarget().getPitch());
-            DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,cameraPitchRadians, targetPitchRadians);
-            SmartDashboard.putNumber("Dis To Target", DisToTargetMeters); // Puts the distance to SmartDashboard
+            double DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters,targetHeightMeters, cameraPitchRadians, targetPitchRadians);
+            groundDisToTarget = DisToTargetMeters * Math.cos(resultCameron.getBestTarget().getPitch());
+            SmartDashboard.putNumber("Ground Distance To Target", groundDisToTarget); // Puts the distance to SmartDashboard
+        } else {
+            groundDisToTarget = odometryDistance; // Sets a default value when no targets are seen
         }
-        return DisToTargetMeters; // Returns the distance to the goal
+        return groundDisToTarget; // Returns the distance to the goal
     }
 
     public double getXDisplacementOfGoal() {
@@ -49,7 +52,8 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             double targetHeightMeters = 0.15; // TODO
             double cameraPitchRadians = Units.degreesToRadians(20); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCamille.getBestTarget().getPitch());
-            DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,cameraPitchRadians, targetPitchRadians);
+            DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,
+                    cameraPitchRadians, targetPitchRadians);
             SmartDashboard.putNumber("Dis To Ball", DisToTargetMeters); // Puts the distance to SmartDashboard
         }
         return DisToTargetMeters; // Returns the distance to the best target ball
