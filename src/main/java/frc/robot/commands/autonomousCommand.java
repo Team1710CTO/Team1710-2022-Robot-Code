@@ -17,15 +17,15 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class autonomousCommand extends CommandBase {
 
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private final DrivetrainSubsystem m_subsystem;
+  private final DrivetrainSubsystem m_DrivetrainSubsystem;
   private PathPlannerTrajectory trajectory;
   private HolonomicDriveController controller;
   private final Timer timer = new Timer();
 
-  public autonomousCommand(DrivetrainSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public autonomousCommand(DrivetrainSubsystem m_DrivetrainSubsystem) {
+    this.m_DrivetrainSubsystem = m_DrivetrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_DrivetrainSubsystem);
   }
 
   @Override
@@ -41,7 +41,7 @@ public class autonomousCommand extends CommandBase {
 
     controller = new HolonomicDriveController(pid1, pid2, thetaController);
 
-    m_subsystem.resetOdometry();
+    m_DrivetrainSubsystem.resetOdometry();
 
     timer.reset();
     timer.start();
@@ -51,15 +51,15 @@ public class autonomousCommand extends CommandBase {
   public void execute() {
     PathPlannerState desiredState = (PathPlannerState) trajectory.sample(timer.get());
 
-    ChassisSpeeds targetChassisSpeeds = controller.calculate(m_subsystem.getPose(), desiredState,
+    ChassisSpeeds targetChassisSpeeds = controller.calculate(m_DrivetrainSubsystem.getPose(), desiredState,
         desiredState.poseMeters.getRotation());
 
-    m_subsystem.drive(targetChassisSpeeds);
+        m_DrivetrainSubsystem.drive(targetChassisSpeeds);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.drive(new ChassisSpeeds(0, 0, 0));
+    m_DrivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 0));
     timer.stop();
   }
 
