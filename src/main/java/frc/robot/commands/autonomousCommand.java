@@ -34,12 +34,12 @@ public class autonomousCommand extends CommandBase {
 
     ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0,
         new TrapezoidProfile.Constraints(Math.PI, Math.PI));
-    PIDController pid1 = new PIDController(0, 0, 0);
-    PIDController pid2 = new PIDController(0, 0, 0);
+    PIDController xPosPidController = new PIDController(0, 0, 0);
+    PIDController yPosPidController = new PIDController(0, 0, 0);
 
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    controller = new HolonomicDriveController(pid1, pid2, thetaController);
+    controller = new HolonomicDriveController(xPosPidController, yPosPidController, thetaController);
 
     m_DrivetrainSubsystem.resetOdometry();
 
