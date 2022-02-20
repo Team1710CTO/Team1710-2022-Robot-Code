@@ -63,6 +63,10 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("bottomBeamBreak", bottomBeamBreak.get());
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
+    SmartDashboard.putNumber("indexer Rotations", getIndexerRotations());
+
+    SmartDashboard.putBoolean("is cycled", isIndexerCycled());
+
 
 
   }
@@ -102,7 +106,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static void indexBallsBetweenBreaks(){
 
-    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped()){
+    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped() && !isIndexerCycled()){
 
       runIndexerIn();
 
