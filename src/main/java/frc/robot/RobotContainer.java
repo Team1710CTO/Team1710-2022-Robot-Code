@@ -97,7 +97,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new autonomousCommand(m_drivetrainSubsystem);
+    return new testPathFollowCommand(m_drivetrainSubsystem);
   }
 
   private static double deadband(double value, double deadband) {

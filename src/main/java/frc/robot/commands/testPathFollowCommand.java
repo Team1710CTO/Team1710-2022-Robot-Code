@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /** Trajectory following */
-public class autonomousCommand extends CommandBase {
+public class testPathFollowCommand extends CommandBase {
 
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DrivetrainSubsystem m_DrivetrainSubsystem;
@@ -22,7 +22,7 @@ public class autonomousCommand extends CommandBase {
   private HolonomicDriveController controller;
   private final Timer timer = new Timer();
 
-  public autonomousCommand(DrivetrainSubsystem m_DrivetrainSubsystem) {
+  public testPathFollowCommand(DrivetrainSubsystem m_DrivetrainSubsystem) {
     this.m_DrivetrainSubsystem = m_DrivetrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DrivetrainSubsystem);
