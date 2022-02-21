@@ -57,8 +57,8 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3500);
-    hoodSubsystem.setHoodPosition(.3);
+    shooterSubsystem.setSpeed(4000);
+    hoodSubsystem.setHoodPosition(.75);
 
     drivetrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
         photonVisionSubsystem.getXDisplacementOfGoal() * -.1,

@@ -26,7 +26,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             // Distance to target calculation
             double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
             double targetHeightMeters = 2.6035; // the actual height
-            double cameraPitchRadians = Units.degreesToRadians(55); // TODO
+            double cameraPitchRadians = Units.degreesToRadians(35); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCameron.getBestTarget().getPitch());
             double DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters,targetHeightMeters, cameraPitchRadians, targetPitchRadians);
             groundDisToTarget = DisToTargetMeters * Math.cos(resultCameron.getBestTarget().getPitch());
