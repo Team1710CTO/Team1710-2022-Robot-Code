@@ -33,7 +33,7 @@ public class Shoot extends CommandBase {
 
   public static PhotonVisionSubsystem photonVisionSubsystem;
 
-  public static PIDController rotationPidController;
+  public static PIDController rotationPidController, distancePidController;
 
   
   public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
@@ -54,7 +54,10 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     
-    rotationPidController = new PIDController(.4, .0001, 0);
+    rotationPidController = new PIDController(.3, .0005, .00001);
+    distancePidController = new PIDController(.4, .001, 0);
+
+    
 
   }
 
