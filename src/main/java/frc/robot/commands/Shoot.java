@@ -61,7 +61,7 @@ public class Shoot extends CommandBase {
     hoodSubsystem.setHoodPosition(.3);
 
     drivetrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
-        photonVisionSubsystem.getXDisplacementOfGoal() * .1,
+        photonVisionSubsystem.getXDisplacementOfGoal() * -.1,
         photonVisionSubsystem.getYDisplacementOfGoal() * .1,
         0,
         GyroSubsystem.getBestRotation2d()
