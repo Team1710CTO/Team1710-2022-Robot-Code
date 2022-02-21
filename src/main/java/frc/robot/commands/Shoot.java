@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import org.opencv.photo.Photo;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -31,6 +32,9 @@ public class Shoot extends CommandBase {
   public static DrivetrainSubsystem drivetrainSubsystem;
 
   public static PhotonVisionSubsystem photonVisionSubsystem;
+
+  public static PIDController rotationPidController;
+
   
   public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
@@ -50,6 +54,7 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     
+    rotationPidController = new PIDController(.4, .0001, 0);
 
   }
 
@@ -57,15 +62,16 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(4000);
+    shooterSubsystem.setSpeed(3500);
     hoodSubsystem.setHoodPosition(.75);
 
-    drivetrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
-        photonVisionSubsystem.getXDisplacementOfGoal() * -.1,
-        photonVisionSubsystem.getYDisplacementOfGoal() * .1,
+    drivetrainSubsystem.drive(new ChassisSpeeds(
         0,
-        GyroSubsystem.getBestRotation2d()
-      ));
+        0,
+        -rotationPidController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())
+        ));
+
+    
 
     if(ShooterSubsystem.isShooterToSpeedAndNotDisabled()){
 

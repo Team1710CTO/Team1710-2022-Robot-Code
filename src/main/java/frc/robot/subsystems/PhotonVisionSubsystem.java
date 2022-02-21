@@ -15,7 +15,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     public void periodic() {
         
         getDistanceToGoalMeters(0);
-        //getXDisplacementOfGoal();
+        getXDisplacementOfGoal();
         //getDistanceToBallMeters();
 
     }
@@ -45,6 +45,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         } else {
             XDisplacementOfGoal = 0;
         }
+        SmartDashboard.putNumber("xdisplacement", XDisplacementOfGoal);
         return XDisplacementOfGoal; // Returns the X displacement from the center of the camera's view to the goal
     }
 
