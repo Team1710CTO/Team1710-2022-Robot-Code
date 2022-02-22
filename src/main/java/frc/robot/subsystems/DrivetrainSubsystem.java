@@ -100,7 +100,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private static ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  public static SwerveDriveOdometry m_odometry;
+  public SwerveDriveOdometry m_odometry;
 
   public static Pose2d m_pose;
 
@@ -219,6 +219,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
   }
 
+  public Pose2d getOPose2d(){
+
+        return m_pose;
+  }
+
+  public void resetOdometry(){
+
+        m_odometry.resetPosition(new Pose2d(0,0, null), new Rotation2d(0));
+
+  }
+
 
   public static double headingControlModifier(boolean active){
 
@@ -272,7 +283,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         
+        
   }
+
+  
   
 
 }
