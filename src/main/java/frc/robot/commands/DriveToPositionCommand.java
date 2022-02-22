@@ -20,22 +20,9 @@ public class DriveToPositionCommand extends CommandBase {
 
   public static double xNow, yNow, rotNow;
 
-  public static PIDController xPidController, yPidController, thetaPidController;
-
-
   public DriveToPositionCommand(DrivetrainSubsystem drivetrainSubsystem, Pose2d desiredPose2d) {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
-
-    xPidController = new PIDController(.1, .01, 0);
-
-    yPidController = new PIDController(.1, .01, 0);
-
-    thetaPidController = new PIDController(.01, 0, 0);
-
-    thetaPidController.enableContinuousInput(0, 360);
-
-    
 
     this.desiredPose2d = desiredPose2d;
 
@@ -46,7 +33,7 @@ public class DriveToPositionCommand extends CommandBase {
   @Override
   public void initialize() {
 
-    //drivetrainSubsystem.m_odometry.resetPosition(new Pose2d(0,0, null), new Rotation2d(0));
+    drivetrainSubsystem.resetOdometry();
 
   }
 
@@ -54,14 +41,7 @@ public class DriveToPositionCommand extends CommandBase {
   @Override
   public void execute() {
 
-    double xNow = drivetrainSubsystem.m_odometry.getPoseMeters().getX();
-    double yNow = drivetrainSubsystem.m_odometry.getPoseMeters().getY();
-    double rotNow = GyroSubsystem.getBestRotation2d().getDegrees();
-    drivetrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
-      xPidController.calculate(xNow, desiredPose2d.getX()), 
-      yPidController.calculate(yNow, desiredPose2d.getY()),  
-      0,
-      GyroSubsystem.getBestRotation2d()));
+    drivetrainSubsystem.DriveToPosition(desiredPose2d);
 
   }
 
@@ -73,7 +53,7 @@ public class DriveToPositionCommand extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if((Math.abs(xNow - desiredPose2d.getX())) < .1 && (Math.abs(yNow - desiredPose2d.getY())) < .1){
+    if(drivetrainSubsystem.isInPosition(desiredPose2d)){
       
       return true;
 
