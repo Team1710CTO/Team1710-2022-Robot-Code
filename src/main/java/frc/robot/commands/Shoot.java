@@ -72,7 +72,11 @@ public class Shoot extends CommandBase {
 
     if (ShooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-      indexerSubsystem.runIndexerIn();
+        indexerSubsystem.runIndexerIn();
+
+    } else {
+
+      indexerSubsystem.stopIndexer();
 
     }
 

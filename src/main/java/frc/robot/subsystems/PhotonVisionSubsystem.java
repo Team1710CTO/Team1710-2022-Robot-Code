@@ -78,8 +78,8 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         if (resultCamille.hasTargets()) {
             // Distance to target calculation
             double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
-            double targetHeightMeters = 0.15; // TODO
-            double cameraPitchRadians = Units.degreesToRadians(20); // TODO
+            double targetHeightMeters = 0.075; // TODO
+            double cameraPitchRadians = Units.degreesToRadians(110); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCamille.getBestTarget().getPitch());
             DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,
                     cameraPitchRadians, targetPitchRadians);
@@ -99,6 +99,17 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("xdisplacement of ball", XDisplacementOfBall);
         return XDisplacementOfBall;
     }
+    public static double getYDisplacementOfBall(){
+        var resultsCamille = Camille.getLatestResult();
+        double YDisplacementOfBall = 0;
+        if (resultsCamille.hasTargets()) {
+            YDisplacementOfBall = resultsCamille.getBestTarget().getPitch();
+        } else {
+            YDisplacementOfBall = 0;
+        }
+        SmartDashboard.putNumber("Ydisplacement of ball", YDisplacementOfBall);
+        return YDisplacementOfBall;
+    }
 
     public static boolean doesIntakeSeeBall() {
         var resultsCamille = Camille.getLatestResult();
@@ -106,6 +117,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         if (resultsCamille.hasTargets()) {
             doesIntakeSeeBall = true;
         }
+        SmartDashboard.putBoolean("intake see", doesIntakeSeeBall);
         return doesIntakeSeeBall;
     }
 }

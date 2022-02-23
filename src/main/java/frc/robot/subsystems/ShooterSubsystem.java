@@ -85,6 +85,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   public static boolean isShooterToSpeedAndNotDisabled(){
 
+    
+
     if(!isDisabled && isShooterToSpeed()){
 
       return true;
@@ -98,6 +100,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static boolean isShooterToSpeed(){
+
+    SmartDashboard.putNumber("error", Math.abs(goalSpeed - m_encoder.getVelocity()));
 
     if(Math.abs(goalSpeed - m_encoder.getVelocity()) < Constants.SHOOTER_GO_THRESHHOLD){
 
