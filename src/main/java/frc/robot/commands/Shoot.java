@@ -22,7 +22,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class Shoot extends CommandBase {
   /** Creates a new Shoot. */
 
-  
   public static ShooterSubsystem shooterSubsystem;
 
   public static HoodSubsystem hoodSubsystem;
@@ -35,8 +34,8 @@ public class Shoot extends CommandBase {
 
   public static PIDController rotationPidController, distancePidController;
 
-  
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
+  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem,
+      DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
@@ -53,11 +52,9 @@ public class Shoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
     rotationPidController = new PIDController(.3, .0005, .00001);
     distancePidController = new PIDController(.4, .001, 0);
-
-    
 
   }
 
@@ -65,18 +62,15 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3500);
+    shooterSubsystem.setSpeed(3750);
     hoodSubsystem.setHoodPosition(.75);
 
     drivetrainSubsystem.drive(new ChassisSpeeds(
         0,
         0,
-        -rotationPidController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())
-        ));
+        -rotationPidController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
-    
-
-    if(ShooterSubsystem.isShooterToSpeedAndNotDisabled()){
+    if (ShooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
       indexerSubsystem.runIndexerIn();
 
