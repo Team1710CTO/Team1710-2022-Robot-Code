@@ -53,7 +53,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
   public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
   
-  public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP, Constants.ROTATION_PID_CONTOLLER_kI, Constants.ROTATION_PID_CONTOLLER_kD);
+  public static PIDController rotationPidController = new PIDController(
+          Constants.ROTATION_PID_CONTOLLER_kP, 
+          Constants.ROTATION_PID_CONTOLLER_kI, 
+          Constants.ROTATION_PID_CONTOLLER_kD
+        );
+  public static PIDController xPidController = new PIDController(
+          .4, 
+          .0001, 
+          .001
+        );
+  public static PIDController yPidController = new PIDController(
+          .0001, 
+          .4, 
+          .001
+        );
 
    
   
@@ -100,7 +114,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private static ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  public static SwerveDriveOdometry m_odometry;
+  public SwerveDriveOdometry m_odometry;
 
   public static Pose2d m_pose;
 
@@ -219,11 +233,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
   }
 
+  public void resetOdometry(){
+
+        m_odometry.resetPosition(new Pose2d(0,0, null), new Rotation2d(0));
+
+  }
+
 
   public static double headingControlModifier(boolean active){
 
-        SmartDashboard.putNumber("goalGyro", goalGyro.getDegrees());
-        SmartDashboard.putNumber("lastGyro", lastGyro.getDegrees());
         if(active){
 
                 lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
@@ -272,7 +290,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         
+        
   }
-  
+ 
+  public void DriveToPosition(Pose2d desiredPose2d){
+
+        drive(ChassisSpeeds.fromFieldRelativeSpeeds(
+                xPidController.calculate(m_odometry.getPoseMeters().getX(), desiredPose2d.getX()), 
+                yPidController.calculate(m_odometry.getPoseMeters().getY(), desiredPose2d.getY()), 
+                rotationPidController.calculate(GyroSubsystem.getBestRotation2d().getDegrees(), desiredPose2d.getRotation().getDegrees()),
+                GyroSubsystem.getBestRotation2d()
+                
+        ));
+  }
+
+  public boolean isInPosition(Pose2d desiredPose2d){
+
+
+        if((Math.abs(m_odometry.getPoseMeters().getX() - desiredPose2d.getX())) < .1 && (Math.abs(m_odometry.getPoseMeters().getY() - desiredPose2d.getY())) < .1){
+      
+                return true;
+          
+        } else {
+
+                return false;
+
+        }
+
+  }
 
 }

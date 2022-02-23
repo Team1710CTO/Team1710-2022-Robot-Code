@@ -20,16 +20,19 @@ import frc.robot.commands.*; // import all commands
 
 import frc.robot.subsystems.*; // import all subsystems
 
-
-
 public class RobotContainer {
+
+
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
+
   public final static XboxController m_controller = new XboxController(0);
-  public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
+
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
   public static HoodSubsystem mHoodSubsystem = new HoodSubsystem();
+  
   public static ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
@@ -106,7 +109,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return new DriveToPositionCommand(m_drivetrainSubsystem, new Pose2d(2, 0, new Rotation2d(0)));
+
   }
 
   private static double deadband(double value, double deadband) {
