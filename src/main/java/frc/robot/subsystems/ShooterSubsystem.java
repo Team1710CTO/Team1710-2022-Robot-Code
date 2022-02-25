@@ -84,7 +84,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_pidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
     
   }
-  public static boolean isShooterToSpeedAndNotDisabled(){
+  public boolean isShooterToSpeedAndNotDisabled(){
 
     
 

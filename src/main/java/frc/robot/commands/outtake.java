@@ -11,8 +11,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class outtake extends CommandBase {
   /** Creates a new outtake. */
 
-  public static IntakeSubsystem intakeSubsystem;
-  public static IndexerSubsystem indexerSubsystem;
+  public IntakeSubsystem intakeSubsystem;
+  public IndexerSubsystem indexerSubsystem;
   
   public outtake(IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
     this.intakeSubsystem = intakeSubsystem;

@@ -3,27 +3,24 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
+ 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Intake extends CommandBase {
 
-  public static IntakeSubsystem intakeSubsystem;
+  public IntakeSubsystem intakeSubsystem;
 
-  public static DrivetrainSubsystem drivetrainSubsystem;
+  public DrivetrainSubsystem drivetrainSubsystem;
 
-  public static PhotonVisionSubsystem photonVisionSubsystem;
+  public PhotonVisionSubsystem photonVisionSubsystem;
 
-  public static PIDController rotationPidController, movePidController;
+  public PIDController rotationPidController, movePidController;
 
   /** Creates a new IntakeDown. */
   public Intake(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem,
@@ -74,7 +71,7 @@ public class Intake extends CommandBase {
   public void end(boolean interrupted) {
 
     intakeSubsystem.setIntakeUp();
-    intakeSubsystem.stopIntakeRunner();
+    intakeSubsystem.intakeRest();
     // indexerSubsystem.stopIndexer();
 
   }

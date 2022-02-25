@@ -11,12 +11,10 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class HoodSubsystem extends SubsystemBase {
 
@@ -58,7 +56,7 @@ public class HoodSubsystem extends SubsystemBase {
 
   }
 
-  public static void setHoodPosition(double position) {
+  public void setHoodPosition(double position) {
 
     if (isZeroed) {
 
@@ -95,7 +93,7 @@ public class HoodSubsystem extends SubsystemBase {
 
   }
 
-  public static void runHoodDown() {
+  public void runHoodDown() {
 
     m_hood_pidController.setReference(-.1, ControlType.kDutyCycle);
 
@@ -109,7 +107,7 @@ public class HoodSubsystem extends SubsystemBase {
 
   }
 
-  public static boolean isHoodCurrentOverZeroConstant() {
+  public boolean isHoodCurrentOverZeroConstant() {
 
     if (getHoodCurrentDraw() > Constants.HOOD_ZERO_CURRENT_DRAW) {
 
@@ -144,7 +142,7 @@ public class HoodSubsystem extends SubsystemBase {
 
   }
 
-  public static void zeroHood() {
+  public void zeroHood() {
 
     isZeroed = true;
 

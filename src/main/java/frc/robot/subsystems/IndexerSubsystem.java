@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -15,9 +14,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IndexerSubsystem extends SubsystemBase {
@@ -71,20 +68,20 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public static void runIndexerIn(){
+  public void runIndexerIn(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_IN_SPEED, ControlType.kDutyCycle);
 
   }
 
-  public static void runIndexerOut(){
+  public void runIndexerOut(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_OUT_SPEED, ControlType.kDutyCycle);
 
   }
 
 
-  public static void stopIndexer(){
+  public void stopIndexer(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_STOP_SPEED, ControlType.kDutyCycle);
 
@@ -98,13 +95,13 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public static boolean isTopBeakBreakTripped(){
+  public boolean isTopBeakBreakTripped(){
 
     return topBeamBreak.get();
 
   }
 
-  public static void indexBallsBetweenBreaks(){
+  public void indexBallsBetweenBreaks(){
 
     if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped() && !isIndexerCycled()){
 
@@ -125,7 +122,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public static boolean isIndexerCycled(){
+  public boolean isIndexerCycled(){
 
     return (getIndexerRotations() > Constants.INDEXER_CYCLE_ROTATIONS);
 
