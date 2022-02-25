@@ -6,12 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 public class ZeroHood extends CommandBase {
   /** Creates a new ZeroHood. */
 
-  public static HoodSubsystem hoodSubsystem;
+  public HoodSubsystem hoodSubsystem;
 
   public ZeroHood(HoodSubsystem hoodSubsystem) {
 

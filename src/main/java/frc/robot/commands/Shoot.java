@@ -4,16 +4,14 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax.ControlType;
 
-import org.opencv.photo.Photo;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.GyroSubsystem;
+
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
@@ -22,15 +20,15 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class Shoot extends CommandBase {
   /** Creates a new Shoot. */
 
-  public static ShooterSubsystem shooterSubsystem;
+  public ShooterSubsystem shooterSubsystem;
 
-  public static HoodSubsystem hoodSubsystem;
+  public HoodSubsystem hoodSubsystem;
 
-  public static IndexerSubsystem indexerSubsystem;
+  public IndexerSubsystem indexerSubsystem;
 
-  public static DrivetrainSubsystem drivetrainSubsystem;
+  public DrivetrainSubsystem drivetrainSubsystem;
 
-  public static PhotonVisionSubsystem photonVisionSubsystem;
+  public PhotonVisionSubsystem photonVisionSubsystem;
 
   public static PIDController rotationPidController, distancePidController;
 
@@ -71,7 +69,7 @@ public class Shoot extends CommandBase {
         0,
         -rotationPidController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
-    if (ShooterSubsystem.isShooterToSpeedAndNotDisabled()) {
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
         indexerSubsystem.runIndexerIn();
 

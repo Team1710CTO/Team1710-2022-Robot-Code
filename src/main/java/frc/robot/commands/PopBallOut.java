@@ -12,8 +12,8 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class PopBallOut extends CommandBase {
   /** Creates a new PopBallOut. */
 
-  public static ShooterSubsystem shooterSubsystem;
-  public static IndexerSubsystem indexerSubsystem;
+  public ShooterSubsystem shooterSubsystem;
+  public IndexerSubsystem indexerSubsystem;
 
   public static boolean jamCleared = false;
 

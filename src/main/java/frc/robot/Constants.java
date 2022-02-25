@@ -165,6 +165,9 @@ public final class Constants {
 
     public static final int CLIMBER_TOP_TALON_CAN_ID = 45;
     public static final int CLIMBER_BOTTOM_TALON_CAN_ID = 46;
+    public static final int kTimeoutMs = 30;
+
+
 
 
     public static final int INDEXER_CAN_ID = 42;
@@ -177,6 +180,8 @@ public final class Constants {
     public static final double INDEXER_OUT_SPEED = -.5;
     public static final double INDEXER_STOP_SPEED = 0;
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
+    public static final double CLIMBER_POSITION_UP = 1;
+    public static final double CLIMBER_POSITION_DOWN = 0;
     
     
     
