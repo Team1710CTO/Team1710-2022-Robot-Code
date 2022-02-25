@@ -132,6 +132,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   }
 
+
+  public void zeroEncoder(){
+
+    climberTalonTop.setSelectedSensorPosition(0);
+
+  }
+
   
 
   public static boolean climberDrumIsRotating(){

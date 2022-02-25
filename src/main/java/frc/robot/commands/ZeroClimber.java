@@ -36,7 +36,7 @@ public class ZeroClimber extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    
+    climberSubsystem.zeroEncoder();
 
   }
 
