@@ -6,6 +6,7 @@ import frc.robot.Constants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -116,6 +117,19 @@ public class ShooterSubsystem extends SubsystemBase {
     return m_encoder.getVelocity();
   }
 
+
+  public void runShooterIn(){
+
+
+    m_pidController.setReference(-.35, ControlType.kDutyCycle);
+
+  }
+
+  public void runShooterOut(){
+
+    m_pidController.setReference(.35, ControlType.kDutyCycle);
+    
+  }
   
   
 }

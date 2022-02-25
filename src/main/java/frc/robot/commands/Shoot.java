@@ -65,7 +65,8 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3500);
+    shooterSubsystem.setSpeed(3750);
+    
     hoodSubsystem.setHoodPosition(.75);
 
     drivetrainSubsystem.drive(new ChassisSpeeds(
