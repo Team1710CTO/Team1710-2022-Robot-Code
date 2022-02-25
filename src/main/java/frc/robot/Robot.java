@@ -4,14 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PhotonVisionSubsystem;
 
 
 /**
@@ -34,9 +29,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartDashboard.putNumber("ShooterSpeed set", 1);
-
-    SmartDashboard.putNumber("hoodAngle set", .1);
+    
   }
 
   /**
@@ -97,8 +90,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     
 
-    SmartDashboard.putNumber("hood current", HoodSubsystem.m_hood_motor.getOutputCurrent());
-    SmartDashboard.putBoolean("is hood zero tripped", HoodSubsystem.isHoodCurrentOverZeroConstant());
+   
   }
 
   @Override
@@ -109,5 +101,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+
+
+
+  }
 }

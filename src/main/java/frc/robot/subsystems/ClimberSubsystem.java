@@ -110,6 +110,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
   }
 
+  public double getClimberCurrent(){
+
+    return (climberTalonTop.getSupplyCurrent() + climberTalonBottom.getSupplyCurrent()) / 2;
+  }
+
   public static boolean climberDrumIsRotating(){
 
     return false;

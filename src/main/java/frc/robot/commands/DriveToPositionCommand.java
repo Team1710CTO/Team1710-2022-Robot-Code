@@ -13,9 +13,8 @@ public class DriveToPositionCommand extends CommandBase {
   /** Creates a new DriveToPositionCommand. */
   public DrivetrainSubsystem drivetrainSubsystem;
 
-  public Pose2d currentPos2d, desiredPose2d;
+  public Pose2d desiredPose2d;
 
-  public static double xNow, yNow, rotNow;
 
   public DriveToPositionCommand(DrivetrainSubsystem drivetrainSubsystem, Pose2d desiredPose2d) {
 
