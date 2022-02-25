@@ -80,7 +80,7 @@ public class RobotContainer {
             .whenPressed(new ZeroHood(mHoodSubsystem));
 
     new Button(m_controller::getRightBumper)
-            .whenHeld(new Intake(mIntakeSubsystem));
+            .whenHeld(new Intake(mIntakeSubsystem, m_drivetrainSubsystem, mPhotonVisionSubsystem));
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));

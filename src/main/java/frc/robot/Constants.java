@@ -152,10 +152,9 @@ public final class Constants {
  public static double SHOOTER_kMaxOutput = 1; // GOOD
  public static double SHOOTER_kMinOutput = -1; // GOOD
  public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
- public static double SHOOTER_abnormal_abnormal_current_draw = 10;
- 
- 
-    public static final double SHOOTER_GO_THRESHHOLD = 100;
+ public static double SHOOTER_abnormal_abnormal_current_draw = 10;      
+
+    public static final double SHOOTER_GO_THRESHHOLD = 50;
     
     
 
