@@ -54,6 +54,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("climber Position", climberTalonTop.getSelectedSensorPosition());
 
+    SmartDashboard.putNumber("climber  current", getClimberCurrent());
+
   }
 
   public static void lockClimber(){
@@ -113,7 +115,24 @@ public class ClimberSubsystem extends SubsystemBase {
   public double getClimberCurrent(){
 
     return (climberTalonTop.getSupplyCurrent() + climberTalonBottom.getSupplyCurrent()) / 2;
+
   }
+
+  public boolean isOverZeroLimitCurrentLimit(){
+
+    if(getClimberCurrent() > Constants.CLIMBER_ZERO_THRESHOLD){
+
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
+
+  
 
   public static boolean climberDrumIsRotating(){
 

@@ -18,19 +18,17 @@ public class Intake extends CommandBase {
 
   public DrivetrainSubsystem drivetrainSubsystem;
 
-  public PhotonVisionSubsystem photonVisionSubsystem;
+  
 
   public PIDController rotationPidController, movePidController;
 
   /** Creates a new IntakeDown. */
-  public Intake(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem,
-      PhotonVisionSubsystem photonVisionSubsystem) {
+  public Intake(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.intakeSubsystem = intakeSubsystem;
-    this.photonVisionSubsystem = photonVisionSubsystem;
     this.drivetrainSubsystem = drivetrainSubsystem;
 
-    addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem);
+    addRequirements(intakeSubsystem, drivetrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -46,23 +44,9 @@ public class Intake extends CommandBase {
   @Override
   public void execute() {
     // indexerSubsystem.runIndexerIn();
-    if (PhotonVisionSubsystem.doesIntakeSeeBall()) {
-      boolean consume;
-      if (PhotonVisionSubsystem.getYDisplacementOfBall() < 0) { //CHANGE THE DISTANCE
         intakeSubsystem.setintakeDown();
-        //intakeSubsystem.runIntake();
-        consume = true;
-      } else {
-        intakeSubsystem.setIntakeUp();
-        //intakeSubsystem.stopIntakeRunner();
-        drivetrainSubsystem.drive(new ChassisSpeeds(
-            -movePidController.calculate(PhotonVisionSubsystem.getYDisplacementOfBall()),
-            0,
-            -rotationPidController.calculate(photonVisionSubsystem.getXDisplacementOfBall())));
-            consume = false;
-      }
-      SmartDashboard.putBoolean("CONSUME", consume);
-    }
+        intakeSubsystem.runIntake();
+
 
   }
 

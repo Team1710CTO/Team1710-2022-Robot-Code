@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
-
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*; // import all commands 
 
 
@@ -34,8 +33,9 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
   
-  public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
+  //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
+  public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -68,22 +68,28 @@ public class RobotContainer {
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
+
+    new Button(m_controller::getBButton)
+            .whenHeld(new ClimbUpPower(mClimberSubsystem));
+
+    new Button(m_controller::getYButton)
+            .whenHeld(new ClimbDownPower(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
-            .whenPressed(new ZeroIntake(mIntakeSubsystem));
-
-    new Button(m_controller::getYButton)
+            .whenPressed(new ZeroIntake(mIntakeSubsystem))
             .whenPressed(new ZeroHood(mHoodSubsystem));
 
+            
+
     new Button(m_controller::getRightBumper)
-            .whenHeld(new Intake(mIntakeSubsystem, m_drivetrainSubsystem, mPhotonVisionSubsystem));
+            .whenHeld(new Intake(mIntakeSubsystem, m_drivetrainSubsystem));
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
-    new Button(m_controller::getAButton)
-            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, m_drivetrainSubsystem, mPhotonVisionSubsystem));
+    //new Button(m_controller::getAButton)
+    //        .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, m_drivetrainSubsystem, mPhotonVisionSubsystem));
 
     
 
