@@ -49,9 +49,9 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(5500);
+    shooterSubsystem.setSpeed(4000);
     
-    hoodSubsystem.setHoodPosition(1);
+    hoodSubsystem.setHoodPosition(.4);
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
