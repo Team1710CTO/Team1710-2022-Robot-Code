@@ -112,9 +112,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static Pose2d m_pose;
 
+
   public static int pidActivationIterator = 0;
 
   public DrivetrainSubsystem() {
+
+
+        
     
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
@@ -199,7 +203,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //temp
         
         //modify heading control
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false); // heading control
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true); // heading control
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 
@@ -207,6 +211,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //SmartDashboard.putNumber("rotation PID output", headingControlModifier(true, m_chassisSpeeds));
 
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+
+       
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
         m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
@@ -216,11 +222,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         m_pose = m_odometry.update(
                 GyroSubsystem.getBestRotation2d(), 
-                states[0], 
-                states[1],
-                states[2], 
-                states[3]
+                stateFromModule(m_frontLeftModule), 
+                stateFromModule(m_frontRightModule),
+                stateFromModule(m_backLeftModule), 
+                stateFromModule(m_backRightModule)
             );
+
+            SmartDashboard.putNumber("front Left Velovity", m_frontLeftModule.getDriveVelocity());
 
             SmartDashboard.putNumber("estimated position X", m_pose.getX());
             SmartDashboard.putNumber("estimated position Y", m_pose.getY());
@@ -229,9 +237,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void resetOdometry(){
 
-        m_odometry.resetPosition(new Pose2d(0,0, null), new Rotation2d(0));
+        m_odometry.resetPosition(new Pose2d(), new Rotation2d());
 
   }
+
+  private SwerveModuleState stateFromModule(SwerveModule swerveModule) {
+        return new SwerveModuleState(swerveModule.getDriveVelocity(), new Rotation2d(swerveModule.getSteerAngle()));
+}
 
 
   public static double headingControlModifier(boolean active){
@@ -249,6 +261,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         pidActivationIterator = 0; //set iterator to zero
                         SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
 
+                        SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
+                        SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+
                         return m_chassisSpeeds.omegaRadiansPerSecond; //return
 
                 } else {
@@ -256,7 +271,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         //iterate iterator if its not already over our iterator threshold
                         //if(pidActivationIterator < (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
                                 //iterate
-                        pidActivationIterator += 1;  
+                        pidActivationIterator += 1; 
+                        SmartDashboard.putNumber("iterator", pidActivationIterator); 
 
                         //}   
 
@@ -264,10 +280,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         if(pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD){
                                 
                                 SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
+
                                 SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
                                 SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+
+                                SmartDashboard.putNumber("rot Error", rotationPidController.getPositionError());
+                                
                                 //PID Error computed using last gyro and goal gyros stored from other loops and current
-                                return m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                                return m_chassisSpeeds.omegaRadiansPerSecond = -rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+
+                                
                 
                         } else {
 
@@ -283,6 +305,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return m_chassisSpeeds.omegaRadiansPerSecond;
         }
 
+
+        
         
         
   }

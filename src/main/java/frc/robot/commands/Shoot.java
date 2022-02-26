@@ -26,24 +26,14 @@ public class Shoot extends CommandBase {
 
   public IndexerSubsystem indexerSubsystem;
 
-  public DrivetrainSubsystem drivetrainSubsystem;
-
-  public PhotonVisionSubsystem photonVisionSubsystem;
-
-  public static PIDController rotationPidController, distancePidController;
-
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem,
-      DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
+  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
 
-    this.drivetrainSubsystem = drivetrainSubsystem;
 
-    this.photonVisionSubsystem = photonVisionSubsystem;
-
-    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, drivetrainSubsystem, photonVisionSubsystem);
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -51,8 +41,7 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
 
-    rotationPidController = new PIDController(.3, .0005, .00001);
-    distancePidController = new PIDController(.4, .001, 0);
+    
 
   }
 
@@ -60,14 +49,9 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3750);
+    shooterSubsystem.setSpeed(5500);
     
-    hoodSubsystem.setHoodPosition(.75);
-
-    drivetrainSubsystem.drive(new ChassisSpeeds(
-        0,
-        0,
-        -rotationPidController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
+    hoodSubsystem.setHoodPosition(1);
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 

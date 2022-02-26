@@ -68,13 +68,13 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public void runIndexerIn(){
+  public static void runIndexerIn(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_IN_SPEED, ControlType.kDutyCycle);
 
   }
 
-  public void runIndexerOut(){
+  public static void runIndexerOut(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_OUT_SPEED, ControlType.kDutyCycle);
 
@@ -103,7 +103,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void indexBallsBetweenBreaks(){
 
-    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped() && !isIndexerCycled()){
+    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped()){
 
       runIndexerIn();
 

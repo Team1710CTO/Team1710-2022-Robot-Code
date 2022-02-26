@@ -84,13 +84,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void runUp(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, .5);
+    climberTalonTop.set(ControlMode.PercentOutput, .31);
 
   }
 
   public void runDown(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, -.5);
+    climberTalonTop.set(ControlMode.PercentOutput, -.31);
 
   }
 

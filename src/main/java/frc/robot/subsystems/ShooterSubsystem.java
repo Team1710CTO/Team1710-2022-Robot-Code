@@ -25,7 +25,11 @@ public class ShooterSubsystem extends SubsystemBase {
     m_motor = new CANSparkMax(Constants.SHOOTER_CAN_ID, MotorType.kBrushless);
     m_motor.restoreFactoryDefaults();
 
+
+
     m_pidController = m_motor.getPIDController();
+
+    
 
     // Encoder object created to track and display current RPM
     m_encoder = m_motor.getEncoder();

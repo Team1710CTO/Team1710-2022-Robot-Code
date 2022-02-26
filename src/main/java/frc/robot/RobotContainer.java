@@ -69,27 +69,29 @@ public class RobotContainer {
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
 
-    new Button(m_controller::getBButton)
-            .whenHeld(new ClimbUpPower(mClimberSubsystem));
-
-    new Button(m_controller::getYButton)
-            .whenHeld(new ClimbDownPower(mClimberSubsystem));
+    //new Button(m_controller::getBButton)
+    //        .whenHeld(new ClimbUpPower(mClimberSubsystem));
+//
+    //new Button(m_controller::getYButton)
+    //        .whenHeld(new ClimbDownPower(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
             .whenPressed(new ZeroIntake(mIntakeSubsystem))
-            .whenPressed(new ZeroHood(mHoodSubsystem));
+            .whenPressed(new ZeroHood(mHoodSubsystem))
+            .whenPressed(m_drivetrainSubsystem::resetOdometry);
+           
 
             
 
     new Button(m_controller::getRightBumper)
-            .whenHeld(new Intake(mIntakeSubsystem, m_drivetrainSubsystem));
+            .whenHeld(new Intake(mIntakeSubsystem));
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
-    //new Button(m_controller::getAButton)
-    //        .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, m_drivetrainSubsystem, mPhotonVisionSubsystem));
+    new Button(m_controller::getAButton)
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     
 
