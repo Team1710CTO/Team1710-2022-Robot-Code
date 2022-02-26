@@ -16,8 +16,12 @@ public class ledSubsystem extends SubsystemBase {
   public ledSubsystem() {
   }
 
-  public static AddressableLED m_led = new AddressableLED(9);
-  public static AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(50);
+  public static AddressableLED m_led_l = new AddressableLED(1);
+  //public static AddressableLED //m_led_r = new AddressableLED(2);
+
+  public static AddressableLEDBuffer m_ledBuffer_l = new AddressableLEDBuffer(19);
+  //public static AddressableLEDBuffer //m_ledBuffer_r = new AddressableLEDBuffer(19);
+
   public final Timer m_timer = new Timer();
 
   int count = 0;
@@ -39,7 +43,8 @@ public class ledSubsystem extends SubsystemBase {
   public void setLength() {
     m_timer.reset();
     m_timer.start();
-    m_led.setLength(m_ledBuffer.getLength());
+    m_led_l.setLength(m_ledBuffer_l.getLength());
+    //m_led_r.setLength(//m_ledBuffer_r.getLength());
 
   }
 
@@ -63,13 +68,18 @@ public class ledSubsystem extends SubsystemBase {
 
   public void solid(int red, int green, int blue) {
 
-    for (int i = 0; i < (m_ledBuffer.getLength()); i++) {
+    for (int i = 0; i < (m_ledBuffer_l.getLength()); i++) {
       // Sets the specified LED to the RGB values for red
-      m_ledBuffer.setRGB(i, red, green, blue);
+      m_ledBuffer_l.setRGB(i, red, green, blue);
     }
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    
+
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+
+    //m_led_r.setData(//m_ledBuffer_r);
+    //m_led_r.start();
   }
 
   public void orbit(int red, int green, int blue) {
@@ -81,16 +91,20 @@ public class ledSubsystem extends SubsystemBase {
     }
     int num = (int) (10 * m_timer.get());
 
-    int i = (num % m_ledBuffer.getLength()) + 1;
+    int i = (num % m_ledBuffer_l.getLength()) + 1;
     // Sets the specified LED to the RGB values for red
-    m_ledBuffer.setRGB(i, red, green, blue);
+    m_ledBuffer_l.setRGB(i, red, green, blue);
+    //m_ledBuffer_r.setRGB(i, red, green, blue);
 
-    int j = (num % m_ledBuffer.getLength());
+    int j = (num % m_ledBuffer_l.getLength());
     // Sets the specified LED to the RGB values for red
-    m_ledBuffer.setRGB(j, 0, 0, 0);
+    m_ledBuffer_l.setRGB(j, 0, 0, 0);
+    //m_ledBuffer_r.setRGB(j, 0, 0, 0);
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+    //m_led_r.setData(m_ledBuffer_l);
+    //m_led_r.start();
     counter++;
   }
 
@@ -98,47 +112,59 @@ public class ledSubsystem extends SubsystemBase {
     int num = (int) (8 * m_timer.get());
 
     if (num % 3 == 0) {
-      for (int e = 0; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, red, green, blue);
+      for (int e = 0; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, red, green, blue);
+        //m_ledBuffer_r.setRGB(e, red, green, blue);
       }
-      for (int o = 1; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, red_bg, green_bg, blue_bg);
+      for (int o = 1; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(o, red_bg, green_bg, blue_bg);
       }
-      for (int o = 2; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, red_bg, green_bg, blue_bg);
+      for (int o = 2; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(o, red_bg, green_bg, blue_bg);
       }
 
     } else if (num % 3 == 1) {
-      for (int o = 0; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, red_bg, green_bg, blue_bg);
+      for (int o = 0; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(o, red_bg, green_bg, blue_bg);
       }
-      for (int o = 1; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, red_bg, green_bg, blue_bg);
+      for (int o = 1; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(o, red_bg, green_bg, blue_bg);
       }
-      for (int e = 2; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, red, green, blue);
+      for (int e = 2; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(e, red_bg, green_bg, blue_bg);
       }
 
     } else if (num % 3 == 2) {
-      for (int o = 0; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, red_bg, green_bg, blue_bg);
+      for (int o = 0; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(o, red_bg, green_bg, blue_bg);
       }
-      for (int e = 1; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, red, green, blue);
+      for (int e = 1; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(e, red_bg, green_bg, blue_bg);
       }
-      for (int o = 2; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, red_bg, green_bg, blue_bg);
+      for (int o = 2; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, red_bg, green_bg, blue_bg);
+        //m_ledBuffer_r.setRGB(o, red_bg, green_bg, blue_bg);
       }
 
     }
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+
+    //m_led_r.setData(//m_ledBuffer_r);
+    //m_led_r.start();
   }
 
   public void knightRider(int red, int green, int blue) {
     if (counter == 2){
-      //counter == 2.4 * (m_ledBuffer.getLength())) {
+      //counter == 2.4 * (m_ledBuffer_l.getLength())) {
       m_timer.reset();
       m_timer.start();
       solid(0, 0, 0);
@@ -150,36 +176,42 @@ public class ledSubsystem extends SubsystemBase {
 
     if (kitt % 2 == 0) {
 
-      int i = (num % m_ledBuffer.getLength()) + 1;
+      int i = (num % m_ledBuffer_l.getLength()) + 1;
       // Sets the specified LED to the RGB values for red
-      m_ledBuffer.setRGB(i, red, green, blue);
+      m_ledBuffer_l.setRGB(i, red, green, blue);
+      //m_ledBuffer_r.setRGB(i, red, green, blue);
 
-      int j = (num % m_ledBuffer.getLength());
+      int j = (num % m_ledBuffer_l.getLength());
       // Sets the specified LED to the RGB values for red
-      m_ledBuffer.setRGB(j, 0, 0, 0);
+      m_ledBuffer_l.setRGB(j, 0, 0, 0);
+      //m_ledBuffer_r.setRGB(j, 0, 0, 0);
 
     } else if (kitt % 2 == 1) {
 
-      int k = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength()))-0;
+      int k = (m_ledBuffer_l.getLength() - (num % m_ledBuffer_l.getLength()))-0;
       // Sets the specified LED to the RGB values for red
-      m_ledBuffer.setRGB(k, red, green, blue);
+      m_ledBuffer_l.setRGB(k, red, green, blue);
+      //m_ledBuffer_r.setRGB(k, red, green, blue);
 
-      //int j = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength()));
+      //int j = (m_ledBuffer_l.getLength() - (num % m_ledBuffer_l.getLength()));
       //// Sets the specified LED to the RGB values for red
       //m_ledBuffer.setRGB(j, 0, 0, 0);
 
-      // int i = (num % m_ledBuffer.getLength()) + 1;
+      // int i = (num % m_ledBuffer_l.getLength()) + 1;
       // // Sets the specified LED to the RGB values for red
       // m_ledBuffer.setRGB(i, red, green, blue);
 
-      // int j = (num % m_ledBuffer.getLength());
+      // int j = (num % m_ledBuffer_l.getLength());
       // // Sets the specified LED to the RGB values for red
       // m_ledBuffer.setRGB(j, 0, 0, 0);
 
     }
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+
+    //m_led_r.setData(//m_ledBuffer_r);
+    //m_led_r.start();
 
     counter++;
   }
@@ -188,19 +220,24 @@ public class ledSubsystem extends SubsystemBase {
     int num = (int) (2 * (blinksPerSecond) * m_timer.get());
 
     if (num % 2 == 0) {
-      for (int i = 0; i < (m_ledBuffer.getLength()); i++) {
+      for (int i = 0; i < (m_ledBuffer_l.getLength()); i++) {
         // Sets the specified LED to the RGB values for red
         // Maybe actually rbg? code is weird
-        m_ledBuffer.setRGB(i, red, green, blue);
+        m_ledBuffer_l.setRGB(i, red, green, blue);
+        //m_ledBuffer_r.setRGB(i, red, green, blue);
       }
     } else {
-      for (int i = 0; i < (m_ledBuffer.getLength()); i++) {
+      for (int i = 0; i < (m_ledBuffer_l.getLength()); i++) {
         // Sets the specified LED to the RGB values for red
-        m_ledBuffer.setRGB(i, 0, 0, 0);
+        m_ledBuffer_l.setRGB(i, 0, 0, 0);
+        //m_ledBuffer_r.setRGB(i, 0, 0, 0);
       }
     }
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+
+    //m_led_r.setData(//m_ledBuffer_r);
+    //m_led_r.start();
   }
 
   public void rainbow() {
@@ -273,56 +310,72 @@ public class ledSubsystem extends SubsystemBase {
       bb = b;
     }
 
-    for (var bg = 0; bg < (m_ledBuffer.getLength()); bg++) {
+    for (var bg = 0; bg < (m_ledBuffer_l.getLength()); bg++) {
 
       // Sets the specified LED to the RGB values for red
-      m_ledBuffer.setRGB(bg, rr, gg, bb);
+      m_ledBuffer_l.setRGB(bg, rr, gg, bb);
+      //m_ledBuffer_r.setRGB(bg, rr, gg, bb);
 
     }
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+
+    //m_led_r.setData(//m_ledBuffer_r);
+    //m_led_r.start();
   }
 
   public void alt() {
     int num = (int) (8 * m_timer.get());
 
     if (num % 3 == 0) {
-      for (int e = 0; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, 200, 0, 0);
+      for (int e = 0; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, 200, 0, 0);
+        //m_ledBuffer_r.setRGB(e, 200, 0, 0);
       }
-      for (int o = 1; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, 0, 200, 0);
+      for (int o = 1; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, 0, 200, 0);
+        //m_ledBuffer_r.setRGB(o, 0, 200, 0);
       }
-      for (int e = 2; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, 0, 0, 200);
+      for (int e = 2; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, 0, 0, 200);
+        //m_ledBuffer_r.setRGB(e, 0, 0, 200);
       }
 
     } else if (num % 3 == 1) {
-      for (int e = 0; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, 0, 200, 0);
+      for (int e = 0; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, 0, 200, 0);
+        //m_ledBuffer_r.setRGB(e, 0, 200, 0);
       }
-      for (int o = 1; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, 0, 0, 200);
+      for (int o = 1; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, 0, 0, 200);
+        //m_ledBuffer_r.setRGB(o, 0, 0, 200);
       }
-      for (int e = 2; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, 200, 0, 0);
+      for (int e = 2; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, 200, 0, 0);
+        //m_ledBuffer_r.setRGB(e, 200, 0, 0);
       }
 
     } else if (num % 3 == 2) {
-      for (int e = 0; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, 0, 0, 200);
+      for (int e = 0; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, 0, 0, 200);
+        //m_ledBuffer_r.setRGB(e, 0, 0, 200);
       }
-      for (int o = 1; o < (m_ledBuffer.getLength()); o += 3) {
-        m_ledBuffer.setRGB(o, 200, 0, 0);
+      for (int o = 1; o < (m_ledBuffer_l.getLength()); o += 3) {
+        m_ledBuffer_l.setRGB(o, 200, 0, 0);
+        //m_ledBuffer_r.setRGB(o, 200, 0, 0);
       }
-      for (int e = 2; e < (m_ledBuffer.getLength()); e += 3) {
-        m_ledBuffer.setRGB(e, 0, 200, 0);
+      for (int e = 2; e < (m_ledBuffer_l.getLength()); e += 3) {
+        m_ledBuffer_l.setRGB(e, 0, 200, 0);
+        //m_ledBuffer_r.setRGB(e, 0, 200, 0);
       }
 
     }
 
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led_l.setData(m_ledBuffer_l);
+    m_led_l.start();
+
+    //m_led_r.setData(//m_ledBuffer_r);
+    //m_led_r.start();
   }
 }
