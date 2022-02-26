@@ -5,16 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class DefaultIndexerCommand extends CommandBase {
-  /** Creates a new DefaultIndexerCommand. */
-  public IndexerSubsystem indexerSubsystem;
+public class ZeroClimber extends CommandBase {
+  /** Creates a new ZeroClimber. */
 
-  public DefaultIndexerCommand(IndexerSubsystem indexerSubsystem) {
+  private ClimberSubsystem climberSubsystem;
 
-    this.indexerSubsystem = indexerSubsystem;
-    addRequirements(indexerSubsystem);
+  public ZeroClimber(ClimberSubsystem climberSubsystem) {
+
+    this.climberSubsystem = climberSubsystem;
+     
+    addRequirements(climberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,17 +28,23 @@ public class DefaultIndexerCommand extends CommandBase {
   @Override
   public void execute() {
 
-    indexerSubsystem.indexBallsBetweenBreaks();
+    climberSubsystem.runDown();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    climberSubsystem.zeroEncoder();
+
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+
+    return climberSubsystem.isOverZeroLimitCurrentLimit();
+    
   }
 }

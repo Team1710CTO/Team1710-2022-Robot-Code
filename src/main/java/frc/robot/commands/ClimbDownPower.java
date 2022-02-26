@@ -3,30 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
- 
-import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-import frc.robot.subsystems.DrivetrainSubsystem;
+public class ClimbDownPower extends CommandBase {
+  /** Creates a new Climb. */
 
-public class Intake extends CommandBase {
+  private ClimberSubsystem climberSubsystem;
 
-  public IntakeSubsystem intakeSubsystem;
+  public ClimbDownPower(ClimberSubsystem climberSubsystem) {
 
-  public DrivetrainSubsystem drivetrainSubsystem;
+    this.climberSubsystem = climberSubsystem;
 
-  
-
-  public PIDController rotationPidController, movePidController;
-
-  /** Creates a new IntakeDown. */
-  public Intake(IntakeSubsystem intakeSubsystem) {
-
-    this.intakeSubsystem = intakeSubsystem;
-
-    addRequirements(intakeSubsystem);
+    addRequirements(climberSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,15 +24,15 @@ public class Intake extends CommandBase {
   @Override
   public void initialize() {
     
+
   }
- 
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // indexerSubsystem.runIndexerIn();
-        intakeSubsystem.setintakeDown();
-        intakeSubsystem.runIntake();
 
+
+    climberSubsystem.runDown();
 
   }
 
@@ -50,9 +40,7 @@ public class Intake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    intakeSubsystem.setIntakeUp();
-    intakeSubsystem.intakeRest();
-    // indexerSubsystem.stopIndexer();
+    climberSubsystem.stop();
 
   }
 

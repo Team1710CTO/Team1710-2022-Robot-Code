@@ -4,39 +4,64 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax.ControlType;
+
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DrivetrainSubsystem;
+
 import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Shoot extends CommandBase {
   /** Creates a new Shoot. */
 
-  public static HoodSubsystem hoodSubsystem;
-  public static ShooterSubsystem shooterSubsystem;
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem) {
+  public ShooterSubsystem shooterSubsystem;
 
-    this.hoodSubsystem = hoodSubsystem;
+  public HoodSubsystem hoodSubsystem;
+
+  public IndexerSubsystem indexerSubsystem;
+
+  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
+
+    this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
+    this.hoodSubsystem = hoodSubsystem;
 
-    addRequirements(hoodSubsystem, shooterSubsystem);
+
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3000);
+    shooterSubsystem.setSpeed(4000);
+    
+    hoodSubsystem.setHoodPosition(.4);
 
-  
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
+        indexerSubsystem.runIndexerIn();
 
+    } else {
+
+      indexerSubsystem.stopIndexer();
+
+    }
 
   }
 
@@ -45,8 +70,8 @@ public class Shoot extends CommandBase {
   public void end(boolean interrupted) {
 
     shooterSubsystem.disableShooter();
-
-  
+    hoodSubsystem.setHoodPosition(0.1);
+    indexerSubsystem.stopIndexer();
 
   }
 

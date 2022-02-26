@@ -4,12 +4,10 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -17,11 +15,9 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import java.io.Console;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -108,11 +104,18 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public static void stopIntakeRunner(){
+  private static void stopIntakeRunner(){
 
     m_intakeRunner.set(ControlMode.PercentOutput, Constants.INTAKE_RUNNER_SPEED_OFF);
 
     
+  }
+
+  public void intakeRest(){
+
+    m_intakeRunner.set(ControlMode.PercentOutput, Constants.INTAKE_RUNNER_SPEED_OFF);
+    
+
   }
 
   public static void runIntakeRunner(){
@@ -123,7 +126,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
 
-  public static void setIntakeUp(){
+  public void setIntakeUp(){
 
     if(isZeroed){
 
@@ -140,7 +143,7 @@ public class IntakeSubsystem extends SubsystemBase {
  
   }
 
-  public static void setintakeDown(){
+  public void setintakeDown(){
 
     if(isZeroed){
 
@@ -157,7 +160,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public static void zeroRotations(){
+  public void zeroRotations(){
 
     m_actuatorRight_encoder.setPosition(-4);
     m_actuatorLeft_encoder.setPosition(4);
@@ -180,7 +183,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public static void runIntakeDown(double cycle){
+  public void runIntakeDown(double cycle){
 
     m_actuatorLeft_PidController.setReference(-cycle, CANSparkMax.ControlType.kDutyCycle);
     m_actuatorRight_PidController.setReference(cycle, CANSparkMax.ControlType.kDutyCycle);
@@ -234,7 +237,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public static boolean isIntakeStalledCurrent(){
+  public boolean isIntakeStalledCurrent(){
 
     if(Math.abs(getIntakeActuatorCurrent()) > (Constants.INTAKE_CURRENT_LIMIT-1)){
       

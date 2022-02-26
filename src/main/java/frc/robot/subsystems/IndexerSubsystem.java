@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -15,9 +14,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IndexerSubsystem extends SubsystemBase {
@@ -63,6 +60,10 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("bottomBeamBreak", bottomBeamBreak.get());
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
+    SmartDashboard.putNumber("indexer Rotations", getIndexerRotations());
+
+    SmartDashboard.putBoolean("is cycled", isIndexerCycled());
+
 
 
   }
@@ -80,9 +81,11 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
 
-  public static void stopIndexer(){
+  public void stopIndexer(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_STOP_SPEED, ControlType.kDutyCycle);
+
+    m_indexerRunner_encoder.setPosition(0.0);
 
   }
 
@@ -92,15 +95,15 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public static boolean isTopBeakBreakTripped(){
+  public boolean isTopBeakBreakTripped(){
 
     return topBeamBreak.get();
 
   }
 
-  public static void indexBall(){
+  public void indexBallsBetweenBreaks(){
 
-    if(isBottomBeakBreakTripped() && !isTopBeakBreakTripped()){
+    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped()){
 
       runIndexerIn();
 
@@ -110,6 +113,18 @@ public class IndexerSubsystem extends SubsystemBase {
 
     }
 
+
+  }
+
+  public static double getIndexerRotations(){
+
+    return m_indexerRunner_encoder.getPosition();
+
+  }
+
+  public boolean isIndexerCycled(){
+
+    return (getIndexerRotations() > Constants.INDEXER_CYCLE_ROTATIONS);
 
   }
 

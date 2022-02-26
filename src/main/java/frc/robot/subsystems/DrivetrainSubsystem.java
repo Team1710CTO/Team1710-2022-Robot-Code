@@ -4,12 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
-import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-import java.util.Timer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,17 +14,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import edu.wpi.first.math.controller.PIDController;
 
-import java.util.TreeSet;
 
 import static frc.robot.Constants.*;
 
@@ -53,7 +47,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
   public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
   
-  public static PIDController rotationPidController = new PIDController(Constants.ROTATION_PID_CONTOLLER_kP, Constants.ROTATION_PID_CONTOLLER_kI, Constants.ROTATION_PID_CONTOLLER_kD);
+  public static PIDController rotationPidController = new PIDController(
+          Constants.ROTATION_PID_CONTOLLER_kP, 
+          Constants.ROTATION_PID_CONTOLLER_kI, 
+          Constants.ROTATION_PID_CONTOLLER_kD
+        );
+  public static PIDController xPidController = new PIDController(
+          .4, 
+          .0001, 
+          .001
+        );
+  public static PIDController yPidController = new PIDController(
+          .0001, 
+          .4, 
+          .001
+        );
 
    
   
@@ -100,13 +108,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private static ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  public static SwerveDriveOdometry m_odometry;
+  public SwerveDriveOdometry m_odometry;
 
   public static Pose2d m_pose;
+
 
   public static int pidActivationIterator = 0;
 
   public DrivetrainSubsystem() {
+
+
+        
     
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
@@ -199,6 +211,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //SmartDashboard.putNumber("rotation PID output", headingControlModifier(true, m_chassisSpeeds));
 
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+
+       
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
         m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
@@ -208,22 +222,32 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         m_pose = m_odometry.update(
                 GyroSubsystem.getBestRotation2d(), 
-                states[0], 
-                states[1],
-                states[2], 
-                states[3]
+                stateFromModule(m_frontLeftModule), 
+                stateFromModule(m_frontRightModule),
+                stateFromModule(m_backLeftModule), 
+                stateFromModule(m_backRightModule)
             );
+
+            SmartDashboard.putNumber("front Left Velovity", m_frontLeftModule.getDriveVelocity());
 
             SmartDashboard.putNumber("estimated position X", m_pose.getX());
             SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
   }
 
+  public void resetOdometry(){
+
+        m_odometry.resetPosition(new Pose2d(), new Rotation2d());
+
+  }
+
+  private SwerveModuleState stateFromModule(SwerveModule swerveModule) {
+        return new SwerveModuleState(swerveModule.getDriveVelocity(), new Rotation2d(swerveModule.getSteerAngle()));
+}
+
 
   public static double headingControlModifier(boolean active){
 
-        SmartDashboard.putNumber("goalGyro", goalGyro.getDegrees());
-        SmartDashboard.putNumber("lastGyro", lastGyro.getDegrees());
         if(active){
 
                 lastGyro = GyroSubsystem.getBestRotation2d(); //store last gyro heading
@@ -237,6 +261,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         pidActivationIterator = 0; //set iterator to zero
                         SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
 
+                        SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
+                        SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+
                         return m_chassisSpeeds.omegaRadiansPerSecond; //return
 
                 } else {
@@ -244,7 +271,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         //iterate iterator if its not already over our iterator threshold
                         //if(pidActivationIterator < (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
                                 //iterate
-                        pidActivationIterator += 1;  
+                        pidActivationIterator += 1; 
+                        SmartDashboard.putNumber("iterator", pidActivationIterator); 
 
                         //}   
 
@@ -252,10 +280,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         if(pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD){
                                 
                                 SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
+
                                 SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
                                 SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+
+                                SmartDashboard.putNumber("rot Error", rotationPidController.getPositionError());
+                                
                                 //PID Error computed using last gyro and goal gyros stored from other loops and current
-                                return m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                                return m_chassisSpeeds.omegaRadiansPerSecond = -rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+
+                                
                 
                         } else {
 
@@ -271,8 +305,36 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return m_chassisSpeeds.omegaRadiansPerSecond;
         }
 
+
+        
+        
         
   }
-  
+ 
+  public void DriveToPosition(Pose2d desiredPose2d){
+
+        drive(ChassisSpeeds.fromFieldRelativeSpeeds(
+                xPidController.calculate(m_odometry.getPoseMeters().getX(), desiredPose2d.getX()), 
+                yPidController.calculate(m_odometry.getPoseMeters().getY(), desiredPose2d.getY()), 
+                rotationPidController.calculate(GyroSubsystem.getBestRotation2d().getDegrees(), desiredPose2d.getRotation().getDegrees()),
+                GyroSubsystem.getBestRotation2d()
+                
+        ));
+  }
+
+  public boolean isInPosition(Pose2d desiredPose2d){
+
+
+        if((Math.abs(m_odometry.getPoseMeters().getX() - desiredPose2d.getX())) < .1 && (Math.abs(m_odometry.getPoseMeters().getY() - desiredPose2d.getY())) < .1){
+      
+                return true;
+          
+        } else {
+
+                return false;
+
+        }
+
+  }
 
 }

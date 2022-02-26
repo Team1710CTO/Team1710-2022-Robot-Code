@@ -11,25 +11,57 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     static PhotonCamera Cameron = new PhotonCamera("Cameron"); // SHOOTER CAM
     static PhotonCamera Camille = new PhotonCamera("Camille"); // INTAKE CAM
 
+    @Override
+    public void periodic() {
+
+        getDistanceToGoalMeters(0);
+        getXDisplacementOfGoal();
+        // getDistanceToBallMeters();
+
+    }
+
     public static double getDistanceToGoalMeters(double odometryDistance) {
-        double DisToTargetMeters = odometryDistance; // Sets a default value when no targets are seen
+        double groundDisToTarget;
         var resultCameron = Cameron.getLatestResult(); // Gets the camera's results
         if (resultCameron.hasTargets()) {
             // Distance to target calculation
-            double cameraHeightMeters = .66; // TODO
+            double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
             double targetHeightMeters = 2.6035; // the actual height
-            double cameraPitchRadians = Units.degreesToRadians(20); // TODO
+            double cameraPitchRadians = Units.degreesToRadians(35); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCameron.getBestTarget().getPitch());
-            DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,cameraPitchRadians, targetPitchRadians);
-            SmartDashboard.putNumber("Dis To Target", DisToTargetMeters); // Puts the distance to SmartDashboard
+            double DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters,
+                    targetHeightMeters, cameraPitchRadians, targetPitchRadians);
+            groundDisToTarget = Math.abs(DisToTargetMeters * Math.cos(resultCameron.getBestTarget().getPitch()));
+            SmartDashboard.putNumber("Ground Distance To Target", groundDisToTarget); // Puts the distance to
+                                                                                      // SmartDashboard
+        } else {
+            groundDisToTarget = odometryDistance; // Sets a default value when no targets are seen
         }
-        return DisToTargetMeters; // Returns the distance to the goal
+        return groundDisToTarget; // Returns the distance to the goal
     }
 
     public double getXDisplacementOfGoal() {
         var resultsCameron = Cameron.getLatestResult();
-        double XDisplacementOfGoal = resultsCameron.getBestTarget().getYaw();
+        double XDisplacementOfGoal = 0;
+        if (resultsCameron.hasTargets()) {
+            XDisplacementOfGoal = resultsCameron.getBestTarget().getYaw();
+        } else {
+            XDisplacementOfGoal = 0;
+        }
+        SmartDashboard.putNumber("xdisplacement", XDisplacementOfGoal);
         return XDisplacementOfGoal; // Returns the X displacement from the center of the camera's view to the goal
+    }
+
+    public double getYDisplacementOfGoal() {
+        var resultsCameron = Cameron.getLatestResult();
+
+        double YDisplacementOfGoal = 0;
+        if (resultsCameron.hasTargets()) {
+            YDisplacementOfGoal = resultsCameron.getBestTarget().getPitch();
+        } else {
+            YDisplacementOfGoal = 0;
+        }
+        return YDisplacementOfGoal; // Returns the X displacement from the center of the camera's view to the goal
     }
 
     public void setAlliancePipelinesRed() {
@@ -40,18 +72,52 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         Camille.setPipelineIndex(2); // Pipeline that tracks blue balls
     }
 
-    public double getDistanceToBallMeters() {
+    public static double getDistanceToBallMeters() {
         double DisToTargetMeters = 0; // Sets a default value when no targets are seen
         var resultCamille = Camille.getLatestResult(); // Gets the camera's results
         if (resultCamille.hasTargets()) {
             // Distance to target calculation
-            double cameraHeightMeters = .9; // TODO
-            double targetHeightMeters = 0.15; // TODO
-            double cameraPitchRadians = Units.degreesToRadians(20); // TODO
+            double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
+            double targetHeightMeters = 0.075; // TODO
+            double cameraPitchRadians = Units.degreesToRadians(110); // TODO
             double targetPitchRadians = Units.degreesToRadians(resultCamille.getBestTarget().getPitch());
-            DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,cameraPitchRadians, targetPitchRadians);
+            DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters, targetHeightMeters,
+                    cameraPitchRadians, targetPitchRadians);
             SmartDashboard.putNumber("Dis To Ball", DisToTargetMeters); // Puts the distance to SmartDashboard
         }
         return DisToTargetMeters; // Returns the distance to the best target ball
+    }
+
+    public double getXDisplacementOfBall() {
+        var resultsCamille = Camille.getLatestResult();
+        double XDisplacementOfBall = 0;
+        if (resultsCamille.hasTargets()) {
+            XDisplacementOfBall = resultsCamille.getBestTarget().getYaw();
+        } else {
+            XDisplacementOfBall = 0;
+        }
+        SmartDashboard.putNumber("xdisplacement of ball", XDisplacementOfBall);
+        return XDisplacementOfBall;
+    }
+    public static double getYDisplacementOfBall(){
+        var resultsCamille = Camille.getLatestResult();
+        double YDisplacementOfBall = 0;
+        if (resultsCamille.hasTargets()) {
+            YDisplacementOfBall = resultsCamille.getBestTarget().getPitch();
+        } else {
+            YDisplacementOfBall = 0;
+        }
+        SmartDashboard.putNumber("Ydisplacement of ball", YDisplacementOfBall);
+        return YDisplacementOfBall;
+    }
+
+    public static boolean doesIntakeSeeBall() {
+        var resultsCamille = Camille.getLatestResult();
+        boolean doesIntakeSeeBall = false;
+        if (resultsCamille.hasTargets()) {
+            doesIntakeSeeBall = true;
+        }
+        SmartDashboard.putBoolean("intake see", doesIntakeSeeBall);
+        return doesIntakeSeeBall;
     }
 }

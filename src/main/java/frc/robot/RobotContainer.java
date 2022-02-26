@@ -7,34 +7,37 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
-
 
 import frc.robot.commands.*; // import all commands 
 
 
 import frc.robot.subsystems.*; // import all subsystems
 
-
-
 public class RobotContainer {
+
+
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
+
   public final static XboxController m_controller = new XboxController(0);
-  public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
+
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
   public static HoodSubsystem mHoodSubsystem = new HoodSubsystem();
+  
   public static ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-  
 
+  
+  
+  //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
+
+  public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -48,8 +51,11 @@ public class RobotContainer {
             () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
+    m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
+
     
 
+    
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -66,18 +72,30 @@ public class RobotContainer {
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
+
+    //new Button(m_controller::getBButton)
+    //        .whenHeld(new ClimbUpPower(mClimberSubsystem));
+//
+    //new Button(m_controller::getYButton)
+    //        .whenHeld(new ClimbDownPower(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
-            .whenPressed(new ZeroIntake(mIntakeSubsystem));
+            .whenPressed(new ZeroIntake(mIntakeSubsystem))
+            .whenPressed(new ZeroHood(mHoodSubsystem))
+            .whenPressed(m_drivetrainSubsystem::resetOdometry);
+           
+
+            
 
     new Button(m_controller::getRightBumper)
-            .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
+            .whenHeld(new Intake(mIntakeSubsystem));
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
-    new Button(m_controller::getAButton).whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem));
+    new Button(m_controller::getAButton)
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     
 
@@ -100,7 +118,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return new DriveToPositionCommand(m_drivetrainSubsystem, new Pose2d(2, 0, new Rotation2d(0)));
+
   }
 
   private static double deadband(double value, double deadband) {

@@ -11,63 +11,66 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class HoodSubsystem extends SubsystemBase {
-  
-  private static CANSparkMax m_hood_motor;
+
+  public static CANSparkMax m_hood_motor;
   public static SparkMaxPIDController m_hood_pidController;
   private static RelativeEncoder m_hood_encoder;
 
   private static boolean isZeroed = false;
-  
+
   /** Creates a new Hood. */
   public HoodSubsystem() {
 
     isZeroed = false;
 
     m_hood_motor = new CANSparkMax(Constants.HOOD_CAN_ID, MotorType.kBrushless);
-        
+
     m_hood_motor.restoreFactoryDefaults();
-    
+
     m_hood_pidController = m_hood_motor.getPIDController();
-    
 
     m_hood_encoder = m_hood_motor.getEncoder();
-    
+
     m_hood_pidController.setP(Constants.HOOD_kP);
     m_hood_pidController.setI(Constants.HOOD_kI);
     m_hood_pidController.setD(Constants.HOOD_kD);
     m_hood_pidController.setIZone(Constants.HOOD_kIz);
     m_hood_pidController.setFF(Constants.HOOD_kFF);
     m_hood_pidController.setOutputRange(Constants.HOOD_kMinOutput, Constants.HOOD_kMaxOutput);
-    
-        
-    
 
-    m_hood_pidController.setReference(Constants.HOOD_POSITION_MIN, ControlType.kPosition);
-
+    // m_hood_pidController.setReference(Constants.HOOD_POSITION_MIN,
+    // ControlType.kPosition);
+    SmartDashboard.putString("Hood Status", "!!Not Zeroed!!");
   }
 
   @Override
   public void periodic() {
 
-        SmartDashboard.putNumber("hood pos", m_hood_encoder.getPosition());    
-        
-  }
-
-  public static void setHoodPosition(double position){
-
-    m_hood_pidController.setReference(position, ControlType.kPosition);
+    SmartDashboard.putNumber("hood pos", m_hood_encoder.getPosition());
 
   }
 
-  public static void setSoftLimits(){
+  public void setHoodPosition(double position) {
+
+    if (isZeroed) {
+
+      m_hood_pidController.setReference(position, ControlType.kPosition);
+
+    } else {
+
+      SmartDashboard.putString("Hood Status", "Set to Pos");
+
+    }
+
+  }
+
+  public static void setSoftLimits() {
 
     m_hood_motor.setSoftLimit(SoftLimitDirection.kForward, Constants.HOOD_POSITION_MAX_FLOAT);
     m_hood_motor.setSoftLimit(SoftLimitDirection.kForward, Constants.HOOD_POSITION_MIN_FLOAT);
@@ -76,47 +79,37 @@ public class HoodSubsystem extends SubsystemBase {
 
   }
 
-  public static void disableSoftLimits(){
+  public static void disableSoftLimits() {
 
     m_hood_motor.enableSoftLimit(SoftLimitDirection.kForward, false);
 
   }
 
-  public static void runHoodUp(){
+  public static void runHoodUp() {
 
     m_hood_pidController.setReference(.1, ControlType.kDutyCycle);
 
+    SmartDashboard.putString("Hood Status", "!!Manual Override!!");
+
   }
 
-  public static void runHoodDown(){
+  public void runHoodDown() {
 
     m_hood_pidController.setReference(-.1, ControlType.kDutyCycle);
 
+    SmartDashboard.putString("Hood Status", "!!Manual Override!!");
+
   }
 
-  public static double getHoodCurrentDraw(){
+  public static double getHoodCurrentDraw() {
 
     return m_hood_motor.getOutputCurrent();
 
   }
 
-  public static boolean isHoodCurrentOverZeroConstant(){
+  public boolean isHoodCurrentOverZeroConstant() {
 
-    if(getHoodCurrentDraw() > Constants.HOOD_ZERO_CURRENT_DRAW){
-
-      return true;
-
-    } else {
-
-      return false;
-
-    }
-
-  }
-
-  public static boolean isVelocityBasicallyZero(){
-
-    if(Math.abs(getHoodVelocity()) < Constants.HOOD_ZERO_VELOCITY_THRESHOLD_UB){ //taking absolure value makes zero lower bound
+    if (getHoodCurrentDraw() > Constants.HOOD_ZERO_CURRENT_DRAW) {
 
       return true;
 
@@ -128,29 +121,35 @@ public class HoodSubsystem extends SubsystemBase {
 
   }
 
-  public static double getHoodVelocity(){
+  public static boolean isVelocityBasicallyZero() {
+
+    if (Math.abs(getHoodVelocity()) < Constants.HOOD_ZERO_VELOCITY_THRESHOLD_UB) { // taking absolure value makes zero
+                                                                                   // lower bound
+
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
+
+  public static double getHoodVelocity() {
 
     return m_hood_encoder.getVelocity();
 
   }
 
-  public static void zeroHood(){
+  public void zeroHood() {
 
     isZeroed = true;
-    
+
     m_hood_encoder.setPosition(0.0);
+
+    SmartDashboard.putString("Hood Status", "Zeroed");
 
   }
 
-
-
-  
-
-
-
-
-
-
-
 }
-
