@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.ledCommand;
+import frc.robot.subsystems.ledSubsystem;
 
 import frc.robot.commands.DefaultDriveCommand;
 
@@ -26,8 +28,10 @@ public class RobotContainer {
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
   public final static XboxController m_controller = new XboxController(0);
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
+  private final ledSubsystem monke = new ledSubsystem();
 
   public RobotContainer() {
+    monke.setDefaultCommand(new ledCommand(monke)); 
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
