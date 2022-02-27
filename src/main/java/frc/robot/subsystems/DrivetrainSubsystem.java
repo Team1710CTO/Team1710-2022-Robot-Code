@@ -245,6 +245,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return new SwerveModuleState(swerveModule.getDriveVelocity(), new Rotation2d(swerveModule.getSteerAngle()));
 }
 
+public Pose2d getOdomPose2d(){
+
+        return m_odometry.getPoseMeters();
+        
+}
+
 
   public static double headingControlModifier(boolean active){
 

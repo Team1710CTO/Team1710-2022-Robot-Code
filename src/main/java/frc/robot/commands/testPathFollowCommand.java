@@ -43,7 +43,7 @@ public class testPathFollowCommand extends CommandBase {
 
     controller = new HolonomicDriveController(xPosPidController, yPosPidController, thetaController);
 
-    m_DrivetrainSubsystem.setOdomToAutoPose(new Translation2d(7.5, 1.75), new Rotation2d(-90));
+    m_DrivetrainSubsystem.resetOdometry();
 
     timer.reset();
     timer.start();
@@ -53,7 +53,7 @@ public class testPathFollowCommand extends CommandBase {
   public void execute() {
     PathPlannerState desiredState = (PathPlannerState) trajectory.sample(timer.get());
 
-    ChassisSpeeds targetChassisSpeeds = controller.calculate(m_DrivetrainSubsystem.getPose(), desiredState,
+    ChassisSpeeds targetChassisSpeeds = controller.calculate(m_DrivetrainSubsystem.getOdomPose2d(), desiredState,
         desiredState.poseMeters.getRotation());
 
         m_DrivetrainSubsystem.drive(targetChassisSpeeds);
