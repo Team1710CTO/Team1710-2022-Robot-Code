@@ -33,6 +33,8 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
+  public static LedSubsystem ledSubsystem = new LedSubsystem();
+
   
   
   //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
@@ -53,7 +55,7 @@ public class RobotContainer {
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
-    
+  ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
 
     
     // Configure the button bindings
@@ -73,11 +75,11 @@ public class RobotContainer {
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
 
-    //new Button(m_controller::getBButton)
-    //        .whenHeld(new ClimbUpPower(mClimberSubsystem));
+    new Button(m_controller::getBButton)
+            .whenHeld(new ClimbUpPower(mClimberSubsystem));
 //
-    //new Button(m_controller::getYButton)
-    //        .whenHeld(new ClimbDownPower(mClimberSubsystem));
+    new Button(m_controller::getYButton)
+            .whenHeld(new ClimbDownPower(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
