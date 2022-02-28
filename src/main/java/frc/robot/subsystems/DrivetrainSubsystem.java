@@ -220,13 +220,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
         m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
-        m_pose = m_odometry.update(
-                GyroSubsystem.getBestRotation2d(), 
+
+        SwerveModuleState[] actualStates = {
                 stateFromModule(m_frontLeftModule), 
-                stateFromModule(m_frontRightModule),
+                stateFromModule(m_frontRightModule), 
                 stateFromModule(m_backLeftModule), 
                 stateFromModule(m_backRightModule)
+        };
+
+        ChassisSpeeds actualChassisSpeeds = m_kinematics.toChassisSpeeds(actualStates);
+
+        SmartDashboard.putNumber("robot x velocity", actualChassisSpeeds.vxMetersPerSecond);
+
+        SmartDashboard.putNumber("robot y velocity", actualChassisSpeeds.vyMetersPerSecond);
+
+        SmartDashboard.putNumber("robot omega velocity", actualChassisSpeeds.omegaRadiansPerSecond);
+
+        m_pose = m_odometry.update(
+                GyroSubsystem.getBestRotation2d(), 
+                actualStates[0], 
+                actualStates[1],
+                actualStates[2], 
+                actualStates[3]
             );
+
+        
 
             SmartDashboard.putNumber("front Left Velovity", m_frontLeftModule.getDriveVelocity());
 
@@ -248,7 +266,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 public Pose2d getOdomPose2d(){
 
         return m_odometry.getPoseMeters();
-        
+
 }
 
 
