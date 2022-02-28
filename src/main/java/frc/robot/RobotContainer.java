@@ -120,8 +120,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DriveToPositionCommand(m_drivetrainSubsystem, new Pose2d(2, 0, new Rotation2d(0)));
-
+    return new FollowPath(m_drivetrainSubsystem, "Test");
   }
 
   private static double deadband(double value, double deadband) {
