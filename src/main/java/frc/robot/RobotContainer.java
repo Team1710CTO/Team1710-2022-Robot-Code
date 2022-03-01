@@ -34,6 +34,8 @@ public class RobotContainer {
   public static ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
+  
+  public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,8 +52,9 @@ public class RobotContainer {
         () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
-    
+    m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
+    
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -68,20 +71,24 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
         // No requirements because we don't need to interrupt anything
-        .whenPressed(m_drivetrainSubsystem::resetOdometry)
+        //.whenPressed(m_drivetrainSubsystem::resetOdometry)
         .whenPressed(m_GyroSubsystem::zeroBestGyro)
         .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
     new Button(m_controller::getStartButton)
         .whenPressed(new ZeroIntake(mIntakeSubsystem));
 
+    new Button(m_controller::getYButton)
+            .whenPressed(new ZeroHood(mHoodSubsystem));
+
     new Button(m_controller::getRightBumper)
-        .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
+            .whenHeld(new Intake(mIntakeSubsystem));
 
     new Button(m_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
-    new Button(m_controller::getAButton).whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem));
+    new Button(m_controller::getAButton)
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, m_drivetrainSubsystem, mPhotonVisionSubsystem));
 
     // new Button(m_controller::getAButton).whenPressed(new
     // climberActuatorIn(servoSubsystem));

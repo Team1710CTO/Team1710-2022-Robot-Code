@@ -4,17 +4,21 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class DefaultIndexerCommand extends CommandBase {
-  /** Creates a new DefaultIndexerCommand. */
-  public static IndexerSubsystem indexerSubsystem;
+public class DriveToPositionCommand extends CommandBase {
+  /** Creates a new DriveToPositionCommand. */
+  public static DrivetrainSubsystem drivetrainSubsystem;
+  public static Pose2d desiredPose2d;
+  public static Rotation2d desiredRot;
 
-  public DefaultIndexerCommand(IndexerSubsystem indexerSubsystem) {
 
-    this.indexerSubsystem = indexerSubsystem;
-    addRequirements(indexerSubsystem);
+  public DriveToPositionCommand(DrivetrainSubsystem drivetrainSubsystem, Pose2d desiredPos, Rotation2d desiredRot) {
+
+    this.drivetrainSubsystem = drivetrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,11 +28,7 @@ public class DefaultIndexerCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    indexerSubsystem.indexBallsBetweenBreaks();
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

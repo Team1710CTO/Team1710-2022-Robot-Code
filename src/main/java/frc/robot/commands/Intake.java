@@ -11,14 +11,14 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class Intake extends CommandBase {
 
   public static IntakeSubsystem intakeSubsystem;
-  public static IndexerSubsystem indexerSubsystem;
+  
   /** Creates a new IntakeDown. */
-  public Intake(IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
+  public Intake(IntakeSubsystem intakeSubsystem) {
 
     this.intakeSubsystem = intakeSubsystem;
-    this.indexerSubsystem = indexerSubsystem;
+    
 
-    addRequirements(intakeSubsystem, indexerSubsystem);
+    addRequirements(intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,7 +32,7 @@ public class Intake extends CommandBase {
 
     intakeSubsystem.setintakeDown();
     intakeSubsystem.runIntake();
-    indexerSubsystem.runIndexerIn();
+    //indexerSubsystem.runIndexerIn();
     
 
   }
@@ -43,7 +43,7 @@ public class Intake extends CommandBase {
 
     intakeSubsystem.setIntakeUp();
     intakeSubsystem.stopIntakeRunner();
-    indexerSubsystem.stopIndexer();
+    //indexerSubsystem.stopIndexer();
     
   }
 

@@ -84,6 +84,8 @@ public class IndexerSubsystem extends SubsystemBase {
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_STOP_SPEED, ControlType.kDutyCycle);
 
+    m_indexerRunner_encoder.setPosition(0.0);
+
   }
 
   public static boolean isBottomBeakBreakTripped(){
@@ -98,9 +100,9 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public static void indexBall(){
+  public static void indexBallsBetweenBreaks(){
 
-    if(isBottomBeakBreakTripped() && !isTopBeakBreakTripped()){
+    if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped()){
 
       runIndexerIn();
 
@@ -110,6 +112,18 @@ public class IndexerSubsystem extends SubsystemBase {
 
     }
 
+
+  }
+
+  public static double getIndexerRotations(){
+
+    return m_indexerRunner_encoder.getPosition();
+
+  }
+
+  public static boolean isIndexerCycled(){
+
+    return (getIndexerRotations() > Constants.INDEXER_CYCLE_ROTATIONS);
 
   }
 

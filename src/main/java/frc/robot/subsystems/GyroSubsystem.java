@@ -87,16 +87,16 @@ public class GyroSubsystem extends SubsystemBase {
      return Rotation2d.fromDegrees(-m_navx.getFusedHeading());
      }*/
      
-     return Rotation2d.fromDegrees((m_navx.getYaw()));
+     //return Rotation2d.fromDegrees((m_navx.getYaw()));
     //return Rotation2d.fromDegrees((360.0 - m_navx.getYaw()));
     /*double angle = -m_navx.getYaw() + 180;
     if (angle > 180) {
       angle -= 360;
     } else if (angle < -180) {
       angle += 360;
-    }
-    return Rotation2d.fromDegrees(angle);*/
-    //return new Rotation2d(m_navx.getYaw() * -1 / 180 * Math.PI);
+    }*/
+
+    return Rotation2d.fromDegrees(-(360.0 - m_navx.getYaw()));
   }
 
   public void zeroNavXGyroscope() { // keep non static!
