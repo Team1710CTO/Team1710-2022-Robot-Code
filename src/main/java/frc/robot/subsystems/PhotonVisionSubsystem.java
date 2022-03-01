@@ -14,9 +14,19 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        getDistanceToGoalMeters(0);
-        getXDisplacementOfGoal();
-        // getDistanceToBallMeters();
+
+        var resultsCamille = Camille.getLatestResult();
+        double XDisplacementOfGoal = 0;
+
+        if (resultsCamille.hasTargets()) {
+            
+            XDisplacementOfGoal = resultsCamille.getBestTarget().getYaw();
+            SmartDashboard.putNumber("ball x displace", XDisplacementOfGoal);
+        } else {
+            XDisplacementOfGoal = 0;
+            SmartDashboard.putNumber("ball x displace", XDisplacementOfGoal);
+        }
+        
 
     }
 
@@ -99,7 +109,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("xdisplacement of ball", XDisplacementOfBall);
         return XDisplacementOfBall;
     }
-    public static double getYDisplacementOfBall(){
+    public double getYDisplacementOfBall(){
         var resultsCamille = Camille.getLatestResult();
         double YDisplacementOfBall = 0;
         if (resultsCamille.hasTargets()) {

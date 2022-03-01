@@ -35,6 +35,8 @@ public class RobotContainer {
 
   public static LedSubsystem ledSubsystem = new LedSubsystem();
 
+  public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
+
   
   
   //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
@@ -98,6 +100,14 @@ public class RobotContainer {
     
     new Button(m_controller::getAButton)
             .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
+
+    new Button(m_controller::getXButton)
+            .whenPressed(new IntakeWithVision(
+            mIntakeSubsystem, 
+            m_drivetrainSubsystem, 
+            mphotonVisionSubsystem, 
+            m_iIndexerSubsystem
+            ));
 
     
 
