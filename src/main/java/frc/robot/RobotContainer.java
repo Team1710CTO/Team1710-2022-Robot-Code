@@ -30,6 +30,9 @@ public class RobotContainer {
   public final PowerDistributionSubsystem m_PowerDistributionSubsystem = new PowerDistributionSubsystem();
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
+  public static HoodSubsystem mHoodSubsystem = new HoodSubsystem();
+  public static ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
+
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
   /**
@@ -46,6 +49,8 @@ public class RobotContainer {
         () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
+
+    
 
     // Configure the button bindings
     configureButtonBindings();
@@ -74,10 +79,9 @@ public class RobotContainer {
         .whenHeld(new Intake(mIntakeSubsystem, m_iIndexerSubsystem));
 
     new Button(m_controller::getLeftBumper)
-        .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
-
-    // new Button(m_controller::getStartButton)
-    // .whenPressed(new ZeroIntake());
+            .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
+    
+    new Button(m_controller::getAButton).whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem));
 
     // new Button(m_controller::getAButton).whenPressed(new
     // climberActuatorIn(servoSubsystem));
@@ -93,7 +97,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new autonomousCommand(m_drivetrainSubsystem);
+    return new testPathFollowCommand(m_drivetrainSubsystem);
   }
 
   private static double deadband(double value, double deadband) {

@@ -32,7 +32,7 @@ public class Intake extends CommandBase {
 
     intakeSubsystem.setintakeDown();
     intakeSubsystem.runIntake();
-    indexerSubsystem.runIn();
+    indexerSubsystem.runIndexerIn();
     
 
   }

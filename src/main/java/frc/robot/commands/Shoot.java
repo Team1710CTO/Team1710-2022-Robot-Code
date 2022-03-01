@@ -4,22 +4,23 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax.ControlType;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class outtake extends CommandBase {
-  /** Creates a new outtake. */
+public class Shoot extends CommandBase {
+  /** Creates a new Shoot. */
 
-  public static IntakeSubsystem intakeSubsystem;
-  public static IndexerSubsystem indexerSubsystem;
-  
-  public outtake(IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
-    this.indexerSubsystem = indexerSubsystem;
+  public static HoodSubsystem hoodSubsystem;
+  public static ShooterSubsystem shooterSubsystem;
+  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem) {
 
-    addRequirements(intakeSubsystem, indexerSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.hoodSubsystem = hoodSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
+
+    addRequirements(hoodSubsystem, shooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -31,8 +32,11 @@ public class outtake extends CommandBase {
   @Override
   public void execute() {
 
-    intakeSubsystem.setIntakeUp();
-    indexerSubsystem.runIndexerOut();
+    shooterSubsystem.setSpeed(3000);
+
+  
+
+
 
   }
 
@@ -40,7 +44,9 @@ public class outtake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    indexerSubsystem.stopIndexer();
+    shooterSubsystem.disableShooter();
+
+  
 
   }
 

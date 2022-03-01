@@ -14,6 +14,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,7 +40,7 @@ public class IndexerSubsystem extends SubsystemBase {
     m_indexerRunner = new CANSparkMax(Constants.INDEXER_CAN_ID, MotorType.kBrushless);
 
     m_indexerRunner.restoreFactoryDefaults();
-    m_indexerRunner.setIdleMode(IdleMode.kCoast);
+    m_indexerRunner.setIdleMode(IdleMode.kBrake);
 
     m_indexerRunner_PidController = m_indexerRunner.getPIDController();
     
@@ -50,6 +52,8 @@ public class IndexerSubsystem extends SubsystemBase {
     m_indexerRunner_PidController.setOutputRange(Constants.INDEXER_kMinOutput, Constants.INDEXER_kMaxOutput);
     m_indexerRunner_PidController.setD(Constants.INDEXER_kD);
 
+    m_indexerRunner_PidController.setReference(rotations, ControlType.kPosition);
+
   }
 
   @Override
@@ -60,31 +64,55 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
 
-    
-    //if(bottomBeamBreak.get() && !topBeamBreak.get()){
-    //  m_indexerRunner_PidController.setReference(.1, ControlType.kDutyCycle);
-    //} else {
-    //  m_indexerRunner_PidController.setReference(0, ControlType.kDutyCycle);
-    //}
 
   }
 
-  public static void runIn(){
+  public static void runIndexerIn(){
 
-    m_indexerRunner_PidController.setReference(1, ControlType.kDutyCycle);
+    m_indexerRunner_PidController.setReference(Constants.INDEXER_IN_SPEED, ControlType.kDutyCycle);
+
+  }
+
+  public static void runIndexerOut(){
+
+    m_indexerRunner_PidController.setReference(Constants.INDEXER_OUT_SPEED, ControlType.kDutyCycle);
 
   }
 
-  public static void runOut(){
-
-    m_indexerRunner_PidController.setReference(-1, ControlType.kDutyCycle);
-
-  }
 
   public static void stopIndexer(){
 
-    m_indexerRunner_PidController.setReference(0, ControlType.kDutyCycle);
+    m_indexerRunner_PidController.setReference(Constants.INDEXER_STOP_SPEED, ControlType.kDutyCycle);
 
   }
+
+  public static boolean isBottomBeakBreakTripped(){
+
+    return bottomBeamBreak.get();
+
+  }
+
+  public static boolean isTopBeakBreakTripped(){
+
+    return topBeamBreak.get();
+
+  }
+
+  public static void indexBall(){
+
+    if(isBottomBeakBreakTripped() && !isTopBeakBreakTripped()){
+
+      runIndexerIn();
+
+    } else {
+
+      stopIndexer();
+
+    }
+
+
+  }
+
+
   
 }
