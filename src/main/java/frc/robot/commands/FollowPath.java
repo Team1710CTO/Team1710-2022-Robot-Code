@@ -7,7 +7,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 
 /** Trajectory following */
 public class FollowPath extends CommandBase {
@@ -25,7 +26,8 @@ public class FollowPath extends CommandBase {
 
   private String trajectoryName;
 
-  private HolonomicDriveController controller;
+  private PIDController xPosPidController, yPosPidController, thetaPidController;
+
   private final Timer timer = new Timer();
 
   public FollowPath(DrivetrainSubsystem m_DrivetrainSubsystem, String trajectoryName) {
@@ -38,18 +40,20 @@ public class FollowPath extends CommandBase {
 
   @Override
   public void initialize() {
-    trajectory = PathPlanner.loadPath(trajectoryName, 0.8, 1); // todo change max velocity and acceleration
+    trajectory = PathPlanner.loadPath(trajectoryName, 8, 2); // todo change max velocity and acceleration
 
-    ProfiledPIDController thetaController = new ProfiledPIDController(6, 0, 0,
-        new TrapezoidProfile.Constraints(Math.PI, Math.PI));
+    
 
 
-    PIDController xPosPidController = new PIDController(6, 0, 0);
-    PIDController yPosPidController = new PIDController(6, 0, 0);
+    xPosPidController = new PIDController(6, 0, 0);
+    yPosPidController = new PIDController(6, 0, 0);
+    thetaPidController = new PIDController(6, 3, 0);
 
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    controller = new HolonomicDriveController(xPosPidController, yPosPidController, thetaController);
+    thetaPidController.enableContinuousInput(0, 2* Math.PI);
+    
+
+    
 
     m_DrivetrainSubsystem.resetOdometry();
 
@@ -62,8 +66,17 @@ public class FollowPath extends CommandBase {
 
     PathPlannerState desiredState = (PathPlannerState) trajectory.sample(timer.get());
 
-    ChassisSpeeds targetChassisSpeeds = controller.calculate(m_DrivetrainSubsystem.getOdomPose2d(), desiredState,
-        desiredState.poseMeters.getRotation());
+    
+
+    ChassisSpeeds targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+
+          xPosPidController.calculate(m_DrivetrainSubsystem.getOdomPose2d().getX(), desiredState.poseMeters.getX()),
+          yPosPidController.calculate(m_DrivetrainSubsystem.getOdomPose2d().getY(), desiredState.poseMeters.getY()),
+          thetaPidController.calculate(-m_DrivetrainSubsystem.getOdomPose2d().getRotation().getRadians(), desiredState.poseMeters.getRotation().getRadians()), 
+          GyroSubsystem.getBestRotation2d()
+          
+          );
+
 
         
     m_DrivetrainSubsystem.drive(targetChassisSpeeds);
