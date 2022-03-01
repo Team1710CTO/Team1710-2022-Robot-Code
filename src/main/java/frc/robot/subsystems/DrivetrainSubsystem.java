@@ -100,7 +100,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		estimatedX = odometryTab.add("Estimated X", 0).getEntry();
 		estimatedY = odometryTab.add("Estimated Y", 0).getEntry();
 		rotation = odometryTab.add("\"Estimated\" Rotation", 0).getEntry();
-		odometryTab.add("NavX X", 0).getEntry();
 
 		// There are 4 methods you can call to create your swerve modules.
 		// The method you use depends on what motors you are using.
@@ -175,7 +174,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 				BACK_RIGHT_MODULE_STEER_ENCODER,
 				BACK_RIGHT_MODULE_STEER_OFFSET);
 
-		odometry = new SwerveDriveOdometry(m_kinematics, GyroSubsystem.getRightPigeonGyroscopeRotation());
+		odometry = new SwerveDriveOdometry(m_kinematics, GyroSubsystem.getBestRotation2d());
 	}
 
 	/**
@@ -185,11 +184,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	 */
 	public void resetOdometry() {
 		calculatedPose = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
-		odometry.resetPosition(calculatedPose, GyroSubsystem.getRightPigeonGyroscopeRotation());
+		odometry.resetPosition(calculatedPose, new Rotation2d(0, 0));
 	}
 
 	public Pose2d getPose() {
-		return odometry.getPoseMeters();
+		return new Pose2d(calculatedPose.getX(), calculatedPose.getY(),
+				GyroSubsystem.getBestRotation2d());
+		// return odometry.getPoseMeters();
 	}
 
 	public void drive(ChassisSpeeds chassisSpeeds) {
@@ -212,7 +213,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
 				states[3].angle.getRadians());
 
-		calculatedPose = odometry.update(GyroSubsystem.getRightPigeonGyroscopeRotation(), states);
+		calculatedPose = odometry.update(GyroSubsystem.getBestRotation2d(),
+				stateFromModule(m_frontLeftModule),
+				stateFromModule(m_frontRightModule),
+				stateFromModule(m_backLeftModule),
+				stateFromModule(m_backRightModule));
+				
 		// SmartDashboard.putNumber("Estimated X", calculatedPose.getX());
 		// SmartDashboard.putNumber("Estimated Y", calculatedPose.getY());
 		// SmartDashboard.putNumber("\"Estimated\" Rotation",
@@ -237,6 +243,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		 * odometryTab.add("Pigeon Y", xyz[2]);
 		 * odometryTab.add("Pigeon Z", xyz[3]);
 		 */
+	}
+
+	private SwerveModuleState stateFromModule(SwerveModule swerveModule) {
+		return new SwerveModuleState(swerveModule.getDriveVelocity(), new Rotation2d(swerveModule.getSteerAngle()));
 	}
 
 	public double headingControlModifier(boolean active) {

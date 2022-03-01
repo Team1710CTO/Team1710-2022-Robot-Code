@@ -30,16 +30,16 @@ public class autonomousCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    trajectory = PathPlanner.loadPath("Test", 0.8, 1);
+    trajectory = PathPlanner.loadPath("Test", 1, 2);
 
-    ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0,
+    ProfiledPIDController thetaController =  new ProfiledPIDController(1.2, 0.1, 0.1,
         new TrapezoidProfile.Constraints(Math.PI, Math.PI));
-    PIDController pid1 = new PIDController(0, 0, 0);
-    PIDController pid2 = new PIDController(0, 0, 0);
+    PIDController xPID = new PIDController(0.1, 0.01, 0);
+    PIDController yPID = new PIDController(-0.1, 0.01, 0);
 
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    controller = new HolonomicDriveController(pid1, pid2, thetaController);
+    controller = new HolonomicDriveController(xPID, yPID, thetaController);
 
     m_subsystem.resetOdometry();
 
@@ -52,7 +52,7 @@ public class autonomousCommand extends CommandBase {
     PathPlannerState desiredState = (PathPlannerState) trajectory.sample(timer.get());
 
     ChassisSpeeds targetChassisSpeeds = controller.calculate(m_subsystem.getPose(), desiredState,
-        desiredState.poseMeters.getRotation());
+        desiredState.holonomicRotation);
 
     m_subsystem.drive(targetChassisSpeeds);
   }
