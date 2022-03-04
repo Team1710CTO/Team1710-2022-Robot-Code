@@ -40,13 +40,10 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         var resultCameron = Cameron.getLatestResult(); // Gets the camera's results
         if (resultCameron.hasTargets()) {
             // Distance to target calculation
-            double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
-            double targetHeightMeters = 2.6035; // the actual height
-            double cameraPitchRadians = Units.degreesToRadians(35); // TODO
-            double targetPitchRadians = Units.degreesToRadians(resultCameron.getBestTarget().getPitch());
-            double DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters,
-                    targetHeightMeters, cameraPitchRadians, targetPitchRadians);
-            groundDisToTarget = Math.abs(DisToTargetMeters * Math.cos(resultCameron.getBestTarget().getPitch()));
+            //double cameraHeightMeters = 0.7874;
+            //double targetHeightMeters = 1.8161; // the actual height
+            //double cameraPitch = 55; // TODO
+            groundDisToTarget = -4.9502 * resultCameron.getBestTarget().getPitch() + 75.486; // STILL TESTING
             SmartDashboard.putNumber("Ground Distance To Target", groundDisToTarget); // Puts the distance to
                                                                                       // SmartDashboard
         } else {
@@ -114,7 +111,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("xdisplacement of ball", XDisplacementOfBall);
         return XDisplacementOfBall;
     }
-    public double getYDisplacementOfBall(){
+    public static double getYDisplacementOfBall(){
         var resultsCamille = Camille.getLatestResult();
         double YDisplacementOfBall = 0;
         if (resultsCamille.hasTargets()) {
