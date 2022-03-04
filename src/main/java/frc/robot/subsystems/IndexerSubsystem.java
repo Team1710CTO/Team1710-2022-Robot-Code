@@ -128,6 +128,10 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
+  public boolean areTwoBallsIndexed(){
 
+    return (bottomBeamBreak.get() == true && topBeamBreak.get() == true);
+
+  }
   
 }

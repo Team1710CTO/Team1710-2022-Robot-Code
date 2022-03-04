@@ -6,17 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LedSubsystem;
+import frc.robot.subsystems.ledSubsystem;
 
 
 public class LEDcommand extends CommandBase {
   /** Creates a new LEDcommand. */
 
-  public static LedSubsystem ledSubsystem;
+  public static ledSubsystem ledSubsystem;
 
  
 
-  public LEDcommand(LedSubsystem ledSubsystem) {
+  public LEDcommand(ledSubsystem ledSubsystem) {
 
 
     this.ledSubsystem = ledSubsystem;

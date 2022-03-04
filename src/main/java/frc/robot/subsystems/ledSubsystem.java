@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.AddressableLED;
 
-public class LedSubsystem extends SubsystemBase {
+public class ledSubsystem extends SubsystemBase {
   /** Creates a new ledSubsystem. */
-  public LedSubsystem() {
+  public ledSubsystem() {
   }
 
   public static AddressableLED m_led = new AddressableLED(1);
@@ -48,15 +48,15 @@ public class LedSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void auto(){
-    
-    if (Timer.getMatchTime() <= 5){
+  public void auto() {
+
+    if (Timer.getMatchTime() <= 5) {
       blink(0, 200, 0, 1);
     }
-    if (Timer.getMatchTime() <= 10){
+    if (Timer.getMatchTime() <= 10) {
       blink(200, 200, 0, 1);
     }
-    if (Timer.getMatchTime() <= 15){
+    if (Timer.getMatchTime() <= 15) {
       blink(200, 0, 0, 1);
     }
   }
@@ -137,8 +137,8 @@ public class LedSubsystem extends SubsystemBase {
   }
 
   public void knightRider(int red, int green, int blue) {
-    if (counter == 2){
-      //counter == 2.4 * (m_ledBuffer.getLength())) {
+    if (counter == 2) {
+      // counter == 2.4 * (m_ledBuffer.getLength())) {
       m_timer.reset();
       m_timer.start();
       solid(0, 0, 0);
@@ -160,13 +160,13 @@ public class LedSubsystem extends SubsystemBase {
 
     } else if (kitt % 2 == 1) {
 
-      int k = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength()))-0;
+      int k = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength())) - 0;
       // Sets the specified LED to the RGB values for red
       m_ledBuffer.setRGB(k, red, green, blue);
 
-      //int j = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength()));
+      // int j = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength()));
       //// Sets the specified LED to the RGB values for red
-      //m_ledBuffer.setRGB(j, 0, 0, 0);
+      // m_ledBuffer.setRGB(j, 0, 0, 0);
 
       // int i = (num % m_ledBuffer.getLength()) + 1;
       // // Sets the specified LED to the RGB values for red
@@ -325,4 +325,23 @@ public class LedSubsystem extends SubsystemBase {
     m_led.setData(m_ledBuffer);
     m_led.start();
   }
+
+  public void idleMode() {
+
+    if (IndexerSubsystem.bottomBeamBreak.get() == true && IndexerSubsystem.topBeamBreak.get() == true) {
+
+      tripleOrbit(100, 100, 100, 200, 100, 0, 2);
+
+    } else if (IndexerSubsystem.bottomBeamBreak.get() == false && IndexerSubsystem.topBeamBreak.get() == false) {
+
+      tripleOrbit(200, 200, 200, 0, 0, 0, 2);
+
+    } else {
+
+      tripleOrbit(200, 100, 0, 0, 0, 0, 2);
+
+    }
+
+  }
+
 }
