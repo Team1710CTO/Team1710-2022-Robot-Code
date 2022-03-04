@@ -23,6 +23,10 @@ public class IntakeWithVision extends CommandBase {
 
   public IndexerSubsystem indexerSubsystem;
 
+  public int initialballcount = 0;
+
+  public boolean ballinrange = false;
+
   public PIDController xPidController, yPidController;
   /** Creates a new IntakeWithVision. */
   public IntakeWithVision(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem) {
@@ -32,8 +36,8 @@ public class IntakeWithVision extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
 
-    xPidController = new PIDController(.06, .01, 0);
-    yPidController = new PIDController(.06, .01, 0);
+    xPidController = new PIDController(.02, .005, 0.005);
+    yPidController = new PIDController(.02, .005, 0.005);
 
     addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,6 +48,8 @@ public class IntakeWithVision extends CommandBase {
   public void initialize() {
 
     intakeSubsystem.setIntakeUp();
+
+    initialballcount = indexerSubsystem.getBallCount();
 
   }
 
@@ -57,19 +63,25 @@ public class IntakeWithVision extends CommandBase {
     double vx = xPidController.calculate(xDisplacement, 0);
     double vy = yPidController.calculate(yDisplacement, 0);
 
-    drivetrainSubsystem.drive(new ChassisSpeeds(-vy,vx,0));
+    
 
     SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
 
-    if(Math.abs(xPidController.getPositionError()) < 8 && Math.abs(yPidController.getPositionError()) < 2){
+    if(Math.abs(xPidController.getPositionError()) < 20 && Math.abs(yPidController.getPositionError()) < 5 && intakeSubsystem.getIntakeState() == "Up"){
 
       intakeSubsystem.setintakeDown();
       intakeSubsystem.runIntake();
 
+    } 
+
+    if(intakeSubsystem.getIntakeState() == "Up"){
+
+      drivetrainSubsystem.drive(new ChassisSpeeds(-vy,vx,0));
+      SmartDashboard.putNumber("vy", vy);
+
     } else {
 
-      intakeSubsystem.setIntakeUp();
-      intakeSubsystem.intakeRest();
+      drivetrainSubsystem.drive(new ChassisSpeeds(0,0,0));
 
     }
 
@@ -91,6 +103,6 @@ public class IntakeWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !indexerSubsystem.isBottomBeakBreakTripped();
+    return !(initialballcount == indexerSubsystem.getBallCount());
   }
 }

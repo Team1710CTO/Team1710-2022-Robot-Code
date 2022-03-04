@@ -28,6 +28,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public static RelativeEncoder m_actuatorLeft_encoder, m_actuatorRight_encoder;
   public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
+  public static String intakeState = "NotZeroed";
+
   public static boolean isZeroed = false;
 
   public static double lastPositionLeft, lastPositionRight = 0;
@@ -133,6 +135,8 @@ public class IntakeSubsystem extends SubsystemBase {
       m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kPosition);
       m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kPosition);
 
+      intakeState = "Up";
+
       SmartDashboard.putString("Intake Status", "Up");
   
       } else {
@@ -149,6 +153,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     m_actuatorLeft_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kPosition);
     m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_down, CANSparkMax.ControlType.kPosition);
+
+    intakeState = "Down";
 
     SmartDashboard.putString("Intake Status", "Down");
 
@@ -259,7 +265,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   
+  public String getIntakeState(){
 
+    return intakeState;
+    
+  }
 
 
 }

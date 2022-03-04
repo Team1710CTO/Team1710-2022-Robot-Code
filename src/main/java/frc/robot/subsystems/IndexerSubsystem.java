@@ -77,6 +77,21 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ball integral", ballintegralBottom);
     
 
+    countBallsPeriodic();
+
+    
+
+
+  }
+
+  public int getBallCount(){
+
+    return balls;
+    
+  }
+
+  public static void countBallsPeriodic(){
+
     if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 1){
 
       ballintegralBottom += 1;
@@ -115,8 +130,6 @@ public class IndexerSubsystem extends SubsystemBase {
       }
 
     }
-
-    
 
 
   }
@@ -166,6 +179,12 @@ public class IndexerSubsystem extends SubsystemBase {
 
     }
 
+
+  }
+
+  public void zeroBallCount(){
+
+    balls = 0;
 
   }
 

@@ -45,17 +45,12 @@ public class FollowPath extends CommandBase {
     
 
 
-    xPosPidController = new PIDController(6, 0, 0);
-    yPosPidController = new PIDController(6, 0, 0);
-    thetaPidController = new PIDController(6, 3, 0);
+    xPosPidController = new PIDController(3, 0, 0);
+    yPosPidController = new PIDController(3, 0, 0);
+    thetaPidController = new PIDController(.05, 0, 0);
 
 
-    thetaPidController.enableContinuousInput(0, 2* Math.PI);
-    
-
-    
-
-    m_DrivetrainSubsystem.resetOdometry();
+    thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
 
     timer.reset();
     timer.start();
@@ -66,6 +61,7 @@ public class FollowPath extends CommandBase {
 
     PathPlannerState desiredState = (PathPlannerState) trajectory.sample(timer.get());
 
+  
     
 
     ChassisSpeeds targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(

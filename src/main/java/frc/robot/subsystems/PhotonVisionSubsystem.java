@@ -17,14 +17,19 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
         var resultsCamille = Camille.getLatestResult();
         double XDisplacementOfGoal = 0;
+        double YDisplacementOfGoal = 0;
 
         if (resultsCamille.hasTargets()) {
             
             XDisplacementOfGoal = resultsCamille.getBestTarget().getYaw();
+            YDisplacementOfGoal = resultsCamille.getBestTarget().getPitch();
             SmartDashboard.putNumber("ball x displace", XDisplacementOfGoal);
+            SmartDashboard.putNumber("ball y displace", YDisplacementOfGoal);
         } else {
             XDisplacementOfGoal = 0;
+            YDisplacementOfGoal = 0;
             SmartDashboard.putNumber("ball x displace", XDisplacementOfGoal);
+            SmartDashboard.putNumber("ball y displace", YDisplacementOfGoal);
         }
         
 

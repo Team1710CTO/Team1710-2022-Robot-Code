@@ -87,7 +87,8 @@ public class RobotContainer {
     new Button(m_controller::getStartButton)
             .whenPressed(new ZeroIntake(mIntakeSubsystem))
             .whenPressed(new ZeroHood(mHoodSubsystem))
-            .whenPressed(m_drivetrainSubsystem::resetOdometry);
+            .whenPressed(m_drivetrainSubsystem::resetOdometry)
+            .whenPressed(m_iIndexerSubsystem::zeroBallCount);
            
 
             
@@ -102,7 +103,7 @@ public class RobotContainer {
             .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     new Button(m_controller::getXButton)
-            .whenPressed(new IntakeWithVision(
+            .whileHeld(new IntakeWithVision(
             mIntakeSubsystem, 
             m_drivetrainSubsystem, 
             mphotonVisionSubsystem, 
@@ -130,7 +131,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new FollowPath(m_drivetrainSubsystem, "Test");
+    return new runPathAndIntake(m_drivetrainSubsystem, mIntakeSubsystem, 
+    mphotonVisionSubsystem, 
+    m_iIndexerSubsystem);
   }
 
   private static double deadband(double value, double deadband) {
