@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Shoot extends CommandBase {
@@ -24,14 +24,17 @@ public class Shoot extends CommandBase {
 
   public IndexerSubsystem indexerSubsystem;
 
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
+  public PhotonVisionSubsystem photonVisionSubsystem;
+
+  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
+    this.photonVisionSubsystem = photonVisionSubsystem;
 
 
-    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem);
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -47,9 +50,11 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3000);
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
+
+    shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
     
-    hoodSubsystem.setHoodPosition(.05);
+    hoodSubsystem.setHoodPosition((.0073 * d) + .388);
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 

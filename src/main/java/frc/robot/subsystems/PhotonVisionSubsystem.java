@@ -32,6 +32,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("ball y displace", YDisplacementOfGoal);
         }
         
+        getDistanceToGoalMeters(0.0);
 
     }
 
@@ -43,7 +44,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             //double cameraHeightMeters = 0.7874;
             //double targetHeightMeters = 1.8161; // the actual height
             //double cameraPitch = 55; // TODO
-            groundDisToTarget = -4.9502 * resultCameron.getBestTarget().getPitch() + 75.486; // STILL TESTING
+            groundDisToTarget = Math.exp(-.0661 * resultCameron.getBestTarget().getPitch()) * 137; // STILL TESTING
             SmartDashboard.putNumber("Ground Distance To Target", groundDisToTarget); // Puts the distance to
                                                                                       // SmartDashboard
         } else {

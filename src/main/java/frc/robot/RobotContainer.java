@@ -100,7 +100,7 @@ public class RobotContainer {
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
     new Button(m_controller::getAButton)
-            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem));
 
     new Button(m_controller::getXButton)
             .whileHeld(new IntakeWithVision(
