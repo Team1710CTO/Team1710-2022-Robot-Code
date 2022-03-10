@@ -42,9 +42,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
     
 
-    lockingServo = new Servo(Constants.CLIMBER_SERVO_PWM_CHANNEL);
+    lockingServo = new Servo(3);
     //lockingServo.setPosition(Constants.CLIMBER_SERVO_LOCK_POSITION);
-    lockingServo.setDisabled();
 
   }
 
@@ -84,13 +83,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void runUp(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, .31);
+    climberTalonTop.set(ControlMode.PercentOutput, 1);
 
   }
 
   public void runDown(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, -.31);
+    climberTalonTop.set(ControlMode.PercentOutput, -1);
 
   }
 

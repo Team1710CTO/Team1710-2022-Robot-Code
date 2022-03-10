@@ -41,7 +41,7 @@ public class RobotContainer {
   
   //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
-  public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
+  public final static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -100,17 +100,10 @@ public class RobotContainer {
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
     new Button(m_controller::getAButton)
-            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem));
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
 
-    new Button(m_controller::getXButton)
-            .whileHeld(new IntakeWithVision(
-            mIntakeSubsystem, 
-            m_drivetrainSubsystem, 
-            mphotonVisionSubsystem, 
-            m_iIndexerSubsystem
-            ));
 
-    
+    new Button(m_controller::getXButton).whenPressed(new ClimberLock(mClimberSubsystem));
 
     
 

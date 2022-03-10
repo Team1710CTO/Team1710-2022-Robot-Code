@@ -251,6 +251,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("estimated position X", m_pose.getX());
             SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
+            SmartDashboard.putNumber("estimated position X in inches", m_pose.getX()/37);
   }
 
   public void resetOdometry(){

@@ -44,8 +44,12 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             //double cameraHeightMeters = 0.7874;
             //double targetHeightMeters = 1.8161; // the actual height
             //double cameraPitch = 55; // TODO
-            groundDisToTarget = Math.exp(-.0661 * resultCameron.getBestTarget().getPitch()) * 137; // STILL TESTING
-            SmartDashboard.putNumber("Ground Distance To Target", groundDisToTarget); // Puts the distance to
+            groundDisToTarget = resultCameron.getBestTarget().getPitch() ; // STILL TESTING
+            double x = groundDisToTarget;
+            double result = 105 + -8.26*x + 0.359*x*x;
+            SmartDashboard.putNumber("Ground Distance To Target", result);
+            return result;
+             // Puts the distance to
                                                                                       // SmartDashboard
         } else {
             groundDisToTarget = odometryDistance; // Sets a default value when no targets are seen
