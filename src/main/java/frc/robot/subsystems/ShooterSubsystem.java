@@ -18,6 +18,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static double goalSpeed = 0;
 
+  public static int iterator = 0;
+
   public static boolean isDisabled = true;
 
   public ShooterSubsystem(){
@@ -109,6 +111,14 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("error", Math.abs(goalSpeed - m_encoder.getVelocity()));
 
     if(Math.abs(goalSpeed - m_encoder.getVelocity()) < Constants.SHOOTER_GO_THRESHHOLD){
+      iterator += 1;
+    } else {
+
+      iterator = 0;
+
+    }
+
+    if(iterator > 20){
 
       return true;
 

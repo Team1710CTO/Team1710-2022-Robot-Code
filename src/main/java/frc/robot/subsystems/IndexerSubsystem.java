@@ -92,6 +92,12 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static void countBallsPeriodic(){
 
+    if(m_indexerRunner_encoder.getVelocity() == 0 && !bottomBeamBreak.get()){
+
+      balls += 1;
+
+    }
+
     if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 1){
 
       ballintegralBottom += 1;
@@ -123,6 +129,8 @@ public class IndexerSubsystem extends SubsystemBase {
           ballintegralBottom = 0;
           
           } 
+
+          
 
   
         }

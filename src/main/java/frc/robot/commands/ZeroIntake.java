@@ -7,16 +7,27 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
+import edu.wpi.first.wpilibj.Timer;
+
 public class ZeroIntake extends CommandBase {
   /** Creates a new ZeroIntake. */
 
   public IntakeSubsystem intakeSubsystem;
 
+  public final Timer timer = new Timer();
+
   public ZeroIntake(IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
 
+    
+
     addRequirements(intakeSubsystem);
+
+
+    timer.reset();
+    timer.start();
+    
 
   }
 
@@ -49,7 +60,7 @@ public class ZeroIntake extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(intakeSubsystem.isIntakeStalledCurrent()){
+    if(intakeSubsystem.isIntakeStalledCurrent() && timer.get() > 1){
 
       
 

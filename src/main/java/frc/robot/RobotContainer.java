@@ -77,11 +77,11 @@ public class RobotContainer {
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
 
-    new Button(m_controller::getBButton)
-            .whenHeld(new ClimbUpPower(mClimberSubsystem));
+   //new Button(m_controller::getBButton)
+   //        .whenHeld(new ClimbUpPower(mClimberSubsystem));
 //
-    new Button(m_controller::getYButton)
-            .whenHeld(new ClimbDownPower(mClimberSubsystem));
+   //new Button(m_controller::getYButton)
+   //        .whenHeld(new ClimbDownPower(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
@@ -103,7 +103,7 @@ public class RobotContainer {
             .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
 
 
-    new Button(m_controller::getXButton).whenPressed(new ClimberLock(mClimberSubsystem));
+    new Button(m_controller::getXButton).whenPressed(new ClimberLock(mClimberSubsystem)).whenReleased(mClimberSubsystem::disengageClimber);
 
     
 
@@ -124,9 +124,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new runPathAndIntake(m_drivetrainSubsystem, mIntakeSubsystem, 
+    return new NakedPriest(m_drivetrainSubsystem, mIntakeSubsystem, 
     mphotonVisionSubsystem, 
-    m_iIndexerSubsystem);
+    m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem);
   }
 
   private static double deadband(double value, double deadband) {

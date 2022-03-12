@@ -10,7 +10,7 @@ import frc.robot.subsystems.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class runPathAndIntake extends SequentialCommandGroup {
+public class NakedPriest extends SequentialCommandGroup {
 
   public IntakeSubsystem intakeSubsystem;
 
@@ -19,10 +19,13 @@ public class runPathAndIntake extends SequentialCommandGroup {
   public PhotonVisionSubsystem photonVisionSubsystem;
 
   public IndexerSubsystem indexerSubsystem;
+
+  public HoodSubsystem hoodSubsystem;
  
+  public ShooterSubsystem shooterSubsystem;
 
   /** Creates a new runPathAndIntake. */
-  public runPathAndIntake(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem) {
+  public NakedPriest(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -30,13 +33,22 @@ public class runPathAndIntake extends SequentialCommandGroup {
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
     this.drivetrainSubsystem = drivetrainSubsystem;
+    this.hoodSubsystem = hoodSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
+    
 
     addCommands(
       
-    new FollowPath(drivetrainSubsystem, "Test"), 
+    new ZeroHood(hoodSubsystem), 
+
+    new ZeroIntake(intakeSubsystem),
+
+    new FollowPath(drivetrainSubsystem, "Test"),
     
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new FollowPath(drivetrainSubsystem, "Test2"));
+    new Shoot(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+    
+    );
   }
 }

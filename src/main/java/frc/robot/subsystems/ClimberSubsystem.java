@@ -57,13 +57,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   }
 
-  public static void lockClimber(){
+  public void lockClimber(){
 
     lockingServo.setAngle(Constants.CLIMBER_SERVO_LOCK_POSITION);
 
   }
 
-  public static void disengageClimber(){
+  public void disengageClimber(){
 
     lockingServo.setAngle(Constants.CLIMBER_SERVO_DISENGAGE_POSITION);
 

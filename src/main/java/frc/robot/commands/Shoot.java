@@ -7,6 +7,7 @@ package frc.robot.commands;
 
 
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -28,6 +29,8 @@ public class Shoot extends CommandBase {
 
   public DrivetrainSubsystem drivetrainSubsystem;
 
+  public PIDController rotationController;
+
   public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
@@ -36,6 +39,8 @@ public class Shoot extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
 
     this.drivetrainSubsystem = drivetrainSubsystem;
+
+    rotationController = new PIDController(.2, .15, 0);
 
 
     addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
@@ -54,15 +59,32 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
 
 
+    if(d>96){
 
-    shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
+      hoodSubsystem.setHoodPosition(1.1);
+
+    } else {
+      
+      hoodSubsystem.setHoodPosition((.0073 * d) + .388);
+    }
+
+    if(d>96){
+
+      shooterSubsystem.setSpeed(10.1*d + 2864);
+
+    } else {
+
+      shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
+
+    }
     
-    hoodSubsystem.setHoodPosition((.0073 * d) + .388);
+    
+    
 
-    drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, photonVisionSubsystem.getXDisplacementOfGoal() * .2));
+    drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 

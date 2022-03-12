@@ -13,6 +13,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
@@ -47,10 +48,12 @@ public class FollowPath extends CommandBase {
 
     xPosPidController = new PIDController(3, 0, 0);
     yPosPidController = new PIDController(3, 0, 0);
-    thetaPidController = new PIDController(.05, 0, 0);
+    thetaPidController = new PIDController(5, 0, 0);
+
+    
 
 
-    thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
+    
 
     timer.reset();
     timer.start();
@@ -66,15 +69,17 @@ public class FollowPath extends CommandBase {
 
     ChassisSpeeds targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
 
-          xPosPidController.calculate(m_DrivetrainSubsystem.getOdomPose2d().getX(), desiredState.poseMeters.getX()),
-          yPosPidController.calculate(m_DrivetrainSubsystem.getOdomPose2d().getY(), desiredState.poseMeters.getY()),
-          thetaPidController.calculate(-m_DrivetrainSubsystem.getOdomPose2d().getRotation().getRadians(), desiredState.poseMeters.getRotation().getRadians()), 
+    
+          yPosPidController.calculate(m_DrivetrainSubsystem.getOdomPose2d().getX(), desiredState.poseMeters.getY()),
+          xPosPidController.calculate(m_DrivetrainSubsystem.getOdomPose2d().getY(), desiredState.poseMeters.getX()),
+          thetaPidController.calculate(-m_DrivetrainSubsystem.getOdomPose2d().getRotation().getRadians(), -desiredState.poseMeters.getRotation().getRadians()), 
           GyroSubsystem.getBestRotation2d()
           
           );
 
 
         
+          SmartDashboard.putNumber("theta of conte", thetaPidController.getPositionError());
     m_DrivetrainSubsystem.drive(targetChassisSpeeds);
 
   }

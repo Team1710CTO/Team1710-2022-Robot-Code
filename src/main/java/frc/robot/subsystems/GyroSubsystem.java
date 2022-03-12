@@ -42,6 +42,12 @@ public class GyroSubsystem extends SubsystemBase {
     return getNavXGyroscopeRotation();
 
   }
+  
+  public static void setGyro(double a){
+
+    m_navx.setAngleAdjustment(a);
+    
+  }
 
   public void zeroBestGyro(){
     

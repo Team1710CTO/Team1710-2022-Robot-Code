@@ -36,8 +36,8 @@ public class IntakeWithVision extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
 
-    xPidController = new PIDController(.02, .005, 0.005);
-    yPidController = new PIDController(.02, .005, 0.005);
+    xPidController = new PIDController(.04, .005, 0.005);
+    yPidController = new PIDController(.04, .005, 0.005);
 
     addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
