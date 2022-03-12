@@ -112,6 +112,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static Pose2d m_pose;
 
+  public SwerveModuleState[] actualStates, states;
+
 
   public static int pidActivationIterator = 0;
 
@@ -197,13 +199,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   }
 
+  public void setWheelStates(SwerveModuleState[] pstates){
+
+        states = pstates;
+
+        m_chassisSpeeds = m_kinematics.toChassisSpeeds(states);
+        
+  }
+
   @Override
   public void periodic() {
 
-        //temp
-        
-        //modify heading control
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false); // heading control
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false);
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 
@@ -260,9 +267,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   }
 
-  public void setOdometry(Pose2d p, Rotation2d r){
-          GyroSubsystem.setGyro(r.getDegrees());
-          m_odometry.resetPosition(p, r);
+  public void setOdometry(Pose2d p){
+          GyroSubsystem.setGyro(p.getRotation().getDegrees());
+          m_odometry.resetPosition(p, GyroSubsystem.getBestRotation2d());
   }
 
   private SwerveModuleState stateFromModule(SwerveModule swerveModule) {
@@ -272,6 +279,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 public Pose2d getOdomPose2d(){
 
         return m_odometry.getPoseMeters();
+
+}
+
+public SwerveModuleState[] getActualStates(){
+
+        return actualStates;
+
+}
+
+public SwerveDriveKinematics getKinematics(){
+
+        return m_kinematics;
 
 }
 
