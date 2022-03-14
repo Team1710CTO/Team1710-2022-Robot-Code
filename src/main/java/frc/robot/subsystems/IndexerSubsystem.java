@@ -19,7 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IndexerSubsystem extends SubsystemBase {
 
-  public static DigitalInput bottomBeamBreak, topBeamBreak;
+  public static DigitalInput bottomBeamBreak;
+  public DigitalInput topBeamBreak;
   public static CANSparkMax m_indexerRunner;
 
 
@@ -91,12 +92,6 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public static void countBallsPeriodic(){
-
-    if(m_indexerRunner_encoder.getVelocity() == 0 && !bottomBeamBreak.get()){
-
-      balls += 1;
-
-    }
 
     if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 1){
 

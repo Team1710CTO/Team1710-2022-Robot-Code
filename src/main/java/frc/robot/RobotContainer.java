@@ -33,15 +33,17 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
-  public static LedSubsystem ledSubsystem = new LedSubsystem();
+ // public static LedSubsystem ledSubsystem = new LedSubsystem();
 
   public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
+  
 
   
   
   //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
-  public final static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
+  public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -57,7 +59,7 @@ public class RobotContainer {
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
-  ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
+  //ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
 
     
     // Configure the button bindings
@@ -77,11 +79,11 @@ public class RobotContainer {
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
 
-   //new Button(m_controller::getBButton)
-   //        .whenHeld(new ClimbUpPower(mClimberSubsystem));
+   new Button(m_controller::getBButton)
+           .whenHeld(new ClimbUp(mClimberSubsystem));
 //
-   //new Button(m_controller::getYButton)
-   //        .whenHeld(new ClimbDownPower(mClimberSubsystem));
+   new Button(m_controller::getYButton)
+           .whenHeld(new ClimbDown(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
@@ -103,7 +105,7 @@ public class RobotContainer {
             .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
 
 
-    new Button(m_controller::getXButton).whenPressed(new ClimberLock(mClimberSubsystem)).whenReleased(mClimberSubsystem::disengageClimber);
+    new Button(m_controller::getXButton).whenPressed(new climberBootSequence(mClimberSubsystem));
 
     
 
@@ -124,9 +126,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new NakedPriest(m_drivetrainSubsystem, mIntakeSubsystem, 
+    return new ThreeBallAutoAtCrotch(m_drivetrainSubsystem, mIntakeSubsystem, 
     mphotonVisionSubsystem, 
-    m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem);
+    m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
   }
 
   private static double deadband(double value, double deadband) {

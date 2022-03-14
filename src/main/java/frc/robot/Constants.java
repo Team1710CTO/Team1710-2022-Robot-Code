@@ -160,8 +160,8 @@ public final class Constants {
 
     public static final int CLIMBER_SERVO_PWM_CHANNEL = 0;
 
-    public static final int CLIMBER_SERVO_LOCK_POSITION = 0;
-    public static final int CLIMBER_SERVO_DISENGAGE_POSITION = 10;
+    public static final double CLIMBER_SERVO_LOCK_POSITION = 180;
+    public static final double CLIMBER_SERVO_DISENGAGE_POSITION = 165.5;
 
     public static final int CLIMBER_TOP_TALON_CAN_ID = 50;
     public static final int CLIMBER_BOTTOM_TALON_CAN_ID = 51;
@@ -181,10 +181,13 @@ public final class Constants {
     public static final double INDEXER_OUT_SPEED = -.3;
     public static final double INDEXER_STOP_SPEED = 0;
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
-    public static final double CLIMBER_POSITION_UP = 1;
-    public static final double CLIMBER_POSITION_DOWN = 0;
-    public static final double CLIMBER_ZERO_THRESHOLD = 30;
+    public static final double CLIMBER_POSITION_UP = 1.65e5;
+    public static final double CLIMBER_POSITION_DOWN = 5000;
+    public static final double CLIMBER_ZERO_THRESHOLD = 20;
     
+    public static final double CLIMBER_OUT_POSITION = 1.65e5;
+
+    public static final double CLIMBER_IN_POSITION = 0;
     
     
 

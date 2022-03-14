@@ -36,8 +36,8 @@ public class IntakeWithVision extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
 
-    xPidController = new PIDController(.04, .005, 0.005);
-    yPidController = new PIDController(.04, .005, 0.005);
+    xPidController = new PIDController(.08, .005, 0.005);
+    yPidController = new PIDController(.08, .005, 0.005);
 
     addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -67,7 +67,7 @@ public class IntakeWithVision extends CommandBase {
 
     SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
 
-    if(Math.abs(xPidController.getPositionError()) < 20 && Math.abs(yPidController.getPositionError()) < 5 && intakeSubsystem.getIntakeState() == "Up"){
+    if(Math.abs(xPidController.getPositionError()) < 15 && Math.abs(yPidController.getPositionError()) < 4 && intakeSubsystem.getIntakeState() == "Up"){
 
       intakeSubsystem.setintakeDown();
       intakeSubsystem.runIntake();
@@ -103,6 +103,6 @@ public class IntakeWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !(initialballcount == indexerSubsystem.getBallCount());
+    return !(initialballcount == indexerSubsystem.getBallCount()) || !indexerSubsystem.topBeamBreak.get();
   }
 }

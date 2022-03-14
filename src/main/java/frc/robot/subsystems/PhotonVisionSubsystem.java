@@ -137,4 +137,15 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("intake see", doesIntakeSeeBall);
         return doesIntakeSeeBall;
     }
+
+    public static boolean hasGoalTargets(){
+
+        var results = Cameron.getLatestResult();
+        
+        if (results.hasTargets()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

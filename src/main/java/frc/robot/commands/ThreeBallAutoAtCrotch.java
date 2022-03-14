@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -15,7 +17,7 @@ import frc.robot.subsystems.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ppsFollower extends SequentialCommandGroup {
+public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
 
   public IntakeSubsystem intakeSubsystem;
 
@@ -29,14 +31,17 @@ public class ppsFollower extends SequentialCommandGroup {
  
   public ShooterSubsystem shooterSubsystem;
 
+  public GyroSubsystem gyroSubsystem;
+
   private PIDController xPosPidController, yPosPidController;
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public ppsFollower(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem) {
+  public ThreeBallAutoAtCrotch(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
+    this.gyroSubsystem = gyroSubsystem;
     this.intakeSubsystem = intakeSubsystem;
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
@@ -44,31 +49,36 @@ public class ppsFollower extends SequentialCommandGroup {
     this.hoodSubsystem = hoodSubsystem;
     this.shooterSubsystem = shooterSubsystem;
 
-    xPosPidController = new PIDController(3, 0, 0);
-    yPosPidController = new PIDController(3, 0, 0);
-    thetaPidController = new ProfiledPIDController(3, 0, 0, new TrapezoidProfile.Constraints(3,3));
+    xPosPidController = new PIDController(1, 0, 0);
+    yPosPidController = new PIDController(1, 0, 0);
+    thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
     
 
     addCommands(
-      
-    new ZeroHood(hoodSubsystem), 
 
-    new ZeroIntake(intakeSubsystem),
+    new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
-    new PPSwerveControllerCommand("Test", 
-                                  drivetrainSubsystem::getOdomPose2d, 
-                                  drivetrainSubsystem.getKinematics(), 
-                                  new PIDController(3, 0, 0), 
-                                  new PIDController(3, 0, 0), 
-                                  new ProfiledPIDController(3, 0, 0, new TrapezoidProfile.Constraints(3,3)), 
-                                  drivetrainSubsystem::setWheelStates, 
-                                  drivetrainSubsystem),
-    
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new Shoot(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
-    
-    );
+    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+
+    new PPSwerveControllerCommand(PathPlanner.loadPath("Test", 8, 5), 
+                                  drivetrainSubsystem::getOdomPose2d, 
+                                  drivetrainSubsystem.getKinematics(), 
+                                  xPosPidController, 
+                                  yPosPidController, 
+                                  thetaPidController, 
+                                  drivetrainSubsystem::setWheelStates, 
+                                  drivetrainSubsystem),
+
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+               
+  
+    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+                                  
+  );
+
+
   }
 }

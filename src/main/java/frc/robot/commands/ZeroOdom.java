@@ -5,16 +5,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 
-public class ClimberLock extends CommandBase {
-  /** Creates a new ClimberLock. */
+public class ZeroOdom extends CommandBase {
+  /** Creates a new ZeroOdom. */
 
-  private ClimberSubsystem climberSubsystem;
-  public ClimberLock(ClimberSubsystem climberSubsystem) {
+  DrivetrainSubsystem drivetrainSubsystem;
 
-    this.climberSubsystem = climberSubsystem;
-    addRequirements(climberSubsystem);
+  GyroSubsystem gyroSubsystem;
+
+  public ZeroOdom(GyroSubsystem gyroSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+
+    this.gyroSubsystem = gyroSubsystem;
+
+    this.gyroSubsystem = gyroSubsystem;
+
+    this.drivetrainSubsystem = drivetrainSubsystem;
+
+    addRequirements(gyroSubsystem, drivetrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,7 +35,9 @@ public class ClimberLock extends CommandBase {
   @Override
   public void execute() {
 
-    climberSubsystem.lockClimber();
+    gyroSubsystem.zeroBestGyro();
+    gyroSubsystem.setIsZeroingFalse();
+    drivetrainSubsystem.resetOdometry();
     
   }
 
@@ -37,6 +48,6 @@ public class ClimberLock extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

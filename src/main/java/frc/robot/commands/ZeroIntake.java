@@ -25,8 +25,7 @@ public class ZeroIntake extends CommandBase {
     addRequirements(intakeSubsystem);
 
 
-    timer.reset();
-    timer.start();
+    
     
 
   }
@@ -34,6 +33,9 @@ public class ZeroIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    timer.reset();
+    timer.start();
 
   }
 
@@ -60,7 +62,7 @@ public class ZeroIntake extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(intakeSubsystem.isIntakeStalledCurrent() && timer.get() > 1){
+    if(intakeSubsystem.isIntakeStalledCurrent() && timer.get() > .25){
 
       
 

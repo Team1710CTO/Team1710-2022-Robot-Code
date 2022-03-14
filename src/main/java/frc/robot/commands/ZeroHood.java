@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.HoodSubsystem;
 
@@ -12,17 +13,23 @@ public class ZeroHood extends CommandBase {
 
   public HoodSubsystem hoodSubsystem;
 
+  public final Timer timer = new Timer();
+
   public ZeroHood(HoodSubsystem hoodSubsystem) {
 
     this.hoodSubsystem = hoodSubsystem;
 
     addRequirements(hoodSubsystem);
+    
    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    timer.reset();
+    timer.start();
 
     //hoodSubsystem.disableSoftLimits();
 
@@ -49,7 +56,18 @@ public class ZeroHood extends CommandBase {
   @Override
   public boolean isFinished() {
 
-     return hoodSubsystem.isHoodCurrentOverZeroConstant();
+    if( hoodSubsystem.isHoodCurrentOverZeroConstant() && timer.get() > .25){
+
+      return true;
+
+    } else {
+
+
+      return false;
+
+    }
+
+     
     
   }
 
