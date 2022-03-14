@@ -21,6 +21,6 @@ public class climberBootSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     this.climberSubsystem = climberSubsystem;
-    addCommands(new ZeroClimber(climberSubsystem), new ClimbDown(climberSubsystem), new ClimberLock(climberSubsystem));
+    addCommands(new ZeroClimber(climberSubsystem), new ClimbDown(climberSubsystem));
   }
 }

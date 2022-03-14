@@ -31,8 +31,8 @@ public class ZeroClimber extends CommandBase {
   public void execute() {
 
     climberSubsystem.runDown();
+
     
-    climberSubsystem.lockClimber();
 
 
   }
@@ -40,7 +40,7 @@ public class ZeroClimber extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climberSubsystem.lockClimber();
+   
     climberSubsystem.zeroEncoder();
     climberSubsystem.stop();
     
