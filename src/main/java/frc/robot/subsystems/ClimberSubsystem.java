@@ -41,7 +41,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 		/* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
 		climberTalonTop.config_kF(0, 0, Constants.kTimeoutMs);
-		climberTalonTop.config_kP(0, .1, Constants.kTimeoutMs);
+		climberTalonTop.config_kP(0, .9, Constants.kTimeoutMs);
 		climberTalonTop.config_kI(0, 0, Constants.kTimeoutMs);
 		climberTalonTop.config_kD(0, 0, Constants.kTimeoutMs);
 
@@ -120,19 +120,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setClimberUp(){
 
-    if(engageBol || timer.get() < .05){
-
-      timer.start();
-      disengageClimber();
-      runDown();
-
-    } else {
-
       setPosition(Constants.CLIMBER_POSITION_UP);
 
-    }
+  }
 
-    
+  public void setClimberHalf(){
+
+    setPosition(Constants.CLIMBER_POSITION_HALF);
 
   }
 

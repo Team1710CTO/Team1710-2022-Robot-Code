@@ -42,7 +42,7 @@ public class ZeroClimber extends CommandBase {
   public void end(boolean interrupted) {
    
     climberSubsystem.zeroEncoder();
-    climberSubsystem.stop();
+    
     
   }
 

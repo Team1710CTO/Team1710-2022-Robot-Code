@@ -32,7 +32,7 @@ public class ClimbUp extends CommandBase {
   public void execute() {
 
 
-    climberSubsystem.setClimberUp();;
+    climberSubsystem.setClimberUp();
 
   }
 
@@ -40,7 +40,7 @@ public class ClimbUp extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    climberSubsystem.stop();
+  
 
   }
 

@@ -144,9 +144,9 @@ public final class Constants {
 
  public static final int SHOOTER_PDP_SLOT = 12; // GOOD
  public static final int SHOOTER_CAN_ID = 40; // GOOD
- public static double SHOOTER_kP = 0.000536; // GOOD
- public static double SHOOTER_kI = 0; // GOOD
- public static double SHOOTER_kD = 0; // GOOD
+ public static double SHOOTER_kP = 0.000536 * 1.5; // GOOD
+ public static double SHOOTER_kI = 0.00000; // GOOD
+ public static double SHOOTER_kD = 0.0; // GOOD
  public static double SHOOTER_kIz = 0; 
  public static double SHOOTER_kFF = 0.00018;  // GOOD
  public static double SHOOTER_kMaxOutput = 1; // GOOD
@@ -181,8 +181,11 @@ public final class Constants {
     public static final double INDEXER_OUT_SPEED = -.3;
     public static final double INDEXER_STOP_SPEED = 0;
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
-    public static final double CLIMBER_POSITION_UP = 1.65e5;
-    public static final double CLIMBER_POSITION_DOWN = 5000;
+    public static final double CLIMBER_POSITION_UP = 1.7e5;
+
+    public static final double CLIMBER_POSITION_HALF = (1.7e5)/2;
+    
+    public static final double CLIMBER_POSITION_DOWN = 10000;
     public static final double CLIMBER_ZERO_THRESHOLD = 20;
     
     public static final double CLIMBER_OUT_POSITION = 1.65e5;

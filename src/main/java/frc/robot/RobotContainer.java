@@ -57,6 +57,8 @@ public class RobotContainer {
             () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
+    mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
+
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
   //ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
@@ -79,10 +81,10 @@ public class RobotContainer {
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
 
 
-   new Button(m_controller::getBButton)
+   new Button(m_controller::getYButton)
            .whenHeld(new ClimbUp(mClimberSubsystem));
 //
-   new Button(m_controller::getYButton)
+   new Button(m_controller::getBButton)
            .whenHeld(new ClimbDown(mClimberSubsystem));
     
 
@@ -102,6 +104,7 @@ public class RobotContainer {
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
     new Button(m_controller::getAButton)
+            //.whenHeld(new ClimbHalf(mClimberSubsystem));
             .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
 
 
@@ -126,7 +129,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new ThreeBallAutoAtCrotch(m_drivetrainSubsystem, mIntakeSubsystem, 
+    return new FourBallAutoAtCrotch(m_drivetrainSubsystem, mIntakeSubsystem, 
     mphotonVisionSubsystem, 
     m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
   }

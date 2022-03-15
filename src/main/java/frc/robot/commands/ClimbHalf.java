@@ -7,12 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class ClimbDown extends CommandBase {
+public class ClimbHalf extends CommandBase {
   /** Creates a new Climb. */
 
   private ClimberSubsystem climberSubsystem;
 
-  public ClimbDown(ClimberSubsystem climberSubsystem) {
+  public ClimbHalf(ClimberSubsystem climberSubsystem) {
 
     this.climberSubsystem = climberSubsystem;
 
@@ -32,7 +32,7 @@ public class ClimbDown extends CommandBase {
   public void execute() {
 
 
-    climberSubsystem.setClimberDown();
+    climberSubsystem.setClimberHalf();
 
   }
 
