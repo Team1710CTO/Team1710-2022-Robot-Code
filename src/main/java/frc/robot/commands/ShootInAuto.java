@@ -75,11 +75,9 @@ public class ShootInAuto extends CommandBase {
     
     
     
-    
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
 
     if(photonVisionSubsystem.hasGoalTargets()){
-
-      double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
 
       targetSeen = true;
 
@@ -110,10 +108,10 @@ public class ShootInAuto extends CommandBase {
       timer3.start();
 
       if(timer2.get() > .5){
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -2));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -5));
       } else {
 
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 3));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 5));
       }
 
     }
@@ -125,7 +123,7 @@ public class ShootInAuto extends CommandBase {
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-        indexerSubsystem.runIndexerIn();
+        indexerSubsystem.runindexerInFAST();
 
         timer.start();
 
@@ -152,6 +150,6 @@ public class ShootInAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > .875;
+    return timer.get() > .3;
   }
 }

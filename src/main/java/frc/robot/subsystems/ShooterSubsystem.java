@@ -63,6 +63,8 @@ public class ShooterSubsystem extends SubsystemBase {
    
     SmartDashboard.putNumber("Velo shooter", m_encoder.getVelocity()); // Puts the actual RPM to SmartDashboard
     SmartDashboard.putNumber("GVelo shooter", goalSpeed);
+
+    SmartDashboard.putBoolean("shooter to speed", isShooterToSpeed());
   }
 
   public void setSpeed(double setPoint){

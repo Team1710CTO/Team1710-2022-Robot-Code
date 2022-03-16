@@ -36,7 +36,7 @@ public class IntakeWithVision extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
 
-    xPidController = new PIDController(.08, .005, 0.005);
+    xPidController = new PIDController(.04, .005, 0.005);
     yPidController = new PIDController(.08, .005, 0.005);
 
     addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem);
@@ -67,7 +67,7 @@ public class IntakeWithVision extends CommandBase {
 
     SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
 
-    if(Math.abs(xPidController.getPositionError()) < 15 && Math.abs(yPidController.getPositionError()) < 4 && intakeSubsystem.getIntakeState() == "Up"){
+    if(photonVisionSubsystem.hasBallTargets() && Math.abs(xPidController.getPositionError()) < 15 && Math.abs(yPidController.getPositionError()) < 4 && intakeSubsystem.getIntakeState() == "Up"){
 
       intakeSubsystem.setintakeDown();
       intakeSubsystem.runIntake();

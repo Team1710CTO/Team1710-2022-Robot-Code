@@ -144,7 +144,7 @@ public final class Constants {
 
  public static final int SHOOTER_PDP_SLOT = 12; // GOOD
  public static final int SHOOTER_CAN_ID = 40; // GOOD
- public static double SHOOTER_kP = 0.000536 * 1.5; // GOOD
+ public static double SHOOTER_kP = 0.000536; // GOOD
  public static double SHOOTER_kI = 0.00000; // GOOD
  public static double SHOOTER_kD = 0.0; // GOOD
  public static double SHOOTER_kIz = 0; 
@@ -154,7 +154,7 @@ public final class Constants {
  public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
  public static double SHOOTER_abnormal_abnormal_current_draw = 10;      
 
-    public static final double SHOOTER_GO_THRESHHOLD = 120;
+    public static final double SHOOTER_GO_THRESHHOLD = 300;
     
     
 

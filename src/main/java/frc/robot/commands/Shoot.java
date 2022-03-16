@@ -62,6 +62,8 @@ public class Shoot extends CommandBase {
     double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
 
 
+    if(photonVisionSubsystem.hasGoalTargets()){
+
     if(d>96){
 
       hoodSubsystem.setHoodPosition(1.1);
@@ -81,14 +83,14 @@ public class Shoot extends CommandBase {
 
     }
     
-    
+  }
     
 
     drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-        indexerSubsystem.runIndexerIn();
+        indexerSubsystem.runindexerInFAST();
 
     } else {
 

@@ -148,4 +148,17 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             return false;
         }
     }
+
+    public static boolean hasBallTargets(){
+
+        var results = Camille.getLatestResult();
+        
+        if (results.hasTargets()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    
 }

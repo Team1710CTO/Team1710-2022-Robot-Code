@@ -30,6 +30,10 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static int balls = 0;
 
+  public static int ttfCounter = 0;
+
+  public static boolean lastUpperBeamBreak = false;
+
   public static int ballintegralBottom, ballintegralTop = 0;
   
 
@@ -65,6 +69,8 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("bottomBeamBreak", bottomBeamBreak.get());
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
+    
+
     //SmartDashboard.putNumber("indexer Rotations", getIndexerRotations());
 
     //SmartDashboard.putBoolean("is cycled", isIndexerCycled());
@@ -80,6 +86,8 @@ public class IndexerSubsystem extends SubsystemBase {
 
     countBallsPeriodic();
 
+
+    countTtf();
     
 
 
@@ -143,6 +151,11 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
+  public static void runindexerInFAST(){
+
+    m_indexerRunner_PidController.setReference(1, ControlType.kDutyCycle);
+
+  }
   public static void runIndexerOut(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_OUT_SPEED, ControlType.kDutyCycle);
@@ -200,6 +213,24 @@ public class IndexerSubsystem extends SubsystemBase {
   public boolean isIndexerCycled(){
 
     return (getIndexerRotations() > Constants.INDEXER_CYCLE_ROTATIONS);
+
+  }
+
+  public void resetTtfCounter(){
+
+    ttfCounter = 0;
+
+  }
+
+  public void countTtf(){
+
+    if(lastUpperBeamBreak = false && lastUpperBeamBreak != topBeamBreak.get()){
+
+      ttfCounter += 1;
+
+    }
+
+    lastUpperBeamBreak = topBeamBreak.get();
 
   }
 

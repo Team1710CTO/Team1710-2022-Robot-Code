@@ -17,7 +17,7 @@ import frc.robot.subsystems.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
+public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
 
   public IntakeSubsystem intakeSubsystem;
 
@@ -37,7 +37,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public ThreeBallAutoAtCrotch(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public FourBallAutoAtCrotchHudson(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -73,8 +73,31 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
                                   drivetrainSubsystem),
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-               
-  
+
+    new DeadReckonDrive(drivetrainSubsystem, 0, 0, 3, .18),
+
+    new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
+                                  drivetrainSubsystem::getOdomPose2d, 
+                                  drivetrainSubsystem.getKinematics(), 
+                                  xPosPidController, 
+                                  yPosPidController, 
+                                  thetaPidController, 
+                                  drivetrainSubsystem::setWheelStates, 
+                                  drivetrainSubsystem),
+
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+
+    new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun2", 8, 5), 
+                                  drivetrainSubsystem::getOdomPose2d, 
+                                  drivetrainSubsystem.getKinematics(), 
+                                  xPosPidController, 
+                                  yPosPidController, 
+                                  thetaPidController, 
+                                  drivetrainSubsystem::setWheelStates, 
+                                  drivetrainSubsystem),
+
+    new DeadReckonDrive(drivetrainSubsystem, 0, 0, -3, .18),
+
     new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );
