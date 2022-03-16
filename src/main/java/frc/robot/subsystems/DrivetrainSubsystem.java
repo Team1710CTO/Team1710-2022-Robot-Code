@@ -44,6 +44,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
 
+   public static boolean headingControl = false;
+
   public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
   public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
   
@@ -207,10 +209,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
   }
 
+  public void enableHeadingControl(){
+
+        headingControl = true;
+
+  }
+
+  public boolean headingControlEnanbled(){
+
+        return headingControl;
+  }
+
   @Override
   public void periodic() {
 
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false);
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(headingControlEnanbled());
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 

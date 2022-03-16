@@ -96,8 +96,6 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new DeadReckonDrive(drivetrainSubsystem, 0, 0, -3, .18),
-
     new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );

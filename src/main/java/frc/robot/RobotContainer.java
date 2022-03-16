@@ -78,7 +78,8 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
-            .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
+            .whenReleased(m_GyroSubsystem::setIsZeroingFalse)
+            .whenReleased(m_drivetrainSubsystem::enableHeadingControl);
 
 
    new Button(m_controller::getYButton)
@@ -129,9 +130,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new FourBallAutoAtCrotchCorey(m_drivetrainSubsystem, mIntakeSubsystem, 
+    return new FourBallAutoAtCrotchHudson(m_drivetrainSubsystem, mIntakeSubsystem, 
     mphotonVisionSubsystem, 
     m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
   }
 
   private static double deadband(double value, double deadband) {
