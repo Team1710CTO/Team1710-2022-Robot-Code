@@ -14,9 +14,25 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        getDistanceToGoalMeters(0);
-        getXDisplacementOfGoal();
-        // getDistanceToBallMeters();
+
+        var resultsCamille = Camille.getLatestResult();
+        double XDisplacementOfGoal = 0;
+        double YDisplacementOfGoal = 0;
+
+        if (resultsCamille.hasTargets()) {
+            
+            XDisplacementOfGoal = resultsCamille.getBestTarget().getYaw();
+            YDisplacementOfGoal = resultsCamille.getBestTarget().getPitch();
+            SmartDashboard.putNumber("ball x displace", XDisplacementOfGoal);
+            SmartDashboard.putNumber("ball y displace", YDisplacementOfGoal);
+        } else {
+            XDisplacementOfGoal = 0;
+            YDisplacementOfGoal = 0;
+            SmartDashboard.putNumber("ball x displace", XDisplacementOfGoal);
+            SmartDashboard.putNumber("ball y displace", YDisplacementOfGoal);
+        }
+        
+        getDistanceToGoalMeters(0.0);
 
     }
 
@@ -25,14 +41,15 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         var resultCameron = Cameron.getLatestResult(); // Gets the camera's results
         if (resultCameron.hasTargets()) {
             // Distance to target calculation
-            double cameraHeightMeters = Units.inchesToMeters(28.75); // TODO
-            double targetHeightMeters = 2.6035; // the actual height
-            double cameraPitchRadians = Units.degreesToRadians(35); // TODO
-            double targetPitchRadians = Units.degreesToRadians(resultCameron.getBestTarget().getPitch());
-            double DisToTargetMeters = PhotonUtils.calculateDistanceToTargetMeters(cameraHeightMeters,
-                    targetHeightMeters, cameraPitchRadians, targetPitchRadians);
-            groundDisToTarget = Math.abs(DisToTargetMeters * Math.cos(resultCameron.getBestTarget().getPitch()));
-            SmartDashboard.putNumber("Ground Distance To Target", groundDisToTarget); // Puts the distance to
+            //double cameraHeightMeters = 0.7874;
+            //double targetHeightMeters = 1.8161; // the actual height
+            //double cameraPitch = 55; // TODO
+            groundDisToTarget = resultCameron.getBestTarget().getPitch() ; // STILL TESTING
+            double x = groundDisToTarget;
+            double result = 105 + -8.26*x + 0.359*x*x;
+            SmartDashboard.putNumber("Ground Distance To Target", result);
+            return result;
+             // Puts the distance to
                                                                                       // SmartDashboard
         } else {
             groundDisToTarget = odometryDistance; // Sets a default value when no targets are seen
@@ -120,4 +137,28 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("intake see", doesIntakeSeeBall);
         return doesIntakeSeeBall;
     }
+
+    public static boolean hasGoalTargets(){
+
+        var results = Cameron.getLatestResult();
+        
+        if (results.hasTargets()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean hasBallTargets(){
+
+        var results = Camille.getLatestResult();
+        
+        if (results.hasTargets()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    
 }

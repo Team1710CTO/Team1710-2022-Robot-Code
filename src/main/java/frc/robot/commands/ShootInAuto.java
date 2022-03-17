@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
@@ -16,7 +17,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class Shoot extends CommandBase {
+public class ShootInAuto extends CommandBase {
   /** Creates a new Shoot. */
 
   public ShooterSubsystem shooterSubsystem;
@@ -31,7 +32,11 @@ public class Shoot extends CommandBase {
 
   public PIDController rotationController;
 
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+  public final Timer timer, timer2, timer3;
+
+  public boolean targetSeen = false;
+
+  public ShootInAuto(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
@@ -39,6 +44,12 @@ public class Shoot extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
 
     this.drivetrainSubsystem = drivetrainSubsystem;
+
+    timer = new Timer();
+
+    timer2 = new Timer();
+
+    timer3 = new Timer();
 
     rotationController = new PIDController(.2, .15, 0);
 
@@ -51,7 +62,9 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
 
-    
+    timer.reset();
+    timer2.reset();
+    timer3.reset();
 
   }
 
@@ -59,42 +72,66 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
+    
+    
+    
     double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
-
 
     if(photonVisionSubsystem.hasGoalTargets()){
 
-    if(d>96){
+      targetSeen = true;
 
-      hoodSubsystem.setHoodPosition(1.1);
+      if(d>96){
 
-    } else {
-      
-      hoodSubsystem.setHoodPosition((.0073 * d) + .388);
+        hoodSubsystem.setHoodPosition(1.1);
+
+      } else {
+        
+        hoodSubsystem.setHoodPosition((.0073 * d) + .388);
+      }
+
+      if(d>96){
+
+        shooterSubsystem.setSpeed(10.1*d + 2864);
+
+      } else {
+
+        shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
+
+      }
+
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
+
+    } else if (!targetSeen){
+
+      timer2.start();
+      timer3.start();
+
+      if(timer2.get() > .5){
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -5));
+      } else {
+
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 5));
+      }
+
     }
 
-    if(d>96){
-
-      shooterSubsystem.setSpeed(10.1*d + 2864);
-
-    } else {
-
-      shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
-
+    if(timer3.get()>.1 && targetSeen){
+      targetSeen = false;
     }
     
-  }
-    
-
-    drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
         indexerSubsystem.runindexerInFAST();
 
+        timer.start();
+
     } else {
 
       indexerSubsystem.stopIndexer();
+
+      timer.stop();
 
     }
 
@@ -113,6 +150,6 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.get() > .3;
   }
 }

@@ -33,13 +33,17 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
-  public static LedSubsystem ledSubsystem = new LedSubsystem();
+ // public static LedSubsystem ledSubsystem = new LedSubsystem();
+
+  public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
+  
 
   
   
   //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
   public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -53,9 +57,11 @@ public class RobotContainer {
             () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
+    mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
+
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
-  ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
+  //ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
 
     
     // Configure the button bindings
@@ -72,20 +78,22 @@ public class RobotContainer {
     // Back button zeros the gyroscope
     new Button(m_controller::getBackButton)
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
-            .whenReleased(m_GyroSubsystem::setIsZeroingFalse);
+            .whenReleased(m_GyroSubsystem::setIsZeroingFalse)
+            .whenReleased(m_drivetrainSubsystem::enableHeadingControl);
 
 
-    new Button(m_controller::getBButton)
-            .whenHeld(new ClimbUpPower(mClimberSubsystem));
+   new Button(m_controller::getYButton)
+           .whenHeld(new ClimbUp(mClimberSubsystem));
 //
-    new Button(m_controller::getYButton)
-            .whenHeld(new ClimbDownPower(mClimberSubsystem));
+   new Button(m_controller::getBButton)
+           .whenHeld(new ClimbDown(mClimberSubsystem));
     
 
     new Button(m_controller::getStartButton)
             .whenPressed(new ZeroIntake(mIntakeSubsystem))
             .whenPressed(new ZeroHood(mHoodSubsystem))
-            .whenPressed(m_drivetrainSubsystem::resetOdometry);
+            .whenPressed(m_drivetrainSubsystem::resetOdometry)
+            .whenPressed(m_iIndexerSubsystem::zeroBallCount);
            
 
             
@@ -97,9 +105,11 @@ public class RobotContainer {
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
     new Button(m_controller::getAButton)
-            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
+            //.whenHeld(new ClimbHalf(mClimberSubsystem));
+            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
 
-    
+
+    new Button(m_controller::getXButton).whenPressed(new climberBootSequence(mClimberSubsystem));
 
     
 
@@ -120,7 +130,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DriveToPositionCommand(m_drivetrainSubsystem, new Pose2d(2, 0, new Rotation2d(0)));
+    return new FourBallAutoAtCrotchHudson(m_drivetrainSubsystem, mIntakeSubsystem, 
+    mphotonVisionSubsystem, 
+    m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
   }
 

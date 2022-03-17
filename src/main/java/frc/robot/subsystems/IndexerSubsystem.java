@@ -19,13 +19,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IndexerSubsystem extends SubsystemBase {
 
-  public static DigitalInput bottomBeamBreak, topBeamBreak;
+  public static DigitalInput bottomBeamBreak;
+  public DigitalInput topBeamBreak;
   public static CANSparkMax m_indexerRunner;
 
 
   public static double rotations = 0;
   private static SparkMaxPIDController m_indexerRunner_PidController;
   private static RelativeEncoder m_indexerRunner_encoder;
+
+  public static int balls = 0;
+
+  public static int ttfCounter = 0;
+
+  public static boolean lastUpperBeamBreak = false;
+
+  public static int ballintegralBottom, ballintegralTop = 0;
   
 
   /** Creates a new IndexerSubsystem. */
@@ -60,10 +69,78 @@ public class IndexerSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("bottomBeamBreak", bottomBeamBreak.get());
     SmartDashboard.putBoolean("topBeamBreak", topBeamBreak.get());
 
-    SmartDashboard.putNumber("indexer Rotations", getIndexerRotations());
+    
 
-    SmartDashboard.putBoolean("is cycled", isIndexerCycled());
+    //SmartDashboard.putNumber("indexer Rotations", getIndexerRotations());
 
+    //SmartDashboard.putBoolean("is cycled", isIndexerCycled());
+
+    m_indexerRunner_encoder.getVelocity();
+
+    SmartDashboard.putNumber("indxer velocity", m_indexerRunner_encoder.getVelocity());
+
+    SmartDashboard.putNumber("balls", balls);
+
+    SmartDashboard.putNumber("ball integral", ballintegralBottom);
+    
+
+    countBallsPeriodic();
+
+
+    countTtf();
+    
+
+
+  }
+
+  public int getBallCount(){
+
+    return balls;
+    
+  }
+
+  public static void countBallsPeriodic(){
+
+    if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 1){
+
+      ballintegralBottom += 1;
+      SmartDashboard.putNumber("ball integral", ballintegralBottom);
+
+    } else if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() < 1){
+
+      ballintegralBottom -= 1;
+      SmartDashboard.putNumber("ball integral", ballintegralBottom);
+
+    } else {
+
+      if(bottomBeamBreak.get()){
+
+        if(ballintegralBottom > 8){
+  
+          balls +=1;
+          ballintegralBottom = 0;
+  
+        } else if(ballintegralBottom < -8){
+  
+          balls -=1;
+          ballintegralBottom = 0;
+          
+        } else {
+
+          if(m_indexerRunner_encoder.getVelocity() == 0){
+  
+          ballintegralBottom = 0;
+          
+          } 
+
+          
+
+  
+        }
+  
+      }
+
+    }
 
 
   }
@@ -74,6 +151,11 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
+  public static void runindexerInFAST(){
+
+    m_indexerRunner_PidController.setReference(1, ControlType.kDutyCycle);
+
+  }
   public static void runIndexerOut(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_OUT_SPEED, ControlType.kDutyCycle);
@@ -116,6 +198,12 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
+  public void zeroBallCount(){
+
+    balls = 0;
+
+  }
+
   public static double getIndexerRotations(){
 
     return m_indexerRunner_encoder.getPosition();
@@ -125,6 +213,24 @@ public class IndexerSubsystem extends SubsystemBase {
   public boolean isIndexerCycled(){
 
     return (getIndexerRotations() > Constants.INDEXER_CYCLE_ROTATIONS);
+
+  }
+
+  public void resetTtfCounter(){
+
+    ttfCounter = 0;
+
+  }
+
+  public void countTtf(){
+
+    if(lastUpperBeamBreak = false && lastUpperBeamBreak != topBeamBreak.get()){
+
+      ttfCounter += 1;
+
+    }
+
+    lastUpperBeamBreak = topBeamBreak.get();
 
   }
 

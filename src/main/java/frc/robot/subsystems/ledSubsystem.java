@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.AddressableLED;
 
 public class LedSubsystem extends SubsystemBase {
-  /** Creates a new ledSubsystem. */
-  public LedSubsystem() {
-  }
 
   public static AddressableLED m_led = new AddressableLED(1);
   public static AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(19);
@@ -36,6 +33,12 @@ public class LedSubsystem extends SubsystemBase {
 
   private int kitt = 0;
 
+  /** Creates a new ledSubsystem. */
+  public LedSubsystem() {
+
+  }
+
+ 
   public void setLength() {
     m_timer.reset();
     m_timer.start();

@@ -44,6 +44,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
 
+   public static boolean headingControl = false;
+
   public static Rotation2d lastGyro = Rotation2d.fromDegrees(0.0);
   public static Rotation2d goalGyro = Rotation2d.fromDegrees(0.0);
   
@@ -111,6 +113,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public SwerveDriveOdometry m_odometry;
 
   public static Pose2d m_pose;
+
+  public SwerveModuleState[] actualStates, states;
 
 
   public static int pidActivationIterator = 0;
@@ -197,13 +201,29 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   }
 
+  public void setWheelStates(SwerveModuleState[] pstates){
+
+        states = pstates;
+
+        m_chassisSpeeds = m_kinematics.toChassisSpeeds(states);
+        
+  }
+
+  public void enableHeadingControl(){
+
+        headingControl = true;
+
+  }
+
+  public boolean headingControlEnanbled(){
+
+        return headingControl;
+  }
+
   @Override
   public void periodic() {
 
-        //temp
-        
-        //modify heading control
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true); // heading control
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(headingControlEnanbled());
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 
@@ -220,19 +240,38 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
         m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
-        m_pose = m_odometry.update(
-                GyroSubsystem.getBestRotation2d(), 
+
+        SwerveModuleState[] actualStates = {
                 stateFromModule(m_frontLeftModule), 
-                stateFromModule(m_frontRightModule),
+                stateFromModule(m_frontRightModule), 
                 stateFromModule(m_backLeftModule), 
                 stateFromModule(m_backRightModule)
+        };
+
+        ChassisSpeeds actualChassisSpeeds = m_kinematics.toChassisSpeeds(actualStates);
+
+        SmartDashboard.putNumber("robot x velocity", actualChassisSpeeds.vxMetersPerSecond);
+
+        SmartDashboard.putNumber("robot y velocity", actualChassisSpeeds.vyMetersPerSecond);
+
+        SmartDashboard.putNumber("robot omega velocity", actualChassisSpeeds.omegaRadiansPerSecond);
+
+        m_pose = m_odometry.update(
+                GyroSubsystem.getBestRotation2d(), 
+                actualStates[0], 
+                actualStates[1],
+                actualStates[2], 
+                actualStates[3]
             );
+
+        
 
             SmartDashboard.putNumber("front Left Velovity", m_frontLeftModule.getDriveVelocity());
 
             SmartDashboard.putNumber("estimated position X", m_pose.getX());
             SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
+            SmartDashboard.putNumber("estimated position X in inches", m_pose.getX()/37);
   }
 
   public void resetOdometry(){
@@ -241,8 +280,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   }
 
+  public void setOdometry(Pose2d p){
+          GyroSubsystem.setGyro(p.getRotation().getDegrees());
+          m_odometry.resetPosition(p, GyroSubsystem.getBestRotation2d());
+  }
+
   private SwerveModuleState stateFromModule(SwerveModule swerveModule) {
         return new SwerveModuleState(swerveModule.getDriveVelocity(), new Rotation2d(swerveModule.getSteerAngle()));
+}
+
+public Pose2d getOdomPose2d(){
+
+        return m_odometry.getPoseMeters();
+
+}
+
+public SwerveModuleState[] getActualStates(){
+
+        return actualStates;
+
+}
+
+public SwerveDriveKinematics getKinematics(){
+
+        return m_kinematics;
+
 }
 
 

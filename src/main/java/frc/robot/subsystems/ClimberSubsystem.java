@@ -6,20 +6,27 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ClimberSubsystem extends SubsystemBase {
 
   private TalonFX climberTalonTop, climberTalonBottom;
-  private static Servo lockingServo;
+  private Servo lockingServo;
+
+  private Timer timer;
+  private boolean engageBol = true;
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
 
+    
+    timer = new Timer();
     climberTalonTop = new TalonFX(Constants.CLIMBER_TOP_TALON_CAN_ID);
     climberTalonBottom = new TalonFX(Constants.CLIMBER_BOTTOM_TALON_CAN_ID);
 
@@ -34,7 +41,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 		/* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
 		climberTalonTop.config_kF(0, 0, Constants.kTimeoutMs);
-		climberTalonTop.config_kP(0, .1, Constants.kTimeoutMs);
+		climberTalonTop.config_kP(0, .9, Constants.kTimeoutMs);
 		climberTalonTop.config_kI(0, 0, Constants.kTimeoutMs);
 		climberTalonTop.config_kD(0, 0, Constants.kTimeoutMs);
 
@@ -42,15 +49,26 @@ public class ClimberSubsystem extends SubsystemBase {
 
     
 
-    lockingServo = new Servo(Constants.CLIMBER_SERVO_PWM_CHANNEL);
-    //lockingServo.setPosition(Constants.CLIMBER_SERVO_LOCK_POSITION);
-    lockingServo.setDisabled();
+    lockingServo = new Servo(3);
+
+    timer.reset();
+
 
   }
 
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    if(engageBol){
+
+      lockingServo.setAngle(180);
+
+    } else {
+
+      lockingServo.setAngle(165.5);
+    }
 
     SmartDashboard.putNumber("climber Position", climberTalonTop.getSelectedSensorPosition());
 
@@ -58,19 +76,19 @@ public class ClimberSubsystem extends SubsystemBase {
 
   }
 
-  public static void lockClimber(){
+  public void lockClimber(){
 
-    lockingServo.setAngle(Constants.CLIMBER_SERVO_LOCK_POSITION);
-
-  }
-
-  public static void disengageClimber(){
-
-    lockingServo.setAngle(Constants.CLIMBER_SERVO_DISENGAGE_POSITION);
+    engageBol = false;
 
   }
 
-  public static void disableClimber(){
+  public void disengageClimber(){
+
+    engageBol = true;
+
+  }
+
+  public void disableClimber(){
 
     lockingServo.setDisabled();
 
@@ -84,13 +102,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void runUp(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, .31);
+    climberTalonTop.set(ControlMode.PercentOutput, .5);
 
   }
 
   public void runDown(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, -.31);
+    climberTalonTop.set(ControlMode.PercentOutput, -.5);
 
   }
 
@@ -102,7 +120,13 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setClimberUp(){
 
-    setPosition(Constants.CLIMBER_POSITION_UP);
+      setPosition(Constants.CLIMBER_POSITION_UP);
+
+  }
+
+  public void setClimberHalf(){
+
+    setPosition(Constants.CLIMBER_POSITION_HALF);
 
   }
 

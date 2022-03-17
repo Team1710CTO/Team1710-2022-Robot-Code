@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -27,6 +28,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public static SparkMaxPIDController m_actuatorLeft_PidController, m_actuatorRight_PidController;
   public static RelativeEncoder m_actuatorLeft_encoder, m_actuatorRight_encoder;
   public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+
+  public static String intakeState = "NotZeroed";
 
   public static boolean isZeroed = false;
 
@@ -77,6 +80,15 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("is current bol treu", isIntakeStalledCurrent());
 
     SmartDashboard.putBoolean("is velociuty basically zero", isIntakeVelocityBasicallyZero());
+    SmartDashboard.putString("intake STAtes", intakeState);
+
+    if(Math.abs(m_actuatorRight_encoder.getPosition()- Constants.INTAKE_RIGHT_up) < 1){
+      intakeState = "Up";
+    } else if(Math.abs(m_actuatorRight_encoder.getPosition()- Constants.INTAKE_RIGHT_down) < 1){
+      intakeState = "Down";
+    } else {
+      intakeState = "iiii or not zeroed";
+    }
 
   }
 
@@ -133,7 +145,7 @@ public class IntakeSubsystem extends SubsystemBase {
       m_actuatorLeft_PidController.setReference(Constants.Intake_LEFT_up, CANSparkMax.ControlType.kPosition);
       m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_up, CANSparkMax.ControlType.kPosition);
 
-      SmartDashboard.putString("Intake Status", "Up");
+      
   
       } else {
       
@@ -150,7 +162,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_actuatorLeft_PidController.setReference(Constants.INTAKE_LEFT_down, CANSparkMax.ControlType.kPosition);
     m_actuatorRight_PidController.setReference(Constants.INTAKE_RIGHT_down, CANSparkMax.ControlType.kPosition);
 
-    SmartDashboard.putString("Intake Status", "Down");
+    
 
     } else {
     
@@ -259,7 +271,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   
+  public String getIntakeState(){
 
+    return intakeState;
+    
+  }
 
 
 }

@@ -91,7 +91,7 @@ public final class Constants {
     public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
     public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
     public static final double Intake_LEFT_up = 0.5; // roations from zero FIXME
-    public static final double INTAKE_LEFT_down = 3.5; // set by the zero functionality
+    public static final double INTAKE_LEFT_down = 3.3; // set by the zero functionality
 
 
     //intake Right
@@ -145,8 +145,8 @@ public final class Constants {
  public static final int SHOOTER_PDP_SLOT = 12; // GOOD
  public static final int SHOOTER_CAN_ID = 40; // GOOD
  public static double SHOOTER_kP = 0.000536; // GOOD
- public static double SHOOTER_kI = 0; // GOOD
- public static double SHOOTER_kD = 0; // GOOD
+ public static double SHOOTER_kI = 0.00000; // GOOD
+ public static double SHOOTER_kD = 0.0; // GOOD
  public static double SHOOTER_kIz = 0; 
  public static double SHOOTER_kFF = 0.00018;  // GOOD
  public static double SHOOTER_kMaxOutput = 1; // GOOD
@@ -154,14 +154,14 @@ public final class Constants {
  public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
  public static double SHOOTER_abnormal_abnormal_current_draw = 10;      
 
-    public static final double SHOOTER_GO_THRESHHOLD = 120;
+    public static final double SHOOTER_GO_THRESHHOLD = 300;
     
     
 
     public static final int CLIMBER_SERVO_PWM_CHANNEL = 0;
 
-    public static final int CLIMBER_SERVO_LOCK_POSITION = 0;
-    public static final int CLIMBER_SERVO_DISENGAGE_POSITION = 10;
+    public static final double CLIMBER_SERVO_LOCK_POSITION = 180;
+    public static final double CLIMBER_SERVO_DISENGAGE_POSITION = 165.5;
 
     public static final int CLIMBER_TOP_TALON_CAN_ID = 50;
     public static final int CLIMBER_BOTTOM_TALON_CAN_ID = 51;
@@ -172,18 +172,25 @@ public final class Constants {
 
     public static final int INDEXER_CAN_ID = 42;
 
-    public static final int bottomBeamBreak_CAN_ID = 0;
+    public static final int bottomBeamBreak_CAN_ID = 1;
 
-    public static final int topBeamBreak_CAN_ID = 1;
-    public static final int INTAKE_CURRENT_LIMIT = 65;
-    public static final double INDEXER_IN_SPEED = .5;
-    public static final double INDEXER_OUT_SPEED = -.5;
+    public static final int topBeamBreak_CAN_ID = 0;
+    public static final int INTAKE_CURRENT_LIMIT = 60;
+    public static final double INDEXER_IN_SPEED = .3
+    ;
+    public static final double INDEXER_OUT_SPEED = -.3;
     public static final double INDEXER_STOP_SPEED = 0;
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
-    public static final double CLIMBER_POSITION_UP = 1;
-    public static final double CLIMBER_POSITION_DOWN = 0;
-    public static final double CLIMBER_ZERO_THRESHOLD = 30;
+    public static final double CLIMBER_POSITION_UP = 1.7e5;
+
+    public static final double CLIMBER_POSITION_HALF = (1.7e5)/2;
     
+    public static final double CLIMBER_POSITION_DOWN = 10000;
+    public static final double CLIMBER_ZERO_THRESHOLD = 20;
+    
+    public static final double CLIMBER_OUT_POSITION = 1.65e5;
+
+    public static final double CLIMBER_IN_POSITION = 0;
     
     
 

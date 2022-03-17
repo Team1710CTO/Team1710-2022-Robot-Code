@@ -4,42 +4,41 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LedSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 
+public class ZeroOdom extends CommandBase {
+  /** Creates a new ZeroOdom. */
 
-public class LEDcommand extends CommandBase {
-  /** Creates a new LEDcommand. */
+  DrivetrainSubsystem drivetrainSubsystem;
 
-  public LedSubsystem ledSubsystem;
+  GyroSubsystem gyroSubsystem;
 
- 
+  public ZeroOdom(GyroSubsystem gyroSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
-  public LEDcommand(LedSubsystem ledSubsystem) {
+    this.gyroSubsystem = gyroSubsystem;
 
+    this.gyroSubsystem = gyroSubsystem;
 
-    this.ledSubsystem = ledSubsystem;
+    this.drivetrainSubsystem = drivetrainSubsystem;
 
-
-    addRequirements(ledSubsystem);
+    addRequirements(gyroSubsystem, drivetrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-    ledSubsystem.setLength();
-   
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    ledSubsystem.tripleOrbit(0, 35, 200, 0, 0, 0, 8);
-
+    gyroSubsystem.zeroBestGyro();
+    gyroSubsystem.setIsZeroingFalse();
+    drivetrainSubsystem.resetOdometry();
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +48,6 @@ public class LEDcommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
