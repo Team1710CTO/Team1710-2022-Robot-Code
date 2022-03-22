@@ -17,7 +17,7 @@ import frc.robot.subsystems.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
+public class TwoBallFromWherever extends SequentialCommandGroup {
 
   public IntakeSubsystem intakeSubsystem;
 
@@ -37,7 +37,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public ThreeBallAutoAtCrotch(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public TwoBallFromWherever(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -53,36 +53,25 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
     yPosPidController = new PIDController(1, 0, 0);
     thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
-
+    
     if(teamColor == "RED"){
       photonVisionSubsystem.setAlliancePipelinesRed();
     } else {
       photonVisionSubsystem.setAlliancePipelinesBlue();
     }
-  
+
     addCommands(
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
-
-    new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
-                                  drivetrainSubsystem::getOdomPose2d, 
-                                  drivetrainSubsystem.getKinematics(), 
-                                  xPosPidController, 
-                                  yPosPidController, 
-                                  thetaPidController, 
-                                  drivetrainSubsystem::setWheelStates, 
-                                  drivetrainSubsystem),
-
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-               
-  
     new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
-                                  
-  );
+    
+    
+    );
+
+    
 
 
   }

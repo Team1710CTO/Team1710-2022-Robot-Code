@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -40,11 +42,25 @@ public class RobotContainer {
   public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
   
 
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   
   
   //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
 
   public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
+
+  public Command fourBallAutoBlue = new FourBallAutoAtCrotchHudson("BLUE", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  
+  public Command fourBallAutoRed = new FourBallAutoAtCrotchHudson("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  
+  public Command threeBallAutoBlue = new ThreeBallAutoAtCrotch("BLUE", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
+  public Command threeBallAutoRed = new ThreeBallAutoAtCrotch("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
+  public Command twoBallAutoBlue = new TwoBallFromWherever("BLUE", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
+  public Command twoBallAutoRed = new TwoBallFromWherever("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
   public RobotContainer() {
     // Set up the default command for the drivetrain.
@@ -52,6 +68,21 @@ public class RobotContainer {
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
     // Right stick X axis -> rotation
+
+    m_chooser.setDefaultOption("4 ball BLUE", fourBallAutoBlue);
+    m_chooser.setDefaultOption("4 ball RED", fourBallAutoRed);
+
+    m_chooser.setDefaultOption("3 ball BLUE", threeBallAutoBlue);
+    m_chooser.setDefaultOption("3 ball RED", threeBallAutoRed);
+
+    m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
+    m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
+
+    
+
+// Put the chooser on the dashboard
+    SmartDashboard.putData(m_chooser);
+
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
             () -> -modifyAxis(d_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
@@ -147,11 +178,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new FourBallAutoAtCrotchHudson(m_drivetrainSubsystem, mIntakeSubsystem, 
-    mphotonVisionSubsystem, 
-    m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+    return m_chooser.getSelected();
 
   }
+
+  
 
   private static double deadband(double value, double deadband) {
 

@@ -37,7 +37,7 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public FourBallAutoAtCrotchHudson(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public FourBallAutoAtCrotchHudson(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -54,6 +54,11 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
     thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
     
+    if(teamColor == "RED"){
+      photonVisionSubsystem.setAlliancePipelinesRed();
+    } else {
+      photonVisionSubsystem.setAlliancePipelinesBlue();
+    }
 
     addCommands(
 
