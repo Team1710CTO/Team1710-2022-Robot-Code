@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*; // import all commands 
 
 
@@ -23,7 +23,9 @@ public class RobotContainer {
 
   private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
 
-  public final static XboxController m_controller = new XboxController(0);
+  public final static XboxController d_controller = new XboxController(0);
+
+  public static final XboxController m_controller = new XboxController(1);
 
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
@@ -52,9 +54,9 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(d_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(d_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-d_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
@@ -76,20 +78,16 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Back button zeros the gyroscope
-    new Button(m_controller::getBackButton)
+    new Button(d_controller::getBackButton)
             .whenPressed(m_GyroSubsystem::zeroBestGyro)
             .whenReleased(m_GyroSubsystem::setIsZeroingFalse)
             .whenReleased(m_drivetrainSubsystem::enableHeadingControl);
 
 
-   new Button(m_controller::getYButton)
-           .whenHeld(new ClimbUp(mClimberSubsystem));
-//
-   new Button(m_controller::getBButton)
-           .whenHeld(new ClimbDown(mClimberSubsystem));
+   
     
 
-    new Button(m_controller::getStartButton)
+    new Button(d_controller::getStartButton)
             .whenPressed(new ZeroIntake(mIntakeSubsystem))
             .whenPressed(new ZeroHood(mHoodSubsystem))
             .whenPressed(m_drivetrainSubsystem::resetOdometry)
@@ -98,28 +96,47 @@ public class RobotContainer {
 
             
 
-    new Button(m_controller::getRightBumper)
+    new Button(d_controller::getRightBumper)
             .whenHeld(new Intake(mIntakeSubsystem));
 
-    new Button(m_controller::getLeftBumper)
+    new Button(d_controller::getLeftBumper)
             .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
     
-    new Button(m_controller::getAButton)
+    new Button(d_controller::getAButton)
             //.whenHeld(new ClimbHalf(mClimberSubsystem));
             .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
 
 
-    new Button(m_controller::getXButton).whenPressed(new climberBootSequence(mClimberSubsystem));
+
+
+    new Button(m_controller::getXButton)
+                .whenPressed(new climberBootSequence(mClimberSubsystem));
+    
+    new Button(m_controller::getYButton)
+                .whenHeld(new ClimbUp(mClimberSubsystem));
+     //
+    new Button(m_controller::getBButton)
+                .whenHeld(new ClimbHalf(mClimberSubsystem));
+
+    new Button(m_controller::getAButton)
+                .whenHeld(new ClimbDown(mClimberSubsystem));
+
+    new Button(m_controller::getRightBumper)
+                .whenHeld(new shootToDeJam(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
+
+    new Button(m_controller::getRightBumper).whenHeld(new ClimbOverrideUp(mClimberSubsystem));
+
+    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem));
 
     
 
     
-    //new Button(m_controller::getStartButton)
+    //new Button(d_controller::getStartButton)
     //        .whenPressed(new ZeroIntake());
             
-    //new Button(m_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
+    //new Button(d_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
     
-    //new Button(m_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
+    //new Button(d_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
   
   }
 

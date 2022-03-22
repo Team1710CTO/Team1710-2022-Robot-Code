@@ -183,10 +183,10 @@ public final class Constants {
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
     public static final double CLIMBER_POSITION_UP = 1.7e5;
 
-    public static final double CLIMBER_POSITION_HALF = (1.7e5)/2;
+    public static final double CLIMBER_POSITION_HALF = (1.7e5)/4;
     
-    public static final double CLIMBER_POSITION_DOWN = 10000;
-    public static final double CLIMBER_ZERO_THRESHOLD = 20;
+    public static final double CLIMBER_POSITION_DOWN = 5000;
+    public static final double CLIMBER_ZERO_THRESHOLD = 30;
     
     public static final double CLIMBER_OUT_POSITION = 1.65e5;
 
