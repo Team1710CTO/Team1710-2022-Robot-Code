@@ -181,7 +181,7 @@ public final class Constants {
     public static final double INDEXER_OUT_SPEED = -1;
     public static final double INDEXER_STOP_SPEED = 0;
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
-    public static final double CLIMBER_POSITION_UP = 1.7e5;
+    public static final double CLIMBER_POSITION_UP = 1.7e5 * .9;
 
     public static final double CLIMBER_POSITION_HALF = (1.7e5)/4;
     

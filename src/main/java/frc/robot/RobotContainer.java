@@ -160,7 +160,7 @@ public class RobotContainer {
     new Button(m_controller::getAButton)
                 .whenHeld(new ClimbDown(mClimberSubsystem));
 
-    new Button(m_controller::getRightBumper)
+    new Button(m_controller::getStartButton)
                 .whenHeld(new shootToDeJam(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     new Button(m_controller::getRightBumper).whenHeld(new ClimbOverrideUp(mClimberSubsystem));

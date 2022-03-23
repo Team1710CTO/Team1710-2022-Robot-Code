@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.ZeroClimber;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -22,6 +24,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private Timer timer;
   private boolean engageBol = true;
+
+  private boolean isfailuremode = false;
 
   public static boolean isZeroed = false;
   /** Creates a new ClimberSubsystem. */
@@ -74,7 +78,20 @@ public class ClimberSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("climber Position", climberTalonTop.getSelectedSensorPosition());
 
+    SmartDashboard.putNumber("climber velo", climberTalonTop.getSelectedSensorVelocity());
+
     SmartDashboard.putNumber("climber  current", getClimberCurrent());
+
+    if(!isfailuremode && !isZeroed && Math.abs(climberTalonTop.getSelectedSensorVelocity()) > 1000){
+
+      isfailuremode = true;
+
+      climberTalonTop.setSelectedSensorPosition(0);
+
+      climberTalonTop.set(ControlMode.Position, 0);
+
+
+    }  
 
   }
 
@@ -191,6 +208,12 @@ public class ClimberSubsystem extends SubsystemBase {
   public static boolean climberDrumIsRotating(){
 
     return false;
+
+  }
+
+  public void holdStowedPosition(){
+
+    climberTalonTop.set(ControlMode.Position, 10000);
 
   }
 
