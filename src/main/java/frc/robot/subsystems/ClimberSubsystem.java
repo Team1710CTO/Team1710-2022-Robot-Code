@@ -22,6 +22,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private Timer timer;
   private boolean engageBol = true;
+
+  public static boolean isZeroed = false;
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
 
@@ -96,13 +98,21 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setPosition(double position){
 
-    climberTalonTop.set(ControlMode.Position, position);
+    if(isZeroed){
+
+      climberTalonTop.set(ControlMode.Position, position);
+
+    }
 
   }
 
   public void runUp(){
 
+    if(isZeroed){
+
     climberTalonTop.set(ControlMode.PercentOutput, 1);
+    
+    }
 
   }
 
@@ -120,19 +130,30 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setClimberUp(){
 
+    if(isZeroed){
+
       setPosition(Constants.CLIMBER_POSITION_UP);
+    }
 
   }
 
   public void setClimberHalf(){
 
+    if(isZeroed){
+
     setPosition(Constants.CLIMBER_POSITION_HALF);
+
+    }
 
   }
 
   public void setClimberDown(){
 
+    if(isZeroed){
+
     setPosition(Constants.CLIMBER_POSITION_DOWN);
+
+    }
 
   }
 
@@ -160,6 +181,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public void zeroEncoder(){
 
     climberTalonTop.setSelectedSensorPosition(0);
+
+    isZeroed = true;
 
   }
 
