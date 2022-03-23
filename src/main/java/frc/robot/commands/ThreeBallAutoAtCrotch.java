@@ -54,13 +54,11 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
     thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
 
-    if(teamColor == "RED"){
-      photonVisionSubsystem.setAlliancePipelinesRed();
-    } else {
-      photonVisionSubsystem.setAlliancePipelinesBlue();
-    }
+    
   
     addCommands(
+
+    new setPipeline(photonVisionSubsystem, teamColor),
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
