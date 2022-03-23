@@ -4,25 +4,31 @@
 
 package frc.robot.commands;
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LedSubsystem;
-
+import frc.robot.subsystems.ledSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 
 public class LEDcommand extends CommandBase {
   /** Creates a new LEDcommand. */
 
-  public LedSubsystem ledSubsystem;
+  public ledSubsystem ledSubsystem;
+  public ShooterSubsystem shooterSubsystem;
+  public IndexerSubsystem indexerSubsystem;
+  public PhotonVisionSubsystem photonVisionSubsystem;
 
- 
-
-  public LEDcommand(LedSubsystem ledSubsystem) {
-
+  public LEDcommand(ledSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem,
+      PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.ledSubsystem = ledSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
+    this.indexerSubsystem = indexerSubsystem;
+    this.photonVisionSubsystem = photonVisionSubsystem;
 
+    addRequirements(ledSubsystem, shooterSubsystem, indexerSubsystem, photonVisionSubsystem);
 
-    addRequirements(ledSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -31,20 +37,49 @@ public class LEDcommand extends CommandBase {
   public void initialize() {
 
     ledSubsystem.setLength();
-   
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    ledSubsystem.tripleOrbit(0, 35, 200, 0, 0, 0, 8);
+    if (shooterSubsystem.isDisabled == false) {
+
+      if (photonVisionSubsystem.getXDisplacementOfGoal() > -1 && photonVisionSubsystem.getXDisplacementOfGoal() < 1) {
+
+        ledSubsystem.tripleOrbit(0, 200, 0, 0, 100, 0, 2);
+
+        if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
+
+          ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 100, 2);
+
+        }
+
+      } else {
+
+        ledSubsystem.tripleOrbit(200, 200, 0, 100, 100, 0, 2);
+
+      }
+
+    }
+
+    if (indexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true) {
+
+      ledSubsystem.tripleOrbit(100, 100, 100, 200, 100, 0, 2);
+
+    } else if (IndexerSubsystem.bottomBeamBreak.get() == false && indexerSubsystem.topBeamBreak.get() == false) {
+
+      ledSubsystem.tripleOrbit(200, 200, 200, 0, 0, 0, 2);
+
+    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
