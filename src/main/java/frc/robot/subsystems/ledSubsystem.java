@@ -76,13 +76,18 @@ public class ledSubsystem extends SubsystemBase {
   }
 
   public void orbit(int red, int green, int blue) {
-    if (counter == 120) {
+    if (counter == (m_ledBuffer.getLength())) {
       m_timer.reset();
       m_timer.start();
       counter = 0;
       solid(0, 0, 0);
     }
     int num = (int) (10 * m_timer.get());
+
+    for (int j = 0; j < (m_ledBuffer.getLength()); j++) {
+      // Sets the specified LED to the RGB values for red
+      m_ledBuffer.setRGB(j, 0, 0, 0);
+    }
 
     int i = (num % m_ledBuffer.getLength()) + 1;
     // Sets the specified LED to the RGB values for red
@@ -150,6 +155,11 @@ public class ledSubsystem extends SubsystemBase {
     }
 
     int num = (int) (10 * m_timer.get());
+
+    for (int j = 0; j < (m_ledBuffer.getLength()); j++) {
+      // Sets the specified LED to the RGB values for red
+      m_ledBuffer.setRGB(j, 0, 0, 0);
+    }
 
     if (kitt % 2 == 0) {
 
@@ -470,32 +480,29 @@ public class ledSubsystem extends SubsystemBase {
     m_led.setData(m_ledBuffer);
     m_led.start();
     counter++;
-    
+
   }
 
-  //  public void idleMode() {
-//  
-  //    if (ShooterSubsystem.isShooterToSpeedAndNotDisabled)
-//  
-  //    if (IndexerSubsystem.bottomBeamBreak.get() == true && IndexerSubsystem.topBeamBreak.get() == true) {
-//  
-  //      tripleOrbit(100, 100, 100, 200, 100, 0, 2);
-//  
-  //    } else if (IndexerSubsystem.bottomBeamBreak.get() == false && IndexerSubsystem.topBeamBreak.get() == false) {
-//  
-  //      tripleOrbit(200, 200, 200, 0, 0, 0, 2);
-//  
-  //    } else {
-//  
-  //      tripleOrbit(200, 100, 0, 0, 0, 0, 2);
-//  
-  //    }
+  // public void idleMode() {
+  //
+  // if (ShooterSubsystem.isShooterToSpeedAndNotDisabled)
+  //
+  // if (IndexerSubsystem.bottomBeamBreak.get() == true &&
+  // IndexerSubsystem.topBeamBreak.get() == true) {
+  //
+  // tripleOrbit(100, 100, 100, 200, 100, 0, 2);
+  //
+  // } else if (IndexerSubsystem.bottomBeamBreak.get() == false &&
+  // IndexerSubsystem.topBeamBreak.get() == false) {
+  //
+  // tripleOrbit(200, 200, 200, 0, 0, 0, 2);
+  //
+  // } else {
+  //
+  // tripleOrbit(200, 100, 0, 0, 0, 0, 2);
+  //
+  // }
 
-
-//  }
-
-  
-
-
+  // }
 
 }
