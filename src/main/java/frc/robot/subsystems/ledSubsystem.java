@@ -75,14 +75,9 @@ public class ledSubsystem extends SubsystemBase {
     m_led.start();
   }
 
-  public void orbit(int red, int green, int blue) {
-    if (counter == (m_ledBuffer.getLength())) {
-      m_timer.reset();
-      m_timer.start();
-      counter = 0;
-      solid(0, 0, 0);
-    }
-    int num = (int) (10 * m_timer.get());
+  public void orbit(int red, int green, int blue, int TPS) {
+  
+    int num = (int) (TPS * m_timer.get());
 
     for (int j = 0; j < (m_ledBuffer.getLength()); j++) {
       // Sets the specified LED to the RGB values for red
@@ -99,7 +94,6 @@ public class ledSubsystem extends SubsystemBase {
 
     m_led.setData(m_ledBuffer);
     m_led.start();
-    counter++;
   }
 
   public void tripleOrbit(int red, int green, int blue, int red_bg, int green_bg, int blue_bg, int TPS) {
@@ -145,7 +139,7 @@ public class ledSubsystem extends SubsystemBase {
   }
 
   public void knightRider(int red, int green, int blue) {
-    if (counter == 2) {
+    if (counter >= m_ledBuffer.getLength()) {
       // counter == 2.4 * (m_ledBuffer.getLength())) {
       m_timer.reset();
       m_timer.start();
