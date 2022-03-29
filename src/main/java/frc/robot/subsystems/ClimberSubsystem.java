@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.ZeroClimber;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -22,6 +24,10 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private Timer timer;
   private boolean engageBol = true;
+
+  private boolean isfailuremode = false;
+
+  public static boolean isZeroed = false;
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
 
@@ -41,7 +47,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 		/* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
 		climberTalonTop.config_kF(0, 0, Constants.kTimeoutMs);
-		climberTalonTop.config_kP(0, .9, Constants.kTimeoutMs);
+		climberTalonTop.config_kP(0, 1.1, Constants.kTimeoutMs);
 		climberTalonTop.config_kI(0, 0, Constants.kTimeoutMs);
 		climberTalonTop.config_kD(0, 0, Constants.kTimeoutMs);
 
@@ -72,7 +78,20 @@ public class ClimberSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("climber Position", climberTalonTop.getSelectedSensorPosition());
 
+    SmartDashboard.putNumber("climber velo", climberTalonTop.getSelectedSensorVelocity());
+
     SmartDashboard.putNumber("climber  current", getClimberCurrent());
+
+    if(!isfailuremode && !isZeroed && Math.abs(climberTalonTop.getSelectedSensorVelocity()) > 1000){
+
+      isfailuremode = true;
+
+      climberTalonTop.setSelectedSensorPosition(0);
+
+      climberTalonTop.set(ControlMode.Position, 0);
+
+
+    }  
 
   }
 
@@ -96,19 +115,27 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setPosition(double position){
 
-    climberTalonTop.set(ControlMode.Position, position);
+    if(isZeroed){
+
+      climberTalonTop.set(ControlMode.Position, position);
+
+    }
 
   }
 
   public void runUp(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, .5);
+    if(isZeroed){
+
+    climberTalonTop.set(ControlMode.PercentOutput, 1);
+    
+    }
 
   }
 
   public void runDown(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, -.5);
+    climberTalonTop.set(ControlMode.PercentOutput, -1);
 
   }
 
@@ -120,19 +147,36 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setClimberUp(){
 
-      setPosition(Constants.CLIMBER_POSITION_UP);
+    if(isZeroed){
 
+      setPosition(Constants.CLIMBER_POSITION_UP);
+    }
+
+  }
+
+  public double getClimberPos(){
+
+    return climberTalonTop.getSelectedSensorPosition();
+    
   }
 
   public void setClimberHalf(){
 
+    if(isZeroed){
+
     setPosition(Constants.CLIMBER_POSITION_HALF);
+
+    }
 
   }
 
   public void setClimberDown(){
 
+    if(isZeroed){
+
     setPosition(Constants.CLIMBER_POSITION_DOWN);
+
+    }
 
   }
 
@@ -161,6 +205,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
     climberTalonTop.setSelectedSensorPosition(0);
 
+    isZeroed = true;
+
   }
 
   
@@ -168,6 +214,12 @@ public class ClimberSubsystem extends SubsystemBase {
   public static boolean climberDrumIsRotating(){
 
     return false;
+
+  }
+
+  public void holdStowedPosition(){
+
+    climberTalonTop.set(ControlMode.Position, 10000);
 
   }
 

@@ -108,10 +108,10 @@ public class ShootInAuto extends CommandBase {
       timer3.start();
 
       if(timer2.get() > .5){
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -5));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -2));
       } else {
 
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 5));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 2));
       }
 
     }

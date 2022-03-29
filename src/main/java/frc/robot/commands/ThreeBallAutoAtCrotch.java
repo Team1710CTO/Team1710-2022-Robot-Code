@@ -37,7 +37,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public ThreeBallAutoAtCrotch(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public ThreeBallAutoAtCrotch(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -53,9 +53,12 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
     yPosPidController = new PIDController(1, 0, 0);
     thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
-    
 
+    
+  
     addCommands(
+
+    new setPipeline(photonVisionSubsystem, teamColor),
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 

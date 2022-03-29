@@ -109,7 +109,7 @@ public final class Constants {
     public static final double INTAKE_RIGHT_up = -Intake_LEFT_up; // set by the zero functionality
     public static final double INTAKE_RIGHT_down = -INTAKE_LEFT_down; // set by the zero functionality
 
-    public static double INTAKE_RUNNER_SPEED_ON = .5; //speed intake runner runs at
+    public static double INTAKE_RUNNER_SPEED_ON = .75; //speed intake runner runs at
     public static double INTAKE_RUNNER_SPEED_OFF = 0; // read the var
     public static double INTAKE_ZERO_VELOCITY_THRESHOLD_UB = .01; // this is the upper bound for the is intake velocity near or at Zero threshold
 
@@ -178,15 +178,15 @@ public final class Constants {
     public static final int INTAKE_CURRENT_LIMIT = 60;
     public static final double INDEXER_IN_SPEED = .3
     ;
-    public static final double INDEXER_OUT_SPEED = -.3;
+    public static final double INDEXER_OUT_SPEED = -1;
     public static final double INDEXER_STOP_SPEED = 0;
     public static final double INDEXER_CYCLE_ROTATIONS = 15;
-    public static final double CLIMBER_POSITION_UP = 1.7e5;
+    public static final double CLIMBER_POSITION_UP = 1.7e5 * .9;
 
-    public static final double CLIMBER_POSITION_HALF = (1.7e5)/2;
+    public static final double CLIMBER_POSITION_HALF = (1.7e5)/4;
     
-    public static final double CLIMBER_POSITION_DOWN = 10000;
-    public static final double CLIMBER_ZERO_THRESHOLD = 20;
+    public static final double CLIMBER_POSITION_DOWN = 5000;
+    public static final double CLIMBER_ZERO_THRESHOLD = 30;
     
     public static final double CLIMBER_OUT_POSITION = 1.65e5;
 

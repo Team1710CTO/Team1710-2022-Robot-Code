@@ -4,32 +4,26 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class ZeroClimber extends CommandBase {
-  /** Creates a new ZeroClimber. */
+public class ClimbOverrideDown extends CommandBase {
+  /** Creates a new Climb. */
 
-  public final Timer timer = new Timer();
-  
-  public ClimberSubsystem climberSubsystem;
-  public ZeroClimber(ClimberSubsystem climberSubsystem) {
+  private ClimberSubsystem climberSubsystem;
 
+  public ClimbOverrideDown(ClimberSubsystem climberSubsystem) {
 
     this.climberSubsystem = climberSubsystem;
 
     addRequirements(climberSubsystem);
-
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    timer.reset();
-    timer.start();
+    
 
   }
 
@@ -37,25 +31,22 @@ public class ZeroClimber extends CommandBase {
   @Override
   public void execute() {
 
+
     climberSubsystem.runDown();
-
-    
-
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   
-    climberSubsystem.zeroEncoder();
-    
-    
+
+    climberSubsystem.stop();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climberSubsystem.isOverZeroLimitCurrentLimit();
+    return false;
   }
 }

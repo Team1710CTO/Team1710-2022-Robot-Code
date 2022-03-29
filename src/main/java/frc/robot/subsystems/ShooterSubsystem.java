@@ -16,6 +16,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private static RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
+  public double[] lastSpeeds;
+
   public static double goalSpeed = 0;
 
   public static int iterator = 0;
@@ -65,6 +67,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("GVelo shooter", goalSpeed);
 
     SmartDashboard.putBoolean("shooter to speed", isShooterToSpeed());
+
+    
   }
 
   public void setSpeed(double setPoint){
@@ -120,7 +124,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
-    if(iterator > 20){
+    if(iterator > 40){
 
       return true;
 
@@ -149,6 +153,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     m_pidController.setReference(.35, ControlType.kDutyCycle);
     
+  }
+
+  public boolean isFlat(){
+
+    return false;
   }
   
   

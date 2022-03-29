@@ -16,7 +16,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class Shoot extends CommandBase {
+public class ShootLowGoal extends CommandBase {
   /** Creates a new Shoot. */
 
   public ShooterSubsystem shooterSubsystem;
@@ -25,25 +25,25 @@ public class Shoot extends CommandBase {
 
   public IndexerSubsystem indexerSubsystem;
 
-  public PhotonVisionSubsystem photonVisionSubsystem;
+ 
 
   public DrivetrainSubsystem drivetrainSubsystem;
 
   public PIDController rotationController;
 
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+  public ShootLowGoal(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
-    this.photonVisionSubsystem = photonVisionSubsystem;
+   
 
     this.drivetrainSubsystem = drivetrainSubsystem;
 
     rotationController = new PIDController(.2, .15, 0);
 
 
-    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, drivetrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -59,38 +59,13 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
+    shooterSubsystem.setSpeed(1750);
 
-
-    if(photonVisionSubsystem.hasGoalTargets()){
-
-    if(d>96){
-
-      hoodSubsystem.setHoodPosition(1.1);
-
-    } else {
-      
-      hoodSubsystem.setHoodPosition((.0073 * d) + .388);
-    }
-
-    if(d>96){
-
-      shooterSubsystem.setSpeed(10.1*d + 2864);
-
-    } else {
-
-      shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
-
-    }
+    hoodSubsystem.setHoodPosition(.6);
     
-  }
-    
-
-    drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
-
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-        indexerSubsystem.runIndexerInMed();
+        indexerSubsystem.runindexerInFAST();
 
     } else {
 
