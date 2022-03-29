@@ -140,6 +140,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static int pidActivationIterator = 0;
 
+  public static double m_distToCenterInMeters = 0;
+
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
@@ -328,6 +330,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
       "estimated position X in inches",
       m_pose.getX() / 37
     );
+
+    m_distToCenterInMeters = calcDistToFieldCenter();
+  }
+
+  /**
+   * Get the distance to the center of field based on the odometry position
+   * As long as we're not hit/sliding everywhere this should be accurate enough.
+   * Mostly likely useful in auto.
+   * @return double, distance to center of field/hub in meters.
+   */
+  public double calcDistToFieldCenter() {
+    Translation2d fieldCenter = new Translation2d(8.2, 4.2);
+    Translation2d robotPos = m_odometry.getPoseMeters().getTranslation();
+
+    return robotPos.getDistance(fieldCenter);
   }
 
   public void setOdometryAuto(Pose2d pose, Rotation2d gyroAngle) {

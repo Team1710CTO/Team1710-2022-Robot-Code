@@ -73,7 +73,9 @@ public class FasterShootInAuto extends CommandBase {
     delayTimer.stop();
 
     // Distance?
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
+    // This probably has to be scaled to match the vision systems.
+    double odoDistance = DrivetrainSubsystem.m_distToCenterInMeters;
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(odoDistance) + 8;
 
     if (photonVisionSubsystem.hasGoalTargets()) {
       // Can we dummy this value since we'll be moving? (we know via the odometry how far we'll be from the target)
