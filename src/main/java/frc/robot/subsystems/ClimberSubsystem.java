@@ -154,6 +154,12 @@ public class ClimberSubsystem extends SubsystemBase {
 
   }
 
+  public double getClimberPos(){
+
+    return climberTalonTop.getSelectedSensorPosition();
+    
+  }
+
   public void setClimberHalf(){
 
     if(isZeroed){

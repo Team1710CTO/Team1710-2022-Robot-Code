@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -27,6 +28,8 @@ public class IntakeWithVision extends CommandBase {
 
   public boolean ballinrange = false;
 
+  public Timer timer;
+
   public PIDController xPidController, yPidController;
   /** Creates a new IntakeWithVision. */
   public IntakeWithVision(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem) {
@@ -35,6 +38,8 @@ public class IntakeWithVision extends CommandBase {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.photonVisionSubsystem = photonVisionSubsystem;
     this.indexerSubsystem = indexerSubsystem;
+
+    timer = new Timer();
 
     xPidController = new PIDController(.04, .005, 0.005);
     yPidController = new PIDController(.08, .005, 0.005);
@@ -50,6 +55,8 @@ public class IntakeWithVision extends CommandBase {
     intakeSubsystem.setIntakeUp();
 
     initialballcount = indexerSubsystem.getBallCount();
+    timer.reset();
+    timer.start();
 
   }
 
@@ -57,13 +64,13 @@ public class IntakeWithVision extends CommandBase {
   @Override
   public void execute() {
 
+    indexerSubsystem.indexBallsBetweenBreaks();
+
     double xDisplacement = photonVisionSubsystem.getXDisplacementOfBall();
     double yDisplacement = photonVisionSubsystem.getYDisplacementOfBall();
 
     double vx = xPidController.calculate(xDisplacement, 0);
     double vy = yPidController.calculate(yDisplacement, 0);
-
-    
 
     SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
 
@@ -72,20 +79,20 @@ public class IntakeWithVision extends CommandBase {
       intakeSubsystem.setintakeDown();
       intakeSubsystem.runIntake();
 
-    } 
+    }
 
     if(intakeSubsystem.getIntakeState() == "Up"){
 
-      drivetrainSubsystem.drive(new ChassisSpeeds(-vy,vx,0));
+      drivetrainSubsystem.drive(new ChassisSpeeds(-vy,vx,0)); 
       SmartDashboard.putNumber("vy", vy);
 
     } else {
 
-      drivetrainSubsystem.drive(new ChassisSpeeds(0,0,0));
-
+      drivetrainSubsystem.drive(new ChassisSpeeds(0,0,0));     
+     
     }
 
-    indexerSubsystem.indexBallsBetweenBreaks();
+    
 
 
   }
@@ -103,6 +110,6 @@ public class IntakeWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !(initialballcount == indexerSubsystem.getBallCount()) || !indexerSubsystem.topBeamBreak.get();
+    return (!(initialballcount == indexerSubsystem.getBallCount()) || !indexerSubsystem.topBeamBreak.get()) && timer.get() > .05;
   }
 }
