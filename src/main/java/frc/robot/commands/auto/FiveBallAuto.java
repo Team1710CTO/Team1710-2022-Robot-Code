@@ -158,6 +158,33 @@ public class FiveBallAuto extends SequentialCommandGroup {
           photonVisionSubsystem,
           1.5 //s delay - before spinning up and locating target
         )
+        // ), // Uncomment for red-side fire 6-ball autonomous
+        // new ParallelCommandGroup(
+        //   // Path to next shooting location (near starting point)
+        //   // 2.5s
+        //   new PPSwerveControllerCommand(
+        //     PathPlanner.loadPath(
+        //       "FiveBallV2-Part4",
+        //       DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        //       10
+        //     ),
+        //     drivetrainSubsystem::getOdomPose2d,
+        //     drivetrainSubsystem.getKinematics(),
+        //     xPosPidController,
+        //     yPosPidController,
+        //     thetaPidController,
+        //     drivetrainSubsystem::setWheelStates,
+        //     drivetrainSubsystem
+        //   ),
+        //   new IntakeInPath(indexerSubsystem, intakeSubsystem, 5, 1.0)
+        // ),
+        // // 2s - Would prefer a delay'ed spinup here based on odometry data
+        // new FasterShootInAuto(
+        //   shooterSubsystem,
+        //   hoodSubsystem,
+        //   indexerSubsystem,
+        //   photonVisionSubsystem,
+        //   0 // No delay
       )
     );
   }
