@@ -38,6 +38,7 @@ public class LEDcommand extends CommandBase {
   public void initialize() {
 
     ledSubsystem.setLength();
+    ledSubsystem.solid(255, 225, 53);
 
   }
 
@@ -48,7 +49,7 @@ public class LEDcommand extends CommandBase {
     if (DriverStation.isAutonomous()) {
 
       ledSubsystem.auto();
-      
+
     } else if (DriverStation.isTeleop()) {
 
       if (ShooterSubsystem.isDisabled == false) {
