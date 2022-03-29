@@ -7,7 +7,6 @@ package frc.robot.commands;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -28,7 +27,7 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
   public IndexerSubsystem indexerSubsystem;
 
   public HoodSubsystem hoodSubsystem;
- 
+
   public ShooterSubsystem shooterSubsystem;
 
   public GyroSubsystem gyroSubsystem;
@@ -37,7 +36,15 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public FourBallAutoAtCrotchCorey(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public FourBallAutoAtCrotchCorey(
+    DrivetrainSubsystem drivetrainSubsystem,
+    IntakeSubsystem intakeSubsystem,
+    PhotonVisionSubsystem photonVisionSubsystem,
+    IndexerSubsystem indexerSubsystem,
+    HoodSubsystem hoodSubsystem,
+    ShooterSubsystem shooterSubsystem,
+    GyroSubsystem gyroSubsystem
+  ) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -51,50 +58,78 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
 
     xPosPidController = new PIDController(1, 0, 0);
     yPosPidController = new PIDController(1, 0, 0);
-    thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
+    thetaPidController =
+      new ProfiledPIDController(
+        0,
+        0,
+        0,
+        new TrapezoidProfile.Constraints(3, 3)
+      );
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
-    
 
     addCommands(
-
-    new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
-
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
-
-    new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
-                                  drivetrainSubsystem::getOdomPose2d, 
-                                  drivetrainSubsystem.getKinematics(), 
-                                  xPosPidController, 
-                                  yPosPidController, 
-                                  thetaPidController, 
-                                  drivetrainSubsystem::setWheelStates, 
-                                  drivetrainSubsystem),
-
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-
-    new DeadReckonDrive(drivetrainSubsystem, 0, 0, 3, .18),
-
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-
-    new ZeroOdom(gyroSubsystem, drivetrainSubsystem),
-
-    new PPSwerveControllerCommand(PathPlanner.loadPath("SheltonShuffle2", 8, 5), 
-                                  drivetrainSubsystem::getOdomPose2d, 
-                                  drivetrainSubsystem.getKinematics(), 
-                                  xPosPidController, 
-                                  yPosPidController, 
-                                  thetaPidController, 
-                                  drivetrainSubsystem::setWheelStates, 
-                                  drivetrainSubsystem),
-
-    new DeadReckonDrive(drivetrainSubsystem, 0, 0, -3, .18),
-
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
-                                  
-  );
-
-
+      new ZeroCommand(
+        drivetrainSubsystem,
+        intakeSubsystem,
+        indexerSubsystem,
+        hoodSubsystem,
+        gyroSubsystem
+      ),
+      new IntakeWithVision(
+        intakeSubsystem,
+        drivetrainSubsystem,
+        photonVisionSubsystem,
+        indexerSubsystem
+      ),
+      new ShootInAuto(
+        shooterSubsystem,
+        hoodSubsystem,
+        indexerSubsystem,
+        photonVisionSubsystem,
+        drivetrainSubsystem
+      ),
+      new PPSwerveControllerCommand(
+        PathPlanner.loadPath("CoreysCrotch", 8, 5),
+        drivetrainSubsystem::getOdomPose2d,
+        drivetrainSubsystem.getKinematics(),
+        xPosPidController,
+        yPosPidController,
+        thetaPidController,
+        drivetrainSubsystem::setWheelStates,
+        drivetrainSubsystem
+      ),
+      new IntakeWithVision(
+        intakeSubsystem,
+        drivetrainSubsystem,
+        photonVisionSubsystem,
+        indexerSubsystem
+      ),
+      new DeadReckonDrive(drivetrainSubsystem, 0, 0, 3, .18),
+      new IntakeWithVision(
+        intakeSubsystem,
+        drivetrainSubsystem,
+        photonVisionSubsystem,
+        indexerSubsystem
+      ),
+      new ZeroOdom(gyroSubsystem, drivetrainSubsystem),
+      new PPSwerveControllerCommand(
+        PathPlanner.loadPath("SheltonShuffle2", 8, 5),
+        drivetrainSubsystem::getOdomPose2d,
+        drivetrainSubsystem.getKinematics(),
+        xPosPidController,
+        yPosPidController,
+        thetaPidController,
+        drivetrainSubsystem::setWheelStates,
+        drivetrainSubsystem
+      ),
+      new DeadReckonDrive(drivetrainSubsystem, 0, 0, -3, .18),
+      new ShootInAuto(
+        shooterSubsystem,
+        hoodSubsystem,
+        indexerSubsystem,
+        photonVisionSubsystem,
+        drivetrainSubsystem
+      )
+    );
   }
 }

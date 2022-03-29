@@ -1,11 +1,7 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+package frc.robot.commands.auto;
 
-package frc.robot.commands;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+// import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -14,44 +10,37 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootInAuto extends CommandBase {
+public class FasterShootInAuto extends CommandBase {
 
   /** Creates a new Shoot. */
 
   public ShooterSubsystem shooterSubsystem;
-
   public HoodSubsystem hoodSubsystem;
-
   public IndexerSubsystem indexerSubsystem;
-
   public PhotonVisionSubsystem photonVisionSubsystem;
-
   public DrivetrainSubsystem drivetrainSubsystem;
-
-  public PIDController rotationController;
-
-  public final Timer timer, timer2, timer3;
-
+  // public PIDController rotationController;
+  public final Timer timer, delayTimer;
   public boolean targetSeen = false;
+  public double delay;
 
-  public ShootInAuto(
+  public FasterShootInAuto(
     ShooterSubsystem shooterSubsystem,
     HoodSubsystem hoodSubsystem,
     IndexerSubsystem indexerSubsystem,
     PhotonVisionSubsystem photonVisionSubsystem,
-    DrivetrainSubsystem drivetrainSubsystem
+    double delayOfSpinUp
   ) {
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
     this.photonVisionSubsystem = photonVisionSubsystem;
-    this.drivetrainSubsystem = drivetrainSubsystem;
+    this.delay = delayOfSpinUp;
 
     timer = new Timer();
-    timer2 = new Timer();
-    timer3 = new Timer();
+    delayTimer = new Timer();
 
-    rotationController = new PIDController(.2, .15, 0);
+    // rotationController = new PIDController(.2, .15, 0);
 
     addRequirements(
       shooterSubsystem,
@@ -67,50 +56,58 @@ public class ShootInAuto extends CommandBase {
   @Override
   public void initialize() {
     timer.reset();
-    timer2.reset();
-    timer3.reset();
+
+    delayTimer.reset();
+    delayTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // No-op until the delay has elapsed
+    if (delayTimer.get() < delay) {
+      return;
+    }
+
+    // Stop the timer once delay elapses.
+    delayTimer.stop();
+
     // Distance?
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
+    // This probably has to be scaled to match the vision systems.
+    double odoDistance = DrivetrainSubsystem.m_distToCenterInMeters;
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(odoDistance) + 8;
 
     if (photonVisionSubsystem.hasGoalTargets()) {
-      targetSeen = true;
-
-      if (d > 96) {
+      // Can we dummy this value since we'll be moving? (we know via the odometry how far we'll be from the target)
+      if (d > 96) { // Something tells me the distance is not 96 meters away lol.
         hoodSubsystem.setHoodPosition(1.1);
         shooterSubsystem.setSpeed(10.1 * d + 2864);
       } else {
         hoodSubsystem.setHoodPosition((.0073 * d) + .388);
         shooterSubsystem.setSpeed((3700 + (-10.3 * d) + (.129 * (d * d))));
       }
+      // Commented out - Let path finder take the wheel - since we are in auto
+      // drivetrainSubsystem.drive(
+      //   new ChassisSpeeds(
+      //     0,
+      //     0,
+      //     -rotationController.calculate(
+      //       photonVisionSubsystem.getXDisplacementOfGoal()
+      //     )
+      //   )
+      // );
+      // Commented out - lets assume path finding gets us to the right place.
+      // And we'll see the target... (if not something has gone horribly wrong)
+      // } else if (!targetSeen) {
+      //   timer2.start();
+      //   timer3.start();
 
-      drivetrainSubsystem.drive(
-        new ChassisSpeeds(
-          0,
-          0,
-          -rotationController.calculate(
-            photonVisionSubsystem.getXDisplacementOfGoal()
-          )
-        )
-      );
-    } else if (!targetSeen) {
-      timer2.start();
-      timer3.start();
-
-      if (timer2.get() > .5) {
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -5));
-      } else {
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 5));
-      }
+      //   if (timer2.get() > .5) {
+      //     drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -5));
+      //   } else {
+      //     drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 5));
+      //   }
       // TODO: Using odometry we can guess where our scoring hub (center field).
-    }
-
-    if (timer3.get() > .1 && targetSeen) {
-      targetSeen = false;
     }
 
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
@@ -118,7 +115,6 @@ public class ShootInAuto extends CommandBase {
       timer.start();
     } else {
       indexerSubsystem.stopIndexer();
-
       timer.stop();
     }
   }
@@ -134,6 +130,7 @@ public class ShootInAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Takes .3 seconds to shoot both balls?
     return timer.get() > .3;
   }
 }
