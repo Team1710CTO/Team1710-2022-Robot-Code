@@ -75,8 +75,8 @@ public class ledSubsystem extends SubsystemBase {
     m_led.start();
   }
 
-  public void orbit(int red, int green, int blue, int TPS) {
-  
+  public void orbit(int red, int green, int blue, int TPS, boolean up) {
+
     int num = (int) (TPS * m_timer.get());
 
     for (int j = 0; j < (m_ledBuffer.getLength()); j++) {
@@ -84,13 +84,23 @@ public class ledSubsystem extends SubsystemBase {
       m_ledBuffer.setRGB(j, 0, 0, 0);
     }
 
-    int i = (num % m_ledBuffer.getLength()) + 1;
-    // Sets the specified LED to the RGB values for red
-    m_ledBuffer.setRGB(i, red, green, blue);
+    if (up) {
 
-    int j = (num % m_ledBuffer.getLength());
-    // Sets the specified LED to the RGB values for red
-    m_ledBuffer.setRGB(j, 0, 0, 0);
+      int i = (num % m_ledBuffer.getLength());
+      // Sets the specified LED to the RGB values for red
+      m_ledBuffer.setRGB(i, red, green, blue);
+
+      // int j = (num % m_ledBuffer.getLength());
+      //// Sets the specified LED to the RGB values for red
+      // m_ledBuffer.setRGB(j, 0, 0, 0);
+
+    } else {
+
+      int i = (m_ledBuffer.getLength() - (num % m_ledBuffer.getLength()));
+      // Sets the specified LED to the RGB values for red
+      m_ledBuffer.setRGB(i, red, green, blue);
+
+    }
 
     m_led.setData(m_ledBuffer);
     m_led.start();
