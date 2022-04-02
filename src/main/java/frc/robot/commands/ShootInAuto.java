@@ -81,24 +81,11 @@ public class ShootInAuto extends CommandBase {
 
       targetSeen = true;
 
-      if(d>96){
-
-        hoodSubsystem.setHoodPosition(1.1);
-
-      } else {
         
-        hoodSubsystem.setHoodPosition((.0073 * d) + .388);
-      }
+        hoodSubsystem.setHoodPosition(.00348*d + .322);
+       
 
-      if(d>96){
-
-        shooterSubsystem.setSpeed(10.1*d + 2864);
-
-      } else {
-
-        shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
-
-      }
+        shooterSubsystem.setSpeed(4.63*d + 2020);
 
         drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 

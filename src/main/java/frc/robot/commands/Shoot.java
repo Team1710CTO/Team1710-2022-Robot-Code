@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
@@ -40,7 +41,7 @@ public class Shoot extends CommandBase {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
 
-    rotationController = new PIDController(.2, .15, 0);
+    rotationController = new PIDController(.075, 0.01, 0);
 
 
     addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
@@ -59,44 +60,34 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
-
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
 
     if(photonVisionSubsystem.hasGoalTargets()){
 
-    if(d>96){
+        
+        hoodSubsystem.setHoodPosition(.208 + .00568 * d - (.00000945 * (d*d)));
+       
 
-      hoodSubsystem.setHoodPosition(1.1);
+        shooterSubsystem.setSpeed(4.63*d + 2020);
 
-    } else {
-      
-      hoodSubsystem.setHoodPosition((.0073 * d) + .388);
-    }
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
-    if(d>96){
 
-      shooterSubsystem.setSpeed(10.1*d + 2864);
+      if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-    } else {
-
-      shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
+          indexerSubsystem.runIndexerInMed();
+  
+      } else {
+  
+        indexerSubsystem.stopIndexer();
+  
+      }
 
     }
     
-  }
+
+
     
-
-    drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
-
-    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
-
-        indexerSubsystem.runIndexerInMed();
-
-    } else {
-
-      indexerSubsystem.stopIndexer();
-
-    }
 
   }
 

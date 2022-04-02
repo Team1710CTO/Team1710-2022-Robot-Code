@@ -28,7 +28,7 @@ public class DefaultShooterCommand extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(3000);
+    shooterSubsystem.setSpeed(1500);
 
   }
 
