@@ -41,7 +41,7 @@ public class ZeroCommand extends ParallelCommandGroup {
       
     new ZeroOdom(gyroSubsystem,drivetrainSubsystem),
 
-    new zeroIndexer(indexerSubsystem),
+    new ZeroIndexer(indexerSubsystem),
       
     new ZeroHood(hoodSubsystem), 
 

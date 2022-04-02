@@ -4,24 +4,35 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class ZeroIndexer extends CommandBase {
-  /** Creates a new zeroIndexer. */
+public class SetOdom extends CommandBase {
 
-  public IndexerSubsystem indexerSubsystem;
+  DrivetrainSubsystem drivetrainSubsystem;
 
-  public ZeroIndexer(IndexerSubsystem indexerSubsystem) {
-    this.indexerSubsystem = indexerSubsystem;
-    addRequirements(indexerSubsystem);
+  Pose2d pose2d;
+
+  Rotation2d rotation2d;
+
+  /** Creates a new SetOdom. */
+  public SetOdom(Pose2d pose2d, Rotation2d rotation2d, DrivetrainSubsystem drivetrainSubsystem) {
+
+    this.drivetrainSubsystem = drivetrainSubsystem;
+    this.pose2d = pose2d;
+    this.rotation2d = rotation2d;
+    addRequirements(drivetrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    indexerSubsystem.zeroBallCount();
+
+    drivetrainSubsystem.setOdometry(pose2d, rotation2d);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,13 +41,11 @@ public class ZeroIndexer extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    indexerSubsystem.stopIndexer();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

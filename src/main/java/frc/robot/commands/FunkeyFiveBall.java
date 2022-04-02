@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -30,6 +33,9 @@ public class FunkeyFiveBall extends SequentialCommandGroup {
 
   public GyroSubsystem gyroSubsystem;
 
+  public PathPlannerTrajectory pathPlannerTrajectory;
+
+
   private PIDController xPosPidController, yPosPidController;
   private ProfiledPIDController thetaPidController;
   
@@ -44,6 +50,8 @@ public class FunkeyFiveBall extends SequentialCommandGroup {
     this.hoodSubsystem = hoodSubsystem;
     this.shooterSubsystem = shooterSubsystem;
 
+    
+
     xPosPidController = new PIDController(1, 0, 0);
     yPosPidController = new PIDController(1, 0, 0);
     thetaPidController = new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(3,3));
@@ -52,10 +60,11 @@ public class FunkeyFiveBall extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
                   new ParallelCommandGroup(
-                                            new zeroIndexer(indexerSubsystem), 
+                                            new ZeroIndexer(indexerSubsystem), 
                                             new ZeroHood(hoodSubsystem), 
                                             new ZeroIntake(intakeSubsystem),
-                                            new ZeroOdom(gyroSubsystem, drivetrainSubsystem)
+                                            new ZeroOdom(gyroSubsystem, drivetrainSubsystem),
+                                            new SetOdom(PathPlanner.loadPath("CoreysCrotch", 8, 5).getInitialState().poseMeters, drivetrainSubsystem)
                                             ),
 
                   new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem)
