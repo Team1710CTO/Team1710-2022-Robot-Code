@@ -281,7 +281,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void setOdometry(Pose2d pose2d, Rotation2d rotation2d){
-          m_odometry.resetPosition(pose2d, rotation2d);
+          m_odometry.resetPosition(new Pose2d(pose2d.getTranslation(), rotation2d), GyroSubsystem.getBestRotation2d());
   }
 
   private SwerveModuleState stateFromModule(SwerveModule swerveModule) {

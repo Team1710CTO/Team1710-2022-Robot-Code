@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -60,14 +61,23 @@ public class FunkeyFiveBall extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
                   new ParallelCommandGroup(
-                                            new ZeroIndexer(indexerSubsystem), 
-                                            new ZeroHood(hoodSubsystem), 
-                                            new ZeroIntake(intakeSubsystem),
-                                            new ZeroOdom(gyroSubsystem, drivetrainSubsystem),
-                                            new SetOdom(PathPlanner.loadPath("CoreysCrotch", 8, 5).getInitialState().poseMeters, drivetrainSubsystem)
+                                            new ZeroIndexer(indexerSubsystem), //zero indexer
+                                            new ZeroHood(hoodSubsystem), //zero hood
+                                            new ZeroIntake(intakeSubsystem), //zero intake
+                                            new SetOdom(PathPlanner.loadPath("CoreysCrotch", 8, 5).getInitialState().poseMeters, PathPlanner.loadPath("CoreysCrotch", 8, 5).getInitialState().holonomicRotation, drivetrainSubsystem)
                                             ),
 
-                  new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem)
+                  new ParallelCommandGroup(
+                                            new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
+                                            drivetrainSubsystem::getOdomPose2d, 
+                                            drivetrainSubsystem.getKinematics(), 
+                                            xPosPidController, 
+                                            yPosPidController, 
+                                            thetaPidController, 
+                                            drivetrainSubsystem::setWheelStates, 
+                                            drivetrainSubsystem),
+                                            new intakeForDuration(5, intakeSubsystem)
+                                            )
                                 
                 );
   }
