@@ -88,7 +88,7 @@ public class Shoot extends CommandBase {
 
     drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
-    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && hoodSubsystem.isHoodInRange() && Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < .5) {
 
         indexerSubsystem.runIndexerInMed();
 

@@ -121,7 +121,7 @@ public class ShootInAuto extends CommandBase {
     }
     
 
-    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && hoodSubsystem.isHoodInRange() && Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < .5) {
 
         indexerSubsystem.runindexerInFAST();
 

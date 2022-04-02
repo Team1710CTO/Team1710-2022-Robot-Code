@@ -31,7 +31,9 @@ public class ShootWithConfig extends CommandBase {
 
   public PIDController rotationController;
 
-  public ShootWithConfig(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+  public double configHood, configShooter = 0;
+
+  public ShootWithConfig(Double configHood, Double configShooter, ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
@@ -39,6 +41,10 @@ public class ShootWithConfig extends CommandBase {
     this.photonVisionSubsystem = photonVisionSubsystem;
 
     this.drivetrainSubsystem = drivetrainSubsystem;
+
+    this.configHood = configHood;
+
+    this.configShooter = configShooter;
 
     rotationController = new PIDController(.2, .15, 0);
 
@@ -62,9 +68,9 @@ public class ShootWithConfig extends CommandBase {
     if(photonVisionSubsystem.hasGoalTargets()){
 
 
-      hoodSubsystem.setHoodPosition(.5); 
+      hoodSubsystem.setHoodPosition(configHood); 
 
-      shooterSubsystem.setSpeed(1000);
+      shooterSubsystem.setSpeed(configShooter);
 
       drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
