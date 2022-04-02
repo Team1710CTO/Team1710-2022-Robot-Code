@@ -24,6 +24,8 @@ public class HoodSubsystem extends SubsystemBase {
 
   private static boolean isZeroed = false;
 
+  public double goalPos = 0;
+
   /** Creates a new Hood. */
   public HoodSubsystem() {
 
@@ -36,6 +38,8 @@ public class HoodSubsystem extends SubsystemBase {
     m_hood_pidController = m_hood_motor.getPIDController();
 
     m_hood_encoder = m_hood_motor.getEncoder();
+
+
 
     m_hood_pidController.setP(Constants.HOOD_kP);
     m_hood_pidController.setI(Constants.HOOD_kI);
@@ -59,6 +63,8 @@ public class HoodSubsystem extends SubsystemBase {
   public void setHoodPosition(double position) {
 
     if (isZeroed) {
+
+      position = goalPos;
 
       m_hood_pidController.setReference(position, ControlType.kPosition);
 
@@ -134,6 +140,10 @@ public class HoodSubsystem extends SubsystemBase {
 
     }
 
+  }
+
+  public boolean isHoodInRange(){
+    return Math.abs(goalPos - m_hood_encoder.getPosition()) < .1;
   }
 
   public static double getHoodVelocity() {
