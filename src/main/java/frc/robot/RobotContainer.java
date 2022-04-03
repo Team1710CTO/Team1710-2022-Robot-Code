@@ -62,6 +62,8 @@ public class RobotContainer {
 
   public Command twoBallAutoRed = new TwoBallFromWherever("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
+  public Command FunkeyFive = new FunkyFiveBall("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -77,6 +79,8 @@ public class RobotContainer {
 
     m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
     m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
+
+    m_chooser.setDefaultOption("funkyFive", FunkeyFive);
 
     
 

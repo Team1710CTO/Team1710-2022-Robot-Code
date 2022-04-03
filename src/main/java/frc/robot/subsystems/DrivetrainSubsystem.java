@@ -250,11 +250,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         ChassisSpeeds actualChassisSpeeds = m_kinematics.toChassisSpeeds(actualStates);
 
-        SmartDashboard.putNumber("robot x velocity", actualChassisSpeeds.vxMetersPerSecond);
+        //SmartDashboard.putNumber("robot x velocity", actualChassisSpeeds.vxMetersPerSecond);
 
-        SmartDashboard.putNumber("robot y velocity", actualChassisSpeeds.vyMetersPerSecond);
+        //SmartDashboard.putNumber("robot y velocity", actualChassisSpeeds.vyMetersPerSecond);
 
-        SmartDashboard.putNumber("robot omega velocity", actualChassisSpeeds.omegaRadiansPerSecond);
+        //SmartDashboard.putNumber("robot omega velocity", actualChassisSpeeds.omegaRadiansPerSecond);
 
         m_pose = m_odometry.update(
                 GyroSubsystem.getBestRotation2d(), 
@@ -266,12 +266,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         
 
-            SmartDashboard.putNumber("front Left Velovity", m_frontLeftModule.getDriveVelocity());
+            //SmartDashboard.putNumber("front Left Velovity", m_frontLeftModule.getDriveVelocity());
 
             SmartDashboard.putNumber("estimated position X", m_pose.getX());
             SmartDashboard.putNumber("estimated position Y", m_pose.getY());
         
-            SmartDashboard.putNumber("estimated position X in inches", m_pose.getX()/37);
+            //SmartDashboard.putNumber("estimated position X in inches", m_pose.getX()/37);
   }
 
   public void resetOdometry(){

@@ -33,7 +33,7 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 10; // FIXME Set front left module drive motor ID g
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11; // FIXME Set front left steer encoder ID
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 12; // FIXME Set front left module steer motor ID
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0); // 75 FIXME Measure and set front left steer offset
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(153 + 180); // 75 FIXME Measure and set front left steer offset
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR_PDP_SLOT = 0; //fixme
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR_PDP_SLOT = 4; //fixme
 

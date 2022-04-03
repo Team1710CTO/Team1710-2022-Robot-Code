@@ -46,7 +46,7 @@ public class HoodSubsystem extends SubsystemBase {
 
     // m_hood_pidController.setReference(Constants.HOOD_POSITION_MIN,
     // ControlType.kPosition);
-    SmartDashboard.putString("Hood Status", "!!Not Zeroed!!");
+   // SmartDashboard.putString("Hood Status", "!!Not Zeroed!!");
   }
 
   @Override
@@ -64,7 +64,7 @@ public class HoodSubsystem extends SubsystemBase {
 
     } else {
 
-      SmartDashboard.putString("Hood Status", "Set to Pos");
+     // SmartDashboard.putString("Hood Status", "Set to Pos");
 
     }
 

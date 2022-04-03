@@ -56,6 +56,6 @@ public class ZeroClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climberSubsystem.isOverZeroLimitCurrentLimit();
+    return climberSubsystem.isOverZeroLimitCurrentLimit() && timer.get() > .5;
   }
 }

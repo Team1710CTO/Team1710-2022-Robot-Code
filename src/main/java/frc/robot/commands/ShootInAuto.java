@@ -51,7 +51,7 @@ public class ShootInAuto extends CommandBase {
 
     timer3 = new Timer();
 
-    rotationController = new PIDController(.2, .15, 0);
+    rotationController = new PIDController(.075, .01, 0);
 
 
     addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
@@ -82,12 +82,12 @@ public class ShootInAuto extends CommandBase {
       targetSeen = true;
 
         
-        hoodSubsystem.setHoodPosition(.00348*d + .322);
+        hoodSubsystem.setHoodPosition(.208 + .00568 * d - (.00000945 * (d*d)));
        
 
         shooterSubsystem.setSpeed(4.63*d + 2020);
 
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
     } else if (!targetSeen){
 
@@ -95,10 +95,10 @@ public class ShootInAuto extends CommandBase {
       timer3.start();
 
       if(timer2.get() > .5){
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -2));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 2));
       } else {
 
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 2));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -2));
       }
 
     }
@@ -108,7 +108,7 @@ public class ShootInAuto extends CommandBase {
     }
     
 
-    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < 3) {
 
         indexerSubsystem.runindexerInFAST();
 
@@ -128,7 +128,7 @@ public class ShootInAuto extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    shooterSubsystem.disableShooter();
+    
     hoodSubsystem.setHoodPosition(0.1);
     indexerSubsystem.stopIndexer();
 
