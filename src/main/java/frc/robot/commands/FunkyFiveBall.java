@@ -90,6 +90,8 @@ public class FunkyFiveBall extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
+    new IntakeForDuration(1, intakeSubsystem),
+
     new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun2", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 

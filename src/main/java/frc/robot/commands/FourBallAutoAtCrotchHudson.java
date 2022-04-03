@@ -77,7 +77,7 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new DeadReckonDrive(drivetrainSubsystem, 0, 0, 3, .18),
+    new DeadReckonDrive(drivetrainSubsystem, 0, 0, -3, .18),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 

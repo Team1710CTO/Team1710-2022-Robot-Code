@@ -41,7 +41,7 @@ public class Shoot extends CommandBase {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
 
-    rotationController = new PIDController(.075, 0.01, 0);
+    rotationController = new PIDController(.08, 0.025, 0);
 
 
     addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);

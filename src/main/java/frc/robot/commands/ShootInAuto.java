@@ -51,7 +51,7 @@ public class ShootInAuto extends CommandBase {
 
     timer3 = new Timer();
 
-    rotationController = new PIDController(.075, .01, 0);
+    rotationController = new PIDController(.08, .025, 0);
 
 
     addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
@@ -108,7 +108,9 @@ public class ShootInAuto extends CommandBase {
     }
     
 
-    if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < 3) {
+    if(photonVisionSubsystem.hasGoalTargets()){
+      
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && (Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < 5)) {
 
         indexerSubsystem.runindexerInFAST();
 
@@ -121,6 +123,8 @@ public class ShootInAuto extends CommandBase {
       timer.stop();
 
     }
+
+  }
 
   }
 

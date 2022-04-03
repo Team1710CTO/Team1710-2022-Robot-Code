@@ -223,7 +223,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false);
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true);
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 
@@ -349,7 +349,7 @@ public SwerveDriveKinematics getKinematics(){
                                 SmartDashboard.putNumber("rot Error", rotationPidController.getPositionError());
                                 
                                 //PID Error computed using last gyro and goal gyros stored from other loops and current
-                                return m_chassisSpeeds.omegaRadiansPerSecond = -rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
+                                return m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());
 
                                 
                 
