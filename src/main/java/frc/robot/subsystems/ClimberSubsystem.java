@@ -39,6 +39,9 @@ public class ClimberSubsystem extends SubsystemBase {
     climberTalonTop.configFactoryDefault();
     climberTalonBottom.configFactoryDefault();
 
+    climberTalonTop.setNeutralMode(NeutralMode.Brake);
+    climberTalonBottom.setNeutralMode(NeutralMode.Brake);
+
     climberTalonTop.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, Constants.kTimeoutMs);
 
     climberTalonBottom.follow(climberTalonTop);
@@ -127,7 +130,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     if(isZeroed){
 
-    climberTalonTop.set(ControlMode.PercentOutput, 1);
+    climberTalonTop.set(ControlMode.PercentOutput, .5);
     
     }
 
@@ -135,7 +138,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void runDown(){
 
-    climberTalonTop.set(ControlMode.PercentOutput, -1);
+    climberTalonTop.set(ControlMode.PercentOutput, -.75);
 
   }
 

@@ -94,7 +94,7 @@ public class RobotContainer {
             () -> -modifyAxis(d_controller.getRightX() * .75) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
-    mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
+    //mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
@@ -168,7 +168,7 @@ public class RobotContainer {
                 .whenHeld(new shootToDeJam(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     new Button(m_controller::getRightBumper).whenHeld(new ClimbOverrideUp(mClimberSubsystem));
-    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem)).whenReleased(new ClimberHoldPosition(mClimberSubsystem));
+    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem));
 
 
     new Button(m_controller::getBackButton).whenHeld(new indexerInoverride(m_iIndexerSubsystem));

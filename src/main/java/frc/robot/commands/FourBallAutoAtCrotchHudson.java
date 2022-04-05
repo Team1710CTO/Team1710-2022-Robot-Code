@@ -66,7 +66,7 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
 
     new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("EXTRAEXTRASPECIAL", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 

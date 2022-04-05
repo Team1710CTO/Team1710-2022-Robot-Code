@@ -75,7 +75,7 @@ public class ShootInAuto extends CommandBase {
     
     
     
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
 
     if(photonVisionSubsystem.hasGoalTargets()){
 
@@ -112,7 +112,7 @@ public class ShootInAuto extends CommandBase {
       
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && (Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < 5)) {
 
-        indexerSubsystem.runindexerInFAST();
+        indexerSubsystem.runIndexerInMed();
 
         timer.start();
 

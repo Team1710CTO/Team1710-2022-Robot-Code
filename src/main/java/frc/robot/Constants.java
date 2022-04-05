@@ -91,7 +91,7 @@ public final class Constants {
     public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
     public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
     public static final double Intake_LEFT_up = 0.5; // roations from zero FIXME
-    public static final double INTAKE_LEFT_down = 3.3; // set by the zero functionality
+    public static final double INTAKE_LEFT_down = 3.9; // set by the zero functionality
 
 
     //intake Right

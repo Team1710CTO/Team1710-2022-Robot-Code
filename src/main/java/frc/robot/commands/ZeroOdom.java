@@ -35,6 +35,8 @@ public class ZeroOdom extends CommandBase {
   @Override
   public void execute() {
 
+    drivetrainSubsystem.rotationPidController.reset();
+
     gyroSubsystem.zeroBestGyro();
     gyroSubsystem.setIsZeroingFalse();
     drivetrainSubsystem.resetOdometry();
