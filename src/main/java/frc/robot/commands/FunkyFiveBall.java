@@ -64,7 +64,7 @@ public class FunkyFiveBall extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
@@ -77,7 +77,7 @@ public class FunkyFiveBall extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
@@ -90,9 +90,9 @@ public class FunkyFiveBall extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new IntakeForDuration(1, intakeSubsystem),
+    new IntakeForDuration(.125, intakeSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun2", 8, 5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("JudgesRun2HALF", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 
@@ -101,7 +101,7 @@ public class FunkyFiveBall extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+    new ShootInAuto(4, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );
 

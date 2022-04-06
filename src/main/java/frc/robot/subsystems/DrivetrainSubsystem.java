@@ -223,7 +223,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false);
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true);
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 

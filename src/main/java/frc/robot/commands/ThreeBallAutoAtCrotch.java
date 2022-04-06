@@ -64,7 +64,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
@@ -78,7 +78,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
                
   
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+    new ShootInAuto(1, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );
 

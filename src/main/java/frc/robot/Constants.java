@@ -83,7 +83,7 @@ public final class Constants {
     public static final int LEFT_INTAKE_ACTUATOR_CAN_ID = 31;
     public static double INTAKE_LEFT_kP = 0.15; 
     public static double INTAKE_LEFT_kI = 0.0001;
-    public static double INTAKE_LEFT_kD = 1; 
+    public static double INTAKE_LEFT_kD = 7.5; 
     public static double INTAKE_LEFT_kIz = 0; 
     public static double INTAKE_LEFT_kFF = 0; 
     public static double INTAKE_LEFT_kMaxOutput = 1; 
@@ -91,7 +91,7 @@ public final class Constants {
     public static double INTAKE_LEFT_zero_dutyCycle__gain = 1e-5;
     public static double INTAKE_LEFT_abnormal_abnormal_current_draw = 10;
     public static final double Intake_LEFT_up = 0.5; // roations from zero FIXME
-    public static final double INTAKE_LEFT_down = 3.9; // set by the zero functionality
+    public static final double INTAKE_LEFT_down = 3.7; // set by the zero functionality
 
 
     //intake Right
@@ -154,7 +154,7 @@ public final class Constants {
  public static double SHOOTER_zero_dutyCycle__gain = 1e-5;
  public static double SHOOTER_abnormal_abnormal_current_draw = 10;      
 
-    public static final double SHOOTER_GO_THRESHHOLD = 300;
+    public static final double SHOOTER_GO_THRESHHOLD = 150;
     
     
 

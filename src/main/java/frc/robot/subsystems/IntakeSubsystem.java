@@ -63,24 +63,24 @@ public class IntakeSubsystem extends SubsystemBase {
 
     m_intakeRunner = new TalonFX(Constants.INTAKE_RUNNER_CAN_ID);
     
-    SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
-    SmartDashboard.putNumber("intake Current draw", getIntakeActuatorCurrent());
+  //  SmartDashboard.putString("Intake Status", "!!Not Zeroed!!");
+  //  SmartDashboard.putNumber("intake Current draw", getIntakeActuatorCurrent());
 
   }
 
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("intake Current draw", getIntakeActuatorCurrent());
-
-    SmartDashboard.putNumber("intake rotations position", m_actuatorLeft_encoder.getPosition());
-    
-    SmartDashboard.putNumber("intake rotations velo", m_actuatorLeft_encoder.getVelocity());
-
-    SmartDashboard.putBoolean("is current bol treu", isIntakeStalledCurrent());
-
-    SmartDashboard.putBoolean("is velociuty basically zero", isIntakeVelocityBasicallyZero());
-    SmartDashboard.putString("intake STAtes", intakeState);
+   // SmartDashboard.putNumber("intake Current draw", getIntakeActuatorCurrent());
+//
+   // SmartDashboard.putNumber("intake rotations position", m_actuatorLeft_encoder.getPosition());
+   // 
+   // SmartDashboard.putNumber("intake rotations velo", m_actuatorLeft_encoder.getVelocity());
+//
+   // SmartDashboard.putBoolean("is current bol treu", isIntakeStalledCurrent());
+//
+   // SmartDashboard.putBoolean("is velociuty basically zero", isIntakeVelocityBasicallyZero());
+   // SmartDashboard.putString("intake STAtes", intakeState);
 
     if(Math.abs(m_actuatorRight_encoder.getPosition()- Constants.INTAKE_RIGHT_up) < 1){
       intakeState = "Up";

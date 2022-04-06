@@ -94,7 +94,7 @@ public class RobotContainer {
             () -> -modifyAxis(d_controller.getRightX() * .75) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
-    //mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
+    mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 

@@ -32,6 +32,10 @@ public class Shoot extends CommandBase {
 
   public PIDController rotationController;
 
+  public int shots = 0;
+
+  public boolean Lastbol = false;
+
   public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
@@ -60,7 +64,15 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
+    if(Lastbol != indexerSubsystem.topBeamBreak.get() && !Lastbol){
+
+      shots += 1;
+
+    }
+
+    SmartDashboard.putNumber("shots", shots);
+
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 5;
 
     if(photonVisionSubsystem.hasGoalTargets()){
 
@@ -68,7 +80,7 @@ public class Shoot extends CommandBase {
         hoodSubsystem.setHoodPosition(.208 + .00568 * d - (.00000945 * (d*d)));
        
 
-        shooterSubsystem.setSpeed(4.63*d + 2020);
+        shooterSubsystem.setSpeed(4.63*d + 2050);
 
         drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
@@ -87,7 +99,7 @@ public class Shoot extends CommandBase {
     
 
 
-    
+    Lastbol = indexerSubsystem.topBeamBreak.get();
 
   }
 

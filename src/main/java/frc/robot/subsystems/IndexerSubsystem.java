@@ -153,7 +153,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static void runIndexerInMed(){
 
-    m_indexerRunner_PidController.setReference(.95, ControlType.kDutyCycle);
+    m_indexerRunner_PidController.setReference(.5, ControlType.kDutyCycle);
 
   }
 
