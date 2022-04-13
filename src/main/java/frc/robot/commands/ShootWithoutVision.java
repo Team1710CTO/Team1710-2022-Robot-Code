@@ -69,7 +69,7 @@ public class ShootWithoutVision extends CommandBase {
 
     } else {
 
-      indexerSubsystem.stopIndexer();
+      indexerSubsystem.indexBallsBetweenBreaks();
 
     }
 

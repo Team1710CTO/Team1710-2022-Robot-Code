@@ -15,12 +15,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IndexerSubsystem extends SubsystemBase {
 
   public static DigitalInput bottomBeamBreak;
-  public DigitalInput topBeamBreak;
+  public static DigitalInput topBeamBreak;
   public static CANSparkMax m_indexerRunner;
 
 
@@ -32,13 +33,19 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static int ttfCounter = 0;
 
-  public static boolean lastUpperBeamBreak = false;
+  public static boolean lastUpperBeamBreak, Lastbol = false;
 
   public static int ballintegralBottom, ballintegralTop = 0;
+
+  public static Timer bottomTimer, topTimer;
+
+
   
 
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsystem() {
+
+
 
     topBeamBreak = new DigitalInput(Constants.topBeamBreak_CAN_ID);
     bottomBeamBreak = new DigitalInput(Constants.bottomBeamBreak_CAN_ID);
@@ -60,6 +67,12 @@ public class IndexerSubsystem extends SubsystemBase {
 
     m_indexerRunner_PidController.setReference(rotations, ControlType.kPosition);
 
+    topTimer = new Timer();
+    bottomTimer = new Timer();
+
+    topTimer.reset();
+    bottomTimer.reset();
+
   }
 
   @Override
@@ -77,9 +90,9 @@ public class IndexerSubsystem extends SubsystemBase {
 
     m_indexerRunner_encoder.getVelocity();
 
-   // SmartDashboard.putNumber("indxer velocity", m_indexerRunner_encoder.getVelocity());
+   SmartDashboard.putNumber("indxer velocity", m_indexerRunner_encoder.getVelocity());
 
-   // SmartDashboard.putNumber("balls", balls);
+   SmartDashboard.putNumber("balls", balls);
 
    // SmartDashboard.putNumber("ball integral", ballintegralBottom);
     
@@ -101,46 +114,35 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static void countBallsPeriodic(){
 
-    if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 1){
+    if(!bottomBeamBreak.get() && !topBeamBreak.get()){
 
-      ballintegralBottom += 1;
-      //SmartDashboard.putNumber("ball integral", ballintegralBottom);
+      balls = 2;     
 
-    } else if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() < 1){
+    } else if(!bottomBeamBreak.get()){
 
-      ballintegralBottom -= 1;
-      //SmartDashboard.putNumber("ball integral", ballintegralBottom);
+      bottomTimer.start();
+
+      if(bottomTimer.get() > .1){
+
+        balls = 1;
+
+      } 
 
     } else {
 
-      if(bottomBeamBreak.get()){
+      bottomTimer.reset();
+      topTimer.reset();
 
-        if(ballintegralBottom > 8){
-  
-          balls +=1;
-          ballintegralBottom = 0;
-  
-        } else if(ballintegralBottom < -8){
-  
-          balls -=1;
-          ballintegralBottom = 0;
-          
-        } else {
+    }    
 
-          if(m_indexerRunner_encoder.getVelocity() == 0){
-  
-          ballintegralBottom = 0;
-          
-          } 
+    if(Lastbol != topBeamBreak.get() && !Lastbol && m_indexerRunner_encoder.getVelocity() > 0){
 
-          
-
-  
-        }
-  
-      }
+      balls -= 1;
 
     }
+
+    Lastbol = topBeamBreak.get();
+    
 
 
   }
@@ -165,6 +167,12 @@ public class IndexerSubsystem extends SubsystemBase {
   public static void runIndexerOut(){
 
     m_indexerRunner_PidController.setReference(Constants.INDEXER_OUT_SPEED, ControlType.kDutyCycle);
+
+  }
+
+  public static void runIndexerOutNORM(){
+
+    m_indexerRunner_PidController.setReference(-.3, ControlType.kDutyCycle);
 
   }
 
@@ -193,11 +201,15 @@ public class IndexerSubsystem extends SubsystemBase {
 
     if(!isBottomBeakBreakTripped() && isTopBeakBreakTripped()){
 
-      runIndexerIn();
+        runIndexerIn();
+
+    } else if(isBottomBeakBreakTripped() && !isTopBeakBreakTripped()) { 
+
+        runIndexerOutNORM();
 
     } else {
 
-      stopIndexer();
+        stopIndexer();
 
     }
 

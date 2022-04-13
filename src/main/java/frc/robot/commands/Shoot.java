@@ -91,7 +91,7 @@ public class Shoot extends CommandBase {
   
       } else {
   
-        indexerSubsystem.stopIndexer();
+        indexerSubsystem.indexBallsBetweenBreaks();
   
       }
 

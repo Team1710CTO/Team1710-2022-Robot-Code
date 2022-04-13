@@ -153,7 +153,7 @@ public class ShootInAuto extends CommandBase {
 
     } else {
 
-      indexerSubsystem.stopIndexer();
+      indexerSubsystem.indexBallsBetweenBreaks();
 
       timer.stop();
 
@@ -180,6 +180,6 @@ public class ShootInAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (numOfballs == shots && timer4.get() > .1) || timer5.get() > 6;
+    return (indexerSubsystem.getBallCount() <= 0 && timer4.get() > .1) || timer5.get() > 6;
   }
 }
