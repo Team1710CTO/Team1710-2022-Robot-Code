@@ -61,7 +61,7 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
@@ -91,7 +91,7 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
 
     new DeadReckonDrive(drivetrainSubsystem, 0, 0, -3, .18),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );
 

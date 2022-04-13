@@ -62,7 +62,7 @@ public class ZeroIntake extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(intakeSubsystem.isIntakeStalledCurrent() && timer.get() > .25){
+    if(intakeSubsystem.isIntakeStalledCurrent() && timer.get() > .35){
 
       
 

@@ -77,11 +77,11 @@ public class IndexerSubsystem extends SubsystemBase {
 
     m_indexerRunner_encoder.getVelocity();
 
-    SmartDashboard.putNumber("indxer velocity", m_indexerRunner_encoder.getVelocity());
+   // SmartDashboard.putNumber("indxer velocity", m_indexerRunner_encoder.getVelocity());
 
-    SmartDashboard.putNumber("balls", balls);
+   // SmartDashboard.putNumber("balls", balls);
 
-    SmartDashboard.putNumber("ball integral", ballintegralBottom);
+   // SmartDashboard.putNumber("ball integral", ballintegralBottom);
     
 
     countBallsPeriodic();
@@ -104,12 +104,12 @@ public class IndexerSubsystem extends SubsystemBase {
     if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 1){
 
       ballintegralBottom += 1;
-      SmartDashboard.putNumber("ball integral", ballintegralBottom);
+      //SmartDashboard.putNumber("ball integral", ballintegralBottom);
 
     } else if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() < 1){
 
       ballintegralBottom -= 1;
-      SmartDashboard.putNumber("ball integral", ballintegralBottom);
+      //SmartDashboard.putNumber("ball integral", ballintegralBottom);
 
     } else {
 
@@ -153,7 +153,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static void runIndexerInMed(){
 
-    m_indexerRunner_PidController.setReference(.95, ControlType.kDutyCycle);
+    m_indexerRunner_PidController.setReference(.5, ControlType.kDutyCycle);
 
   }
 

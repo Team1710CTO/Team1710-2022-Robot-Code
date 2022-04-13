@@ -46,13 +46,13 @@ public class HoodSubsystem extends SubsystemBase {
 
     // m_hood_pidController.setReference(Constants.HOOD_POSITION_MIN,
     // ControlType.kPosition);
-    SmartDashboard.putString("Hood Status", "!!Not Zeroed!!");
+   // SmartDashboard.putString("Hood Status", "!!Not Zeroed!!");
   }
 
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("hood pos", m_hood_encoder.getPosition());
+    //SmartDashboard.putNumber("hood pos", m_hood_encoder.getPosition());
 
   }
 
@@ -64,7 +64,7 @@ public class HoodSubsystem extends SubsystemBase {
 
     } else {
 
-      SmartDashboard.putString("Hood Status", "Set to Pos");
+     // SmartDashboard.putString("Hood Status", "Set to Pos");
 
     }
 
@@ -89,7 +89,7 @@ public class HoodSubsystem extends SubsystemBase {
 
     m_hood_pidController.setReference(.1, ControlType.kDutyCycle);
 
-    SmartDashboard.putString("Hood Status", "!!Manual Override!!");
+    //SmartDashboard.putString("Hood Status", "!!Manual Override!!");
 
   }
 
@@ -97,7 +97,7 @@ public class HoodSubsystem extends SubsystemBase {
 
     m_hood_pidController.setReference(-.1, ControlType.kDutyCycle);
 
-    SmartDashboard.putString("Hood Status", "!!Manual Override!!");
+    //SmartDashboard.putString("Hood Status", "!!Manual Override!!");
 
   }
 
@@ -148,7 +148,7 @@ public class HoodSubsystem extends SubsystemBase {
 
     m_hood_encoder.setPosition(0.0);
 
-    SmartDashboard.putString("Hood Status", "Zeroed");
+    //SmartDashboard.putString("Hood Status", "Zeroed");
 
   }
 

@@ -33,6 +33,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         }
         
         getDistanceToGoalMeters(0.0);
+        getYDisplacementOfGoal();
 
     }
 
@@ -46,7 +47,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             //double cameraPitch = 55; // TODO
             groundDisToTarget = resultCameron.getBestTarget().getPitch() ; // STILL TESTING
             double x = groundDisToTarget;
-            double result = 105 + -8.26*x + 0.359*x*x;
+            double result = 101 + -3.01*x + .0419 * (x*x);
             SmartDashboard.putNumber("Ground Distance To Target", result);
             return result;
              // Puts the distance to
@@ -78,6 +79,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         } else {
             YDisplacementOfGoal = 0;
         }
+        SmartDashboard.putNumber("yDisplacementOfGoal", YDisplacementOfGoal);
         return YDisplacementOfGoal; // Returns the X displacement from the center of the camera's view to the goal
     }
 
@@ -140,11 +142,15 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
     public static boolean hasGoalTargets(){
 
+       
+
         var results = Cameron.getLatestResult();
         
         if (results.hasTargets()) {
+            SmartDashboard.putBoolean("has target", true);
             return true;
         } else {
+            SmartDashboard.putBoolean("has target", false);
             return false;
         }
     }

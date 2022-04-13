@@ -74,6 +74,8 @@ public class IntakeWithVision extends CommandBase {
 
     SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
 
+
+
     if(photonVisionSubsystem.hasBallTargets() && Math.abs(xPidController.getPositionError()) < 15 && Math.abs(yPidController.getPositionError()) < 4 && intakeSubsystem.getIntakeState() == "Up"){
 
       intakeSubsystem.setintakeDown();
@@ -91,6 +93,8 @@ public class IntakeWithVision extends CommandBase {
       drivetrainSubsystem.drive(new ChassisSpeeds(0,0,0));     
      
     }
+
+  
 
     
 

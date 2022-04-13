@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
@@ -32,11 +33,17 @@ public class ShootInAuto extends CommandBase {
 
   public PIDController rotationController;
 
-  public final Timer timer, timer2, timer3;
+  public final Timer timer, timer2, timer3, timer4, timer5;
 
   public boolean targetSeen = false;
 
-  public ShootInAuto(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+  public int shots = 0;
+
+  public boolean Lastbol = false;
+
+  public int numOfballs = 0;
+
+  public ShootInAuto(int numOfballs, ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
@@ -45,13 +52,23 @@ public class ShootInAuto extends CommandBase {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
 
+    this.numOfballs = numOfballs;
+
     timer = new Timer();
 
     timer2 = new Timer();
 
     timer3 = new Timer();
 
-    rotationController = new PIDController(.2, .15, 0);
+    timer4 = new Timer();
+
+    timer5 = new Timer();
+
+    rotationController = new PIDController(.08, .025, 0);
+
+    shots = 0;
+
+    Lastbol = false;
 
 
     addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
@@ -62,9 +79,19 @@ public class ShootInAuto extends CommandBase {
   @Override
   public void initialize() {
 
+    shots = 0;
+
+    Lastbol = false;
+
     timer.reset();
     timer2.reset();
     timer3.reset();
+
+    timer4.reset();
+    timer4.start();
+
+    timer5.reset();
+    timer5.start();
 
   }
 
@@ -72,35 +99,30 @@ public class ShootInAuto extends CommandBase {
   @Override
   public void execute() {
 
+    if(Lastbol != indexerSubsystem.topBeamBreak.get() && !Lastbol){
+
+      shots += 1;
+
+    }
+
+    Lastbol = false;
+
     
+     
     
-    
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 8;
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
 
     if(photonVisionSubsystem.hasGoalTargets()){
 
       targetSeen = true;
 
-      if(d>96){
-
-        hoodSubsystem.setHoodPosition(1.1);
-
-      } else {
         
-        hoodSubsystem.setHoodPosition((.0073 * d) + .388);
-      }
+        hoodSubsystem.setHoodPosition(.208 + .00568 * d - (.00000945 * (d*d)));
+       
 
-      if(d>96){
+        shooterSubsystem.setSpeed(4.63*d + 2000);
 
-        shooterSubsystem.setSpeed(10.1*d + 2864);
-
-      } else {
-
-        shooterSubsystem.setSpeed((3700 + (-10.3*d) + (.129 * (d*d))));
-
-      }
-
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
     } else if (!targetSeen){
 
@@ -108,10 +130,10 @@ public class ShootInAuto extends CommandBase {
       timer3.start();
 
       if(timer2.get() > .5){
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -2));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 2));
       } else {
 
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 2));
+        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, -2));
       }
 
     }
@@ -121,9 +143,11 @@ public class ShootInAuto extends CommandBase {
     }
     
 
-    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
+    if(photonVisionSubsystem.hasGoalTargets()){
+      
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled() && (Math.abs(photonVisionSubsystem.getXDisplacementOfGoal()) < 5)) {
 
-        indexerSubsystem.runindexerInFAST();
+        indexerSubsystem.runIndexerInMed();
 
         timer.start();
 
@@ -137,19 +161,25 @@ public class ShootInAuto extends CommandBase {
 
   }
 
+  Lastbol = indexerSubsystem.topBeamBreak.get();
+
+  }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    shooterSubsystem.disableShooter();
+    
     hoodSubsystem.setHoodPosition(0.1);
     indexerSubsystem.stopIndexer();
+
+    shots = 0;
 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > .3;
+    return (numOfballs == shots && timer4.get() > .1) || timer5.get() > 6;
   }
 }

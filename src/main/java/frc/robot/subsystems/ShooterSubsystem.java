@@ -68,6 +68,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("shooter to speed", isShooterToSpeed());
 
+    SmartDashboard.putNumber("shooter current", m_motor.getOutputCurrent());
+
     
   }
 

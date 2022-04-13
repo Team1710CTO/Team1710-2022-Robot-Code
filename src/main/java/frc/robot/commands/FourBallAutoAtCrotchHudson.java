@@ -64,9 +64,9 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("CoreysCrotch", 8, 5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("EXTRAEXTRASPECIAL", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 
@@ -76,8 +76,6 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
                                   drivetrainSubsystem),
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-
-    new DeadReckonDrive(drivetrainSubsystem, 0, 0, 3, .18),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
@@ -99,7 +97,7 @@ public class FourBallAutoAtCrotchHudson extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new ShootInAuto(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );
 

@@ -29,7 +29,6 @@ public class DriveToPositionCommand extends CommandBase {
   @Override
   public void initialize() {
 
-    drivetrainSubsystem.resetOdometry();
 
   }
 

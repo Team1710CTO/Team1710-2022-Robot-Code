@@ -62,6 +62,8 @@ public class RobotContainer {
 
   public Command twoBallAutoRed = new TwoBallFromWherever("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
+  public Command FunkeyFive = new FunkyFiveBall("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -78,6 +80,8 @@ public class RobotContainer {
     m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
     m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
 
+    m_chooser.setDefaultOption("funkyFive", FunkeyFive);
+
     
 
 // Put the chooser on the dashboard
@@ -87,7 +91,7 @@ public class RobotContainer {
             m_drivetrainSubsystem,
             () -> -modifyAxis(d_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(d_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-d_controller.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(d_controller.getRightX() * .675) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
@@ -139,7 +143,7 @@ public class RobotContainer {
 
     new Button(d_controller::getBButton)
             //.whenHeld(new ClimbHalf(mClimberSubsystem));
-            .whenHeld(new ShootLowGoal(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, m_drivetrainSubsystem));
+            .whenHeld(new ShootWithoutVision(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
     
 
     new Button(d_controller::getXButton)
@@ -161,10 +165,10 @@ public class RobotContainer {
                 .whenHeld(new ClimbDown(mClimberSubsystem));
 
     new Button(m_controller::getStartButton)
-                .whenHeld(new shootToDeJam(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
+                .whenHeld(new ShootInLow(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     new Button(m_controller::getRightBumper).whenHeld(new ClimbOverrideUp(mClimberSubsystem));
-    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem)).whenReleased(new ClimberHoldPosition(mClimberSubsystem));
+    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem));
 
 
     new Button(m_controller::getBackButton).whenHeld(new indexerInoverride(m_iIndexerSubsystem));

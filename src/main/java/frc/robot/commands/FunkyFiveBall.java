@@ -17,7 +17,7 @@ import frc.robot.subsystems.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
+public class FunkyFiveBall extends SequentialCommandGroup {
 
   public IntakeSubsystem intakeSubsystem;
 
@@ -37,7 +37,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
   private ProfiledPIDController thetaPidController;
 
   /** Creates a new runPathAndIntake. */
-  public ThreeBallAutoAtCrotch(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public FunkyFiveBall(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -53,9 +53,9 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
     yPosPidController = new PIDController(1, 0, 0);
     thetaPidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(3,3));
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
-
     
-  
+    
+
     addCommands(
 
     new setPipeline(photonVisionSubsystem, teamColor),
@@ -76,9 +76,32 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
                                   drivetrainSubsystem),
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
-               
-  
-    new ShootInAuto(1, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
+
+    new PPSwerveControllerCommand(PathPlanner.loadPath("NolansIdea", 8, 5), 
+                                  drivetrainSubsystem::getOdomPose2d, 
+                                  drivetrainSubsystem.getKinematics(), 
+                                  xPosPidController, 
+                                  yPosPidController, 
+                                  thetaPidController, 
+                                  drivetrainSubsystem::setWheelStates, 
+                                  drivetrainSubsystem),
+
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+
+    new IntakeForDuration(.125, intakeSubsystem),
+
+    new PPSwerveControllerCommand(PathPlanner.loadPath("JudgesRun2HALF", 8, 5), 
+                                  drivetrainSubsystem::getOdomPose2d, 
+                                  drivetrainSubsystem.getKinematics(), 
+                                  xPosPidController, 
+                                  yPosPidController, 
+                                  thetaPidController, 
+                                  drivetrainSubsystem::setWheelStates, 
+                                  drivetrainSubsystem),
+
+    new ShootInAuto(4, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   
   );
 
