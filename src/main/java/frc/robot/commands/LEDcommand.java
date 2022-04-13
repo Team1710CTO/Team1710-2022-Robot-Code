@@ -6,22 +6,21 @@ package frc.robot.commands;
 
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ledSubsystem;
+import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class LEDcommand extends CommandBase {
+public class LedCommand extends CommandBase {
   /** Creates a new LEDcommand. */
 
-  public ledSubsystem ledSubsystem;
+  public LedSubsystem ledSubsystem;
   public ShooterSubsystem shooterSubsystem;
   public IndexerSubsystem indexerSubsystem;
   public PhotonVisionSubsystem photonVisionSubsystem;
 
-  public LEDcommand(ledSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem,
-      PhotonVisionSubsystem photonVisionSubsystem) {
+  public LedCommand(LedSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.ledSubsystem = ledSubsystem;
     this.shooterSubsystem = shooterSubsystem;

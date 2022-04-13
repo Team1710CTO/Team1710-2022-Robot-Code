@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.AddressableLED;
 //import frc.robot.subsystems.ShooterSubsystem;
 //import frc.robot.subsystems.ShooterSubsystem;
 
-public class ledSubsystem extends SubsystemBase {
+public class LedSubsystem extends SubsystemBase {
   /** Creates a new ledSubsystem. */
-  public ledSubsystem() {
+  public LedSubsystem() {
   }
 
   public static AddressableLED m_led = new AddressableLED(1);
