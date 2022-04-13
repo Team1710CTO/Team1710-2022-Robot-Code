@@ -10,71 +10,72 @@ import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
-import edu.wpi.first.wpilibj.DriverStation;
+//import edu.wpi.first.wpilibj.DriverStation;
 
 public class LedShootSequence extends CommandBase {
-    /** Creates a new LEDcommand. */
+  /** Creates a new LEDcommand. */
 
-    public LedSubsystem ledSubsystem;
-    public ShooterSubsystem shooterSubsystem;
-    public IndexerSubsystem indexerSubsystem;
-    public PhotonVisionSubsystem photonVisionSubsystem;
+  public LedSubsystem ledSubsystem;
+  public ShooterSubsystem shooterSubsystem;
+  public IndexerSubsystem indexerSubsystem;
+  public PhotonVisionSubsystem photonVisionSubsystem;
 
-    public LedShootSequence(LedSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem,
-            IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
+  public LedShootSequence(LedSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem,
+      IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
-        this.ledSubsystem = ledSubsystem;
-        this.shooterSubsystem = shooterSubsystem;
-        this.indexerSubsystem = indexerSubsystem;
-        this.photonVisionSubsystem = photonVisionSubsystem;
+    this.ledSubsystem = ledSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
+    this.indexerSubsystem = indexerSubsystem;
+    this.photonVisionSubsystem = photonVisionSubsystem;
 
-        addRequirements(ledSubsystem, shooterSubsystem, indexerSubsystem, photonVisionSubsystem);
+    addRequirements(ledSubsystem, shooterSubsystem, indexerSubsystem, photonVisionSubsystem);
 
-        // Use addRequirements() here to declare subsystem dependencies.
-    }
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
 
-        ledSubsystem.setLength();
-        ledSubsystem.solid(255, 225, 53);
+    ledSubsystem.setLength();
+    ledSubsystem.solid(255, 225, 53);
 
-    }
+  }
 
-    // Called every time the scheduler runs while the command is scheduled.
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
+    if (ShooterSubsystem.isDisabled == false) {
 
-      if (ShooterSubsystem.isDisabled == false) {
+      if (photonVisionSubsystem.getXDisplacementOfGoal() > -1 && photonVisionSubsystem.getXDisplacementOfGoal() < 1) {
 
-        if (photonVisionSubsystem.getXDisplacementOfGoal() > -1 && photonVisionSubsystem.getXDisplacementOfGoal() < 1) {
+        ledSubsystem.tripleOrbit(0, 200, 0, 0, 150, 0, 2);
 
-          ledSubsystem.tripleOrbit(0, 200, 0, 0, 150, 0, 2);
+        if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-          if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
-
-            ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 150, 2);
-
-          }
-
-        } else {
-
-          ledSubsystem.tripleOrbit(200, 200, 0, 150, 150, 0, 2);
+          ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 150, 2);
 
         }
 
+      } else {
+
+        ledSubsystem.tripleOrbit(200, 200, 0, 150, 150, 0, 2);
+
+      }
+
     }
 
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-    }
+  }
 
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 }
