@@ -15,11 +15,9 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*; // import all commands 
 
-
 import frc.robot.subsystems.*; // import all subsystems
 
 public class RobotContainer {
-
 
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
@@ -32,7 +30,7 @@ public class RobotContainer {
   public static IndexerSubsystem m_iIndexerSubsystem = new IndexerSubsystem();
 
   public static HoodSubsystem mHoodSubsystem = new HoodSubsystem();
-  
+
   public static ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
@@ -40,29 +38,34 @@ public class RobotContainer {
   public static LedSubsystem ledSubsystem = new LedSubsystem();
 
   public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
-  
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  
-  
-  //public static PhotonVisionSubsystem mPhotonVisionSubsystem = new PhotonVisionSubsystem();
+  // public static PhotonVisionSubsystem mPhotonVisionSubsystem = new
+  // PhotonVisionSubsystem();
 
   public static ClimberSubsystem mClimberSubsystem = new ClimberSubsystem();
 
-  public Command fourBallAutoBlue = new FourBallAutoAtCrotchHudson("BLUE", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
-  
-  public Command fourBallAutoRed = new FourBallAutoAtCrotchHudson("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
-  
-  public Command threeBallAutoBlue = new ThreeBallAutoAtCrotch("BLUE", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  public Command fourBallAutoBlue = new FourBallAutoAtCrotchHudson("BLUE", m_drivetrainSubsystem, mIntakeSubsystem,
+      mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
-  public Command threeBallAutoRed = new ThreeBallAutoAtCrotch("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  public Command fourBallAutoRed = new FourBallAutoAtCrotchHudson("RED", m_drivetrainSubsystem, mIntakeSubsystem,
+      mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
-  public Command twoBallAutoBlue = new TwoBallFromWherever("BLUE", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  public Command threeBallAutoBlue = new ThreeBallAutoAtCrotch("BLUE", m_drivetrainSubsystem, mIntakeSubsystem,
+      mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
-  public Command twoBallAutoRed = new TwoBallFromWherever("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  public Command threeBallAutoRed = new ThreeBallAutoAtCrotch("RED", m_drivetrainSubsystem, mIntakeSubsystem,
+      mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
-  public Command FunkeyFive = new FunkyFiveBall("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+  public Command twoBallAutoBlue = new TwoBallFromWherever("BLUE", m_drivetrainSubsystem, mIntakeSubsystem,
+      mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
+  public Command twoBallAutoRed = new TwoBallFromWherever("RED", m_drivetrainSubsystem, mIntakeSubsystem,
+      mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
+  public Command FunkeyFive = new FunkyFiveBall("RED", m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem,
+      m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
   public RobotContainer() {
     // Set up the default command for the drivetrain.
@@ -82,106 +85,99 @@ public class RobotContainer {
 
     m_chooser.setDefaultOption("funkyFive", FunkeyFive);
 
-    
-
-// Put the chooser on the dashboard
+    // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-            m_drivetrainSubsystem,
-            () -> -modifyAxis(d_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(d_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(d_controller.getRightX() * .675) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));
+        m_drivetrainSubsystem,
+        () -> -modifyAxis(d_controller.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(d_controller.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(d_controller.getRightX() * .675)
+            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
     mShooterSubsystem.setDefaultCommand(new DefaultShooterCommand(mShooterSubsystem));
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
-  //ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
+    // ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
 
-    
     // Configure the button bindings
     configureButtonBindings();
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
     // Back button zeros the gyroscope
     new Button(d_controller::getBackButton)
-            .whenPressed(m_GyroSubsystem::zeroBestGyro)
-            .whenReleased(m_GyroSubsystem::setIsZeroingFalse)
-            .whenReleased(m_drivetrainSubsystem::enableHeadingControl);
-
-
-   
-    
+        .whenPressed(m_GyroSubsystem::zeroBestGyro)
+        .whenReleased(m_GyroSubsystem::setIsZeroingFalse)
+        .whenReleased(m_drivetrainSubsystem::enableHeadingControl);
 
     new Button(d_controller::getStartButton)
-            .whenPressed(new ZeroIntake(mIntakeSubsystem))
-            .whenPressed(new ZeroHood(mHoodSubsystem))
-            .whenPressed(m_drivetrainSubsystem::resetOdometry)
-            .whenPressed(m_iIndexerSubsystem::zeroBallCount);
-           
-
-            
+        .whenPressed(new ZeroIntake(mIntakeSubsystem))
+        .whenPressed(new ZeroHood(mHoodSubsystem))
+        .whenPressed(m_drivetrainSubsystem::resetOdometry)
+        .whenPressed(m_iIndexerSubsystem::zeroBallCount);
 
     new Button(d_controller::getRightBumper)
-            .whenHeld(new Intake(mIntakeSubsystem));
+        .whenHeld(new Intake(mIntakeSubsystem));
 
     new Button(d_controller::getLeftBumper)
-            .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
-    
+        .whenHeld(new outtake(mIntakeSubsystem, m_iIndexerSubsystem));
+
     new Button(d_controller::getAButton)
-            //.whenHeld(new ClimbHalf(mClimberSubsystem));
-            .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem, m_drivetrainSubsystem));
+        // .whenHeld(new ClimbHalf(mClimberSubsystem));
+        .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem,
+            m_drivetrainSubsystem));
 
     new Button(d_controller::getBButton)
-            //.whenHeld(new ClimbHalf(mClimberSubsystem));
-            .whenHeld(new ShootWithoutVision(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
-    
+        // .whenHeld(new ClimbHalf(mClimberSubsystem));
+        .whenHeld(new ShootWithoutVision(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
     new Button(d_controller::getXButton)
-            //.whenHeld(new ClimbHalf(mClimberSubsystem));
-            .whenHeld(new IntakeWithVision(mIntakeSubsystem, m_drivetrainSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem));
-
-
+        // .whenHeld(new ClimbHalf(mClimberSubsystem));
+        .whenHeld(
+            new IntakeWithVision(mIntakeSubsystem, m_drivetrainSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem));
 
     new Button(m_controller::getXButton)
-                .whenPressed(new climberBootSequence(mClimberSubsystem));
-    
+        .whenPressed(new climberBootSequence(mClimberSubsystem));
+
     new Button(m_controller::getYButton)
-                .whenHeld(new ClimbUp(mClimberSubsystem));
-     //
+        .whenHeld(new ClimbUp(mClimberSubsystem));
+    //
     new Button(m_controller::getBButton)
-                .whenHeld(new ClimbHalf(mClimberSubsystem));
+        .whenHeld(new ClimbHalf(mClimberSubsystem));
 
     new Button(m_controller::getAButton)
-                .whenHeld(new ClimbDown(mClimberSubsystem));
+        .whenHeld(new ClimbDown(mClimberSubsystem));
 
     new Button(m_controller::getStartButton)
-                .whenHeld(new ShootInLow(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
+        .whenHeld(new ShootInLow(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
 
-    new Button(m_controller::getRightBumper).whenHeld(new ClimbOverrideUp(mClimberSubsystem));
-    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem));
+    new Button(m_controller::getRightBumper).whenHeld(new ClimbOverrideUp(mClimberSubsystem))
+        .whenHeld(new LedClimberUp(ledSubsystem));
 
+    new Button(m_controller::getLeftBumper).whenHeld(new ClimbOverrideDown(mClimberSubsystem))
+        .whenHeld(new LedClimberDown(ledSubsystem));
 
     new Button(m_controller::getBackButton).whenHeld(new indexerInoverride(m_iIndexerSubsystem));
-    
 
-    
-    //new Button(d_controller::getStartButton)
-    //        .whenPressed(new ZeroIntake());
-            
-    //new Button(d_controller::getAButton).whenPressed(new climberActuatorIn(servoSubsystem));
-    
-    //new Button(d_controller::getBButton).whenPressed(new climberActuatorOut(servoSubsystem));
-  
+    // new Button(d_controller::getStartButton)
+    // .whenPressed(new ZeroIntake());
+
+    // new Button(d_controller::getAButton).whenPressed(new
+    // climberActuatorIn(servoSubsystem));
+
+    // new Button(d_controller::getBButton).whenPressed(new
+    // climberActuatorOut(servoSubsystem));
+
   }
 
   /**
@@ -194,8 +190,6 @@ public class RobotContainer {
     return m_chooser.getSelected();
 
   }
-
-  
 
   private static double deadband(double value, double deadband) {
 
@@ -214,7 +208,7 @@ public class RobotContainer {
     } else {
 
       return 0.0;
-      
+
     }
   }
 
@@ -227,6 +221,5 @@ public class RobotContainer {
 
     return value;
   }
-
 
 }
