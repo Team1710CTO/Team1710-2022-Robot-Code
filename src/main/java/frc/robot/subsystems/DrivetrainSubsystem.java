@@ -223,7 +223,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(true);
+        m_chassisSpeeds.omegaRadiansPerSecond = headingControlModifier(false);
         
         SmartDashboard.putNumber("rotation Supplier", m_chassisSpeeds.omegaRadiansPerSecond);
 
@@ -321,10 +321,10 @@ public SwerveDriveKinematics getKinematics(){
                         
                         goalGyro = lastGyro; //store Gyro
                         pidActivationIterator = 0; //set iterator to zero
-                        SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
+                        //SmartDashboard.putBoolean("Rotation PID Enabled", false); //put to dashboard
 
-                        SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
-                        SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+                        //SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
+                        //SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
 
                         return m_chassisSpeeds.omegaRadiansPerSecond; //return
 
@@ -334,19 +334,21 @@ public SwerveDriveKinematics getKinematics(){
                         //if(pidActivationIterator < (Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD += 1)){
                                 //iterate
                         pidActivationIterator += 1; 
-                        SmartDashboard.putNumber("iterator", pidActivationIterator); 
+                        //SmartDashboard.putNumber("iterator", pidActivationIterator); 
 
                         //}   
 
                         //if our iterator is greater than threshold modify our omegaRadiansPerSecond and return
                         if(pidActivationIterator > Constants.ROTATION_PID_ITERATOR_ACTIVATION_THRESHOLD){
                                 
-                                SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
+                               //SmartDashboard.putBoolean("Heading Control Enabled", true); //put to dashboard
 
-                                SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
-                                SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
+                               //SmartDashboard.putNumber("lastG", lastGyro.getDegrees());
+                               //SmartDashboard.putNumber("goalG", goalGyro.getDegrees());
 
-                                SmartDashboard.putNumber("rot Error", rotationPidController.getPositionError());
+                               //SmartDashboard.putNumber("rot Error", rotationPidController.getPositionError());
+
+                               //SmartDashboard.putNumber("rotationPIDOITPOUT", rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees()));
                                 
                                 //PID Error computed using last gyro and goal gyros stored from other loops and current
                                 return m_chassisSpeeds.omegaRadiansPerSecond = rotationPidController.calculate(lastGyro.getDegrees(), goalGyro.getDegrees());

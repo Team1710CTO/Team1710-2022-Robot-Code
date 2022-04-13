@@ -79,7 +79,7 @@ public class FunkyFiveBall extends SequentialCommandGroup {
 
     new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("NolansIdea", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 

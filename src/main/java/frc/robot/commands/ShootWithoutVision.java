@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
@@ -16,7 +17,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootLowGoal extends CommandBase {
+public class ShootWithoutVision extends CommandBase {
   /** Creates a new Shoot. */
 
   public ShooterSubsystem shooterSubsystem;
@@ -27,23 +28,22 @@ public class ShootLowGoal extends CommandBase {
 
  
 
-  public DrivetrainSubsystem drivetrainSubsystem;
 
   public PIDController rotationController;
 
-  public ShootLowGoal(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+  public ShootWithoutVision(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
    
 
-    this.drivetrainSubsystem = drivetrainSubsystem;
+    
 
     rotationController = new PIDController(.2, .15, 0);
 
 
-    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, drivetrainSubsystem);
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -59,13 +59,13 @@ public class ShootLowGoal extends CommandBase {
   @Override
   public void execute() {
 
-    shooterSubsystem.setSpeed(1750);
+    shooterSubsystem.setSpeed(2300  + SmartDashboard.getNumber("shooterRMAddition", 0));
 
-    hoodSubsystem.setHoodPosition(.6);
+    hoodSubsystem.setHoodPosition(.5);
     
     if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
-        indexerSubsystem.runindexerInFAST();
+      indexerSubsystem.runIndexerInMed();
 
     } else {
 

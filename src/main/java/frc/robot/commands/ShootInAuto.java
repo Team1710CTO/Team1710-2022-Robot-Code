@@ -33,7 +33,7 @@ public class ShootInAuto extends CommandBase {
 
   public PIDController rotationController;
 
-  public final Timer timer, timer2, timer3, timer4;
+  public final Timer timer, timer2, timer3, timer4, timer5;
 
   public boolean targetSeen = false;
 
@@ -62,6 +62,8 @@ public class ShootInAuto extends CommandBase {
 
     timer4 = new Timer();
 
+    timer5 = new Timer();
+
     rotationController = new PIDController(.08, .025, 0);
 
     shots = 0;
@@ -88,6 +90,9 @@ public class ShootInAuto extends CommandBase {
     timer4.reset();
     timer4.start();
 
+    timer5.reset();
+    timer5.start();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -105,7 +110,7 @@ public class ShootInAuto extends CommandBase {
     
      
     
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0) + 5;
+    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
 
     if(photonVisionSubsystem.hasGoalTargets()){
 
@@ -115,7 +120,7 @@ public class ShootInAuto extends CommandBase {
         hoodSubsystem.setHoodPosition(.208 + .00568 * d - (.00000945 * (d*d)));
        
 
-        shooterSubsystem.setSpeed(4.63*d + 2020);
+        shooterSubsystem.setSpeed(4.63*d + 2000);
 
         drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
 
@@ -175,6 +180,6 @@ public class ShootInAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return numOfballs == shots && timer4.get() > .1;
+    return (numOfballs == shots && timer4.get() > .1) || timer5.get() > 6;
   }
 }

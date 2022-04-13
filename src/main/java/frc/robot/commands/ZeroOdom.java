@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
@@ -29,17 +30,24 @@ public class ZeroOdom extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    
+    drivetrainSubsystem.rotationPidController.reset();
+
+    drivetrainSubsystem.drive(new ChassisSpeeds(0,0,0));
+
+    gyroSubsystem.zeroBestGyro();
+    gyroSubsystem.setGyro(180);
+    gyroSubsystem.setIsZeroingFalse();
+    drivetrainSubsystem.resetOdometry();
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    drivetrainSubsystem.rotationPidController.reset();
-
-    gyroSubsystem.zeroBestGyro();
-    gyroSubsystem.setIsZeroingFalse();
-    drivetrainSubsystem.resetOdometry();
+    
     
   }
 

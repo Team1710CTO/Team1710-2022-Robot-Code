@@ -17,7 +17,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class Shoot extends CommandBase {
+public class ShootInLow extends CommandBase {
   /** Creates a new Shoot. */
 
   public ShooterSubsystem shooterSubsystem;
@@ -26,29 +26,24 @@ public class Shoot extends CommandBase {
 
   public IndexerSubsystem indexerSubsystem;
 
-  public PhotonVisionSubsystem photonVisionSubsystem;
+ 
 
-  public DrivetrainSubsystem drivetrainSubsystem;
 
   public PIDController rotationController;
 
-  public int shots = 0;
-
-  public boolean Lastbol = false;
-
-  public Shoot(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem, DrivetrainSubsystem drivetrainSubsystem) {
+  public ShootInLow(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, IndexerSubsystem indexerSubsystem) {
 
     this.indexerSubsystem = indexerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.hoodSubsystem = hoodSubsystem;
-    this.photonVisionSubsystem = photonVisionSubsystem;
+   
 
-    this.drivetrainSubsystem = drivetrainSubsystem;
+    
 
-    rotationController = new PIDController(.08, 0.025, 0);
+    rotationController = new PIDController(.2, .15, 0);
 
 
-    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem);
+    addRequirements(shooterSubsystem, hoodSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -64,42 +59,19 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    if(Lastbol != indexerSubsystem.topBeamBreak.get() && !Lastbol){
+    shooterSubsystem.setSpeed(2325 + SmartDashboard.getNumber("shooterRMAddition", 0));
 
-      shots += 1;
-
-    }
-
-    SmartDashboard.putNumber("shots", shots);
-
-    double d = photonVisionSubsystem.getDistanceToGoalMeters(0.0);
-
-    if(photonVisionSubsystem.hasGoalTargets()){
-
-        
-        hoodSubsystem.setHoodPosition(.208 + .00568 * d - (.00000945 * (d*d)));
-       
-
-        shooterSubsystem.setSpeed(4.63*d + 2000 + SmartDashboard.getNumber("shooterRMAddition", 0));
-
-        drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, rotationController.calculate(photonVisionSubsystem.getXDisplacementOfGoal())));
-
-
-      if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
-
-          indexerSubsystem.runIndexerInMed();
-  
-      } else {
-  
-        indexerSubsystem.stopIndexer();
-  
-      }
-
-    }
+    hoodSubsystem.setHoodPosition(.01);
     
+    if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
 
+      indexerSubsystem.runIndexerInMed();
 
-    Lastbol = indexerSubsystem.topBeamBreak.get();
+    } else {
+
+      indexerSubsystem.stopIndexer();
+
+    }
 
   }
 
