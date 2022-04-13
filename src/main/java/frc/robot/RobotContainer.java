@@ -135,7 +135,8 @@ public class RobotContainer {
     new Button(d_controller::getAButton)
         // .whenHeld(new ClimbHalf(mClimberSubsystem));
         .whenHeld(new Shoot(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem,
-            m_drivetrainSubsystem));
+            m_drivetrainSubsystem))
+        .whenHeld(new LedShootSequence(ledSubsystem, mShooterSubsystem, m_iIndexerSubsystem, mphotonVisionSubsystem));
 
     new Button(d_controller::getBButton)
         // .whenHeld(new ClimbHalf(mClimberSubsystem));
