@@ -23,14 +23,14 @@ public class LedClimberUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
+    ledsubsystem.setLength();
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
 
     ledsubsystem.orbit(0, 200, 0, 16, true);
 
@@ -39,8 +39,6 @@ public class LedClimberUp extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-    
 
   }
 

@@ -20,7 +20,9 @@ public class LedSubsystem extends SubsystemBase {
   }
 
   public static AddressableLED m_led = new AddressableLED(1);
+
   public static AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(19);
+
   public final Timer m_timer = new Timer();
 
   int count = 0;
@@ -43,11 +45,17 @@ public class LedSubsystem extends SubsystemBase {
     m_timer.reset();
     m_timer.start();
     m_led.setLength(m_ledBuffer.getLength());
-
+    try {
+      m_led.setLength(m_ledBuffer.getLength());
+    } catch (Exception e) {
+      m_ledBuffer = new AddressableLEDBuffer(10);
+      m_led.setLength(m_ledBuffer.getLength());
+    }
   }
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
   }
 

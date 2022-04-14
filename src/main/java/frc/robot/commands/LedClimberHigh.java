@@ -8,46 +8,41 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LedSubsystem;
 
 public class LedClimberHigh extends CommandBase {
-  /** Creates a new Climb. */
+    /** Creates a new Climb. */
 
-  private LedSubsystem ledsubsystem;
+    private LedSubsystem ledsubsystem;
 
-  public LedClimberHigh(LedSubsystem ledsubsystem) {
+    public LedClimberHigh(LedSubsystem ledsubsystem) {
 
-    this.ledsubsystem = ledsubsystem;
+        this.ledsubsystem = ledsubsystem;
 
-    addRequirements(ledsubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+        addRequirements(ledsubsystem);
+        // Use addRequirements() here to declare subsystem dependencies.
+    }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        ledsubsystem.setLength();
+        ledsubsystem.fillPercent(0, 200, 0, 1, false);
 
-    ledsubsystem.fillPercent(0, 200, 0, 1, false);
+    }
 
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+    }
 
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
 
-    
+    }
 
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-
-    
-
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

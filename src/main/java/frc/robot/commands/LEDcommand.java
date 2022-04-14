@@ -57,25 +57,29 @@ public class LedCommand extends CommandBase {
 
     }
 
-    if (IndexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true) {
+    if (ShooterSubsystem.isDisabled == true) {
 
-      ledSubsystem.tripleOrbit(200, 200, 0, 100, 100, 0, 2);
+      if (IndexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true) {
 
-    } else if (IndexerSubsystem.bottomBeamBreak.get() == false && indexerSubsystem.topBeamBreak.get() == false) {
+        ledSubsystem.tripleOrbit(200, 200, 0, 100, 100, 0, 2);
 
-      if (DriverStation.getAlliance() == Alliance.Blue) {
+      } else if (IndexerSubsystem.bottomBeamBreak.get() == false && indexerSubsystem.topBeamBreak.get() == false) {
 
-        ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 0, 2);
+        if (DriverStation.getAlliance() == Alliance.Blue) {
+
+          ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 0, 2);
+
+        } else {
+
+          ledSubsystem.tripleOrbit(200, 0, 0, 0, 0, 0, 2);
+
+        }
 
       } else {
 
-        ledSubsystem.tripleOrbit(200, 0, 0, 0, 0, 0, 2);
+        ledSubsystem.tripleOrbit(200, 200, 0, 0, 0, 0, 2);
 
       }
-
-    } else {
-
-      ledSubsystem.tripleOrbit(200, 200, 0, 0, 0, 0, 2);
 
     }
 
