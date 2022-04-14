@@ -11,6 +11,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class LedCommand extends CommandBase {
   /** Creates a new LEDcommand. */
@@ -46,7 +47,7 @@ public class LedCommand extends CommandBase {
   @Override
   public void execute() {
 
-    if (DriverStation.isAutonomous()) {
+    if (DriverStation.isAutonomousEnabled()) {
 
       ledSubsystem.auto();
 
@@ -56,19 +57,25 @@ public class LedCommand extends CommandBase {
 
     }
 
-    if (IndexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true)
+    if (IndexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true) {
 
-    {
-
-      ledSubsystem.tripleOrbit(100, 100, 100, 200, 100, 0, 2);
+      ledSubsystem.tripleOrbit(200, 200, 0, 100, 100, 0, 2);
 
     } else if (IndexerSubsystem.bottomBeamBreak.get() == false && indexerSubsystem.topBeamBreak.get() == false) {
 
-      ledSubsystem.tripleOrbit(200, 200, 200, 0, 0, 0, 2);
+      if (DriverStation.getAlliance() == Alliance.Blue) {
+
+        ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 0, 2);
+
+      } else {
+
+        ledSubsystem.tripleOrbit(200, 0, 0, 0, 0, 0, 2);
+
+      }
 
     } else {
 
-      ledSubsystem.tripleOrbit(200, 100, 0, 0, 0, 0, 2);
+      ledSubsystem.tripleOrbit(200, 200, 0, 0, 0, 0, 2);
 
     }
 

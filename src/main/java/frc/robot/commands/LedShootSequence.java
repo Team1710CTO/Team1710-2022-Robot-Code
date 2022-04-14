@@ -38,7 +38,7 @@ public class LedShootSequence extends CommandBase {
   public void initialize() {
 
     ledSubsystem.setLength();
-    ledSubsystem.solid(255, 225, 53);
+    
 
   }
 
