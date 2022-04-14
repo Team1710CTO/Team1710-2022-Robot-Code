@@ -75,6 +75,36 @@ public class LedSubsystem extends SubsystemBase {
     m_led.start();
   }
 
+  public void fillPercent(int red, int green, int blue, int percent, boolean fromTop) {
+
+    if (fromTop) {
+
+      for (int i = 0; i < (m_ledBuffer.getLength()); i++) {
+        // Sets the specified LED to the RGB values for red
+        m_ledBuffer.setRGB(i, red, green, blue);
+      }
+
+      for (int i = 0; i < (m_ledBuffer.getLength() - ((m_ledBuffer.getLength()) / percent)); i++) {
+        // Sets the specified LED to the RGB values for red
+        m_ledBuffer.setRGB(i, 0, 0, 0);
+      }
+
+    } else {
+
+      for (int i = 0; i < (m_ledBuffer.getLength()); i++) {
+        // Sets the specified LED to the RGB values for red
+        m_ledBuffer.setRGB(i, 0, 0, 0);
+      }
+
+      for (int i = 0; i < ((m_ledBuffer.getLength()) / percent); i++) {
+        // Sets the specified LED to the RGB values for red
+        m_ledBuffer.setRGB(i, red, green, blue);
+      }
+
+    }
+
+  }
+
   public void orbit(int red, int green, int blue, int TPS, boolean up) {
 
     int num = (int) (TPS * m_timer.get());

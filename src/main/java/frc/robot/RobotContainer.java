@@ -151,13 +151,13 @@ public class RobotContainer {
         .whenPressed(new climberBootSequence(mClimberSubsystem));
 
     new Button(m_controller::getYButton)
-        .whenHeld(new ClimbUp(mClimberSubsystem));
-    //
+        .whenHeld(new ClimbUp(mClimberSubsystem)).whenHeld(new LedClimberHigh(ledSubsystem));
+    
     new Button(m_controller::getBButton)
-        .whenHeld(new ClimbHalf(mClimberSubsystem));
+        .whenHeld(new ClimbHalf(mClimberSubsystem)).whenHeld(new LedClimberMid(ledSubsystem));
 
     new Button(m_controller::getAButton)
-        .whenHeld(new ClimbDown(mClimberSubsystem));
+        .whenHeld(new ClimbDown(mClimberSubsystem)).whenHeld(new LedClimberLow(ledSubsystem));
 
     new Button(m_controller::getStartButton)
         .whenHeld(new ShootInLow(mShooterSubsystem, mHoodSubsystem, m_iIndexerSubsystem));
