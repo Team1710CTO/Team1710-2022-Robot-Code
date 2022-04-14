@@ -20,7 +20,8 @@ public class LedCommand extends CommandBase {
   public IndexerSubsystem indexerSubsystem;
   public PhotonVisionSubsystem photonVisionSubsystem;
 
-  public LedCommand(LedSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
+  public LedCommand(LedSubsystem ledSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem,
+      PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.ledSubsystem = ledSubsystem;
     this.shooterSubsystem = shooterSubsystem;
@@ -49,43 +50,28 @@ public class LedCommand extends CommandBase {
 
       ledSubsystem.auto();
 
-    } else if (DriverStation.isTeleop()) {
+    } else {
 
-      if (ShooterSubsystem.isDisabled == false) {
-
-        if (photonVisionSubsystem.getXDisplacementOfGoal() > -1 && photonVisionSubsystem.getXDisplacementOfGoal() < 1) {
-
-          ledSubsystem.tripleOrbit(0, 200, 0, 0, 150, 0, 2);
-
-          if (shooterSubsystem.isShooterToSpeedAndNotDisabled()) {
-
-            ledSubsystem.tripleOrbit(0, 0, 200, 0, 0, 150, 2);
-
-          }
-
-        } else {
-
-          ledSubsystem.tripleOrbit(200, 200, 0, 150, 150, 0, 2);
-
-        }
-
-      }
-
-      if (IndexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true) {
-
-        ledSubsystem.tripleOrbit(100, 100, 100, 200, 100, 0, 2);
-
-      } else if (IndexerSubsystem.bottomBeamBreak.get() == false && indexerSubsystem.topBeamBreak.get() == false) {
-
-        ledSubsystem.tripleOrbit(200, 200, 200, 0, 0, 0, 2);
-
-      } else {
-
-        ledSubsystem.tripleOrbit(200, 100, 0, 0, 0, 0, 2);
-
-      }
+      ledSubsystem.tripleOrbit(200, 200, 0, 150, 150, 0, 2);
 
     }
+
+    if (IndexerSubsystem.bottomBeamBreak.get() == true && indexerSubsystem.topBeamBreak.get() == true)
+
+    {
+
+      ledSubsystem.tripleOrbit(100, 100, 100, 200, 100, 0, 2);
+
+    } else if (IndexerSubsystem.bottomBeamBreak.get() == false && indexerSubsystem.topBeamBreak.get() == false) {
+
+      ledSubsystem.tripleOrbit(200, 200, 200, 0, 0, 0, 2);
+
+    } else {
+
+      ledSubsystem.tripleOrbit(200, 100, 0, 0, 0, 0, 2);
+
+    }
+
   }
 
   // Called once the command ends or is interrupted.
