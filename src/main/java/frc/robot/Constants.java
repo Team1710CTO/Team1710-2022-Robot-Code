@@ -109,7 +109,7 @@ public final class Constants {
     public static final double INTAKE_RIGHT_up = -Intake_LEFT_up; // set by the zero functionality
     public static final double INTAKE_RIGHT_down = -INTAKE_LEFT_down; // set by the zero functionality
 
-    public static double INTAKE_RUNNER_SPEED_ON = 1; //speed intake runner runs at
+    public static double INTAKE_RUNNER_SPEED_ON = .75; //speed intake runner runs at
     public static double INTAKE_RUNNER_SPEED_OFF = 0; // read the var
     public static double INTAKE_ZERO_VELOCITY_THRESHOLD_UB = .01; // this is the upper bound for the is intake velocity near or at Zero threshold
 

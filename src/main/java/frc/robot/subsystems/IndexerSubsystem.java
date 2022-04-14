@@ -106,7 +106,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   }
 
-  public int getBallCount(){
+  public static int getBallCount(){
 
     return balls;
     

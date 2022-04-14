@@ -37,7 +37,7 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
- // public static LedSubsystem ledSubsystem = new LedSubsystem();
+  public static LedSubsystem ledSubsystem = new LedSubsystem();
 
   public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
   
@@ -98,7 +98,7 @@ public class RobotContainer {
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
-  //ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
+    ledSubsystem.setDefaultCommand(new LedCommand(ledSubsystem));
 
     
     // Configure the button bindings
