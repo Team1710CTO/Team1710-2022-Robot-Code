@@ -71,7 +71,7 @@ public class EinstiensFour extends SequentialCommandGroup {
 
     new IntakeForDuration(.75, intakeSubsystem, indexerSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("EININ", 2.5, 5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("Puttters", 2, 2.5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 
