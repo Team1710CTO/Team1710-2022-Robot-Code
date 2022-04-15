@@ -73,7 +73,7 @@ public class LedCommand extends CommandBase {
 
     } else if (IndexerSubsystem.getBallCount() == 1) {
 
-      ledSubsystem.solid(200, 200, 0);
+      ledSubsystem.solid(200, 100, 0);
 
     }
 

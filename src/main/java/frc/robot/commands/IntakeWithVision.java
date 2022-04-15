@@ -22,7 +22,7 @@ public class IntakeWithVision extends CommandBase {
 
   public PhotonVisionSubsystem photonVisionSubsystem;
 
-  public IndexerSubsystem indexerSubsystem;
+
 
   public int initialballcount = 0;
 
@@ -32,19 +32,18 @@ public class IntakeWithVision extends CommandBase {
 
   public PIDController xPidController, yPidController;
   /** Creates a new IntakeWithVision. */
-  public IntakeWithVision(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem) {
+  public IntakeWithVision(IntakeSubsystem intakeSubsystem, DrivetrainSubsystem drivetrainSubsystem, PhotonVisionSubsystem photonVisionSubsystem) {
 
     this.intakeSubsystem = intakeSubsystem;
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.photonVisionSubsystem = photonVisionSubsystem;
-    this.indexerSubsystem = indexerSubsystem;
 
     timer = new Timer();
 
     xPidController = new PIDController(.04, .005, 0.005);
     yPidController = new PIDController(.08, .005, 0.005);
 
-    addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem);
+    addRequirements(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -54,7 +53,7 @@ public class IntakeWithVision extends CommandBase {
 
     intakeSubsystem.setIntakeUp();
 
-    initialballcount = indexerSubsystem.getBallCount();
+    initialballcount = IndexerSubsystem.getBallCount();
     timer.reset();
     timer.start();
 
@@ -64,15 +63,13 @@ public class IntakeWithVision extends CommandBase {
   @Override
   public void execute() {
 
-    indexerSubsystem.indexBallsBetweenBreaks();
-
     double xDisplacement = photonVisionSubsystem.getXDisplacementOfBall();
     double yDisplacement = photonVisionSubsystem.getYDisplacementOfBall();
 
     double vx = xPidController.calculate(xDisplacement, 0);
     double vy = yPidController.calculate(yDisplacement, 0);
 
-    SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
+    //SmartDashboard.putNumber("poopoo", (xPidController.getPositionError() + yPidController.getPositionError()));
 
 
 
@@ -86,7 +83,7 @@ public class IntakeWithVision extends CommandBase {
     if(intakeSubsystem.getIntakeState() == "Up"){
 
       drivetrainSubsystem.drive(new ChassisSpeeds(-vy,vx,0)); 
-      SmartDashboard.putNumber("vy", vy);
+      //SmartDashboard.putNumber("vy", vy);
 
     } else {
 
@@ -108,12 +105,13 @@ public class IntakeWithVision extends CommandBase {
     intakeSubsystem.setIntakeUp();
     intakeSubsystem.intakeRest();
     
+    
 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (!(initialballcount == indexerSubsystem.getBallCount()) || !indexerSubsystem.topBeamBreak.get()) && timer.get() > .05;
+    return (!(initialballcount == IndexerSubsystem.getBallCount())) && timer.get() > .05;
   }
 }

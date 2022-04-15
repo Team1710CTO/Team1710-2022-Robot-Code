@@ -64,6 +64,8 @@ public class RobotContainer {
 
   public Command FunkeyFive = new FunkyFiveBall("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
+  public Command EinstiensFour = new EinstiensFour("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -77,10 +79,12 @@ public class RobotContainer {
     m_chooser.setDefaultOption("3 ball BLUE", threeBallAutoBlue);
     m_chooser.setDefaultOption("3 ball RED", threeBallAutoRed);
 
-    m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
-    m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
+    m_chooser.setDefaultOption("einstiensFour", EinstiensFour);
 
     m_chooser.setDefaultOption("funkyFive", FunkeyFive);
+
+    m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
+    m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
 
     
 
@@ -148,7 +152,7 @@ public class RobotContainer {
 
     new Button(d_controller::getXButton)
             //.whenHeld(new ClimbHalf(mClimberSubsystem));
-            .whenHeld(new IntakeWithVision(mIntakeSubsystem, m_drivetrainSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem));
+            .whenHeld(new IntakeWithVision(mIntakeSubsystem, m_drivetrainSubsystem, mphotonVisionSubsystem));
 
 
 

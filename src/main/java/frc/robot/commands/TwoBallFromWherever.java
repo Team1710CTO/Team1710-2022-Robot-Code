@@ -62,7 +62,7 @@ public class TwoBallFromWherever extends SequentialCommandGroup {
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
     

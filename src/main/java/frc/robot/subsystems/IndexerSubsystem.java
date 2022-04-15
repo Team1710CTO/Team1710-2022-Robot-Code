@@ -37,7 +37,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public static int ballintegralBottom, ballintegralTop = 0;
 
-  public static Timer bottomTimer, topTimer;
+  public static Timer bottomTimer, topTimer, deBounceTimer;
 
 
   
@@ -69,9 +69,13 @@ public class IndexerSubsystem extends SubsystemBase {
 
     topTimer = new Timer();
     bottomTimer = new Timer();
+    deBounceTimer = new Timer();
+
 
     topTimer.reset();
     bottomTimer.reset();
+    deBounceTimer.reset();
+    deBounceTimer.start();
 
   }
 
@@ -118,11 +122,11 @@ public class IndexerSubsystem extends SubsystemBase {
 
       balls = 2;     
 
-    } else if(!bottomBeamBreak.get()){
+    } else if(!bottomBeamBreak.get() && m_indexerRunner_encoder.getVelocity() > 0){
 
       bottomTimer.start();
 
-      if(bottomTimer.get() > .1){
+      if(bottomTimer.get() > .25){
 
         balls = 1;
 
@@ -135,15 +139,20 @@ public class IndexerSubsystem extends SubsystemBase {
 
     }    
 
-    if(Lastbol != topBeamBreak.get() && !Lastbol && m_indexerRunner_encoder.getVelocity() > 0){
+    if(Lastbol != topBeamBreak.get() && !Lastbol && m_indexerRunner_encoder.getVelocity() > 0 && deBounceTimer.get() > .8){
 
       balls -= 1;
+
+      deBounceTimer.stop();
+      deBounceTimer.reset();
+      deBounceTimer.start();
 
     }
 
     Lastbol = topBeamBreak.get();
     
 
+    SmartDashboard.putNumber("debounce timer", deBounceTimer.get());
 
   }
 

@@ -45,7 +45,7 @@ public class NakedPriest extends SequentialCommandGroup {
 
     new FollowPath(drivetrainSubsystem, "Test"),
     
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new Shoot(shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
     

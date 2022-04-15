@@ -180,6 +180,6 @@ public class ShootInAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (indexerSubsystem.getBallCount() <= 0 && timer4.get() > .1) || timer5.get() > 6;
+    return (timer.get() > .5 && timer4.get() > .1) || timer5.get() > 6;
   }
 }
