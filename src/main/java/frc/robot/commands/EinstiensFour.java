@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -37,6 +39,10 @@ public class EinstiensFour extends SequentialCommandGroup {
   private PIDController xPosPidController, yPosPidController;
   private ProfiledPIDController thetaPidController;
 
+  public BooleanSupplier gSupplier;
+
+
+
   /** Creates a new runPathAndIntake. */
   public EinstiensFour(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
@@ -49,6 +55,8 @@ public class EinstiensFour extends SequentialCommandGroup {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.hoodSubsystem = hoodSubsystem;
     this.shooterSubsystem = shooterSubsystem;
+
+    gSupplier = () -> photonVisionSubsystem.hasGoalTargets();
 
     xPosPidController = new PIDController(1, 0, 0);
     yPosPidController = new PIDController(1, 0, 0);
@@ -71,14 +79,14 @@ public class EinstiensFour extends SequentialCommandGroup {
 
     new IntakeForDuration(.75, intakeSubsystem, indexerSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("Puttters", 2, 2.5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("Michelle", 2, 2.5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 
                                   yPosPidController, 
                                   thetaPidController, 
                                   drivetrainSubsystem::setWheelStates, 
-                                  drivetrainSubsystem).raceWith(new DefaultIndexerCommand(indexerSubsystem)),
+                                  drivetrainSubsystem).raceWith(new DefaultIndexerCommand(indexerSubsystem)).withInterrupt(gSupplier),
 
     new ShootInAuto(4, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
                                   

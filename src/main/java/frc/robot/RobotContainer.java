@@ -66,6 +66,8 @@ public class RobotContainer {
 
   public Command EinstiensFour = new EinstiensFour("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
+  public Command shootNscoot = new shootNscoot( SmartDashboard.getNumber("shootNscoot Duration", 0),m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -81,12 +83,14 @@ public class RobotContainer {
 
     m_chooser.setDefaultOption("einstiensFour", EinstiensFour);
 
+    m_chooser.setDefaultOption("Shootnscoot", shootNscoot);
+
     m_chooser.setDefaultOption("funkyFive", FunkeyFive);
 
     m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
     m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
 
-    
+    SmartDashboard.putNumber("shootNscoot Duration", 0);
 
 // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
