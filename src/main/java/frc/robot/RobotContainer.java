@@ -37,7 +37,7 @@ public class RobotContainer {
 
   public static IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
 
- // public static LedSubsystem ledSubsystem = new LedSubsystem();
+  public static LedSubsystem ledSubsystem = new LedSubsystem();
 
   public static PhotonVisionSubsystem mphotonVisionSubsystem = new PhotonVisionSubsystem();
   
@@ -64,6 +64,10 @@ public class RobotContainer {
 
   public Command FunkeyFive = new FunkyFiveBall("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
 
+  public Command EinstiensFour = new EinstiensFour("RED",m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
+  public Command shootNscoot = new shootNscoot( SmartDashboard.getNumber("shootNscoot Duration", 0),m_drivetrainSubsystem, mIntakeSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem, mHoodSubsystem, mShooterSubsystem, m_GyroSubsystem);
+
   public RobotContainer() {
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -77,12 +81,16 @@ public class RobotContainer {
     m_chooser.setDefaultOption("3 ball BLUE", threeBallAutoBlue);
     m_chooser.setDefaultOption("3 ball RED", threeBallAutoRed);
 
-    m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
-    m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
+    m_chooser.setDefaultOption("einstiensFour", EinstiensFour);
+
+    m_chooser.setDefaultOption("Shootnscoot", shootNscoot);
 
     m_chooser.setDefaultOption("funkyFive", FunkeyFive);
 
-    
+    m_chooser.setDefaultOption("2 ball BLUE", twoBallAutoBlue);
+    m_chooser.setDefaultOption("2 ball RED", twoBallAutoRed);
+
+    SmartDashboard.putNumber("shootNscoot Duration", 0);
 
 // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
@@ -98,7 +106,7 @@ public class RobotContainer {
 
     m_iIndexerSubsystem.setDefaultCommand(new DefaultIndexerCommand(m_iIndexerSubsystem));
 
-  //ledSubsystem.setDefaultCommand(new LEDcommand(ledSubsystem));
+    ledSubsystem.setDefaultCommand(new LedCommand(ledSubsystem));
 
     
     // Configure the button bindings
@@ -148,7 +156,7 @@ public class RobotContainer {
 
     new Button(d_controller::getXButton)
             //.whenHeld(new ClimbHalf(mClimberSubsystem));
-            .whenHeld(new IntakeWithVision(mIntakeSubsystem, m_drivetrainSubsystem, mphotonVisionSubsystem, m_iIndexerSubsystem));
+            .whenHeld(new IntakeWithVision(mIntakeSubsystem, m_drivetrainSubsystem, mphotonVisionSubsystem));
 
 
 

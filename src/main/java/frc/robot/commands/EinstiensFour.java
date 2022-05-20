@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -11,13 +13,14 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoBallFromWherever extends SequentialCommandGroup {
+public class EinstiensFour extends SequentialCommandGroup {
 
   public IntakeSubsystem intakeSubsystem;
 
@@ -36,8 +39,12 @@ public class TwoBallFromWherever extends SequentialCommandGroup {
   private PIDController xPosPidController, yPosPidController;
   private ProfiledPIDController thetaPidController;
 
+  public BooleanSupplier gSupplier;
+
+
+
   /** Creates a new runPathAndIntake. */
-  public TwoBallFromWherever(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
+  public EinstiensFour(String teamColor, DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, PhotonVisionSubsystem photonVisionSubsystem, IndexerSubsystem indexerSubsystem, HoodSubsystem hoodSubsystem, ShooterSubsystem shooterSubsystem, GyroSubsystem gyroSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -48,6 +55,8 @@ public class TwoBallFromWherever extends SequentialCommandGroup {
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.hoodSubsystem = hoodSubsystem;
     this.shooterSubsystem = shooterSubsystem;
+
+    gSupplier = () -> photonVisionSubsystem.hasGoalTargets();
 
     xPosPidController = new PIDController(1, 0, 0);
     yPosPidController = new PIDController(1, 0, 0);
@@ -64,12 +73,24 @@ public class TwoBallFromWherever extends SequentialCommandGroup {
 
     new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem).raceWith(new DefaultIndexerCommand(indexerSubsystem)),
 
-    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
-    
-    
-    );
+    new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
-    
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem).raceWith(new DefaultIndexerCommand(indexerSubsystem)),
+
+    new IntakeForDuration(.75, intakeSubsystem, indexerSubsystem),
+
+    new PPSwerveControllerCommand(PathPlanner.loadPath("Michelle", 2, 2.5), 
+                                  drivetrainSubsystem::getOdomPose2d, 
+                                  drivetrainSubsystem.getKinematics(), 
+                                  xPosPidController, 
+                                  yPosPidController, 
+                                  thetaPidController, 
+                                  drivetrainSubsystem::setWheelStates, 
+                                  drivetrainSubsystem).raceWith(new DefaultIndexerCommand(indexerSubsystem)).withInterrupt(gSupplier),
+
+    new ShootInAuto(4, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)
+                                  
+  );
 
 
   }

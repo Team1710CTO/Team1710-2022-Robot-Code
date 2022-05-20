@@ -59,7 +59,7 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
@@ -72,11 +72,11 @@ public class FourBallAutoAtCrotchCorey extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new DeadReckonDrive(drivetrainSubsystem, 0, 0, 3, .18),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new ZeroOdom(gyroSubsystem, drivetrainSubsystem),
 

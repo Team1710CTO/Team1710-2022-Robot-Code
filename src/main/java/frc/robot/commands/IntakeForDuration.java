@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeForDuration extends CommandBase {
@@ -13,18 +14,22 @@ public class IntakeForDuration extends CommandBase {
 
   public IntakeSubsystem intakeSubsystem;
 
+  public IndexerSubsystem indexerSubsystem;
+
   public Timer timer;
 
   public double duration;
   
-  public IntakeForDuration(double duration, IntakeSubsystem intakeSubsystem) {
+  public IntakeForDuration(double duration, IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
 
     timer = new Timer();
+
+    this.indexerSubsystem = indexerSubsystem;
 
     this.duration = duration;
 
     this.intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
+    addRequirements(intakeSubsystem, indexerSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -38,11 +43,16 @@ public class IntakeForDuration extends CommandBase {
     intakeSubsystem.setintakeDown();
     intakeSubsystem.runIntake();
 
+    indexerSubsystem.indexBallsBetweenBreaks();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+    indexerSubsystem.indexBallsBetweenBreaks();
+  }
 
   // Called once the command ends or is interrupted.
   @Override

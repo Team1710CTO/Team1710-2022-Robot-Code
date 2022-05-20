@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.function.BooleanSupplier;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
@@ -107,6 +110,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         return DisToTargetMeters; // Returns the distance to the best target ball
     }
 
+    
     public double getXDisplacementOfBall() {
         var resultsCamille = Camille.getLatestResult();
         double XDisplacementOfBall = 0;

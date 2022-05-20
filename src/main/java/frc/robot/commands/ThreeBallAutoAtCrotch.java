@@ -62,7 +62,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
@@ -75,7 +75,7 @@ public class ThreeBallAutoAtCrotch extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
                
   
     new ShootInAuto(1, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem)

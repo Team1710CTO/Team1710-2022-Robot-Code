@@ -69,7 +69,7 @@ public class ShootInLow extends CommandBase {
 
     } else {
 
-      indexerSubsystem.stopIndexer();
+      indexerSubsystem.indexBallsBetweenBreaks();
 
     }
 

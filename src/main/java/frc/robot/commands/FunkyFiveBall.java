@@ -62,7 +62,7 @@ public class FunkyFiveBall extends SequentialCommandGroup {
 
     new ZeroCommand(drivetrainSubsystem, intakeSubsystem, indexerSubsystem, hoodSubsystem, gyroSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
@@ -75,11 +75,11 @@ public class FunkyFiveBall extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
     new ShootInAuto(2, shooterSubsystem, hoodSubsystem, indexerSubsystem, photonVisionSubsystem, drivetrainSubsystem),
 
-    new PPSwerveControllerCommand(PathPlanner.loadPath("NolansIdea", 8, 5), 
+    new PPSwerveControllerCommand(PathPlanner.loadPath("judgesRun1", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
                                   drivetrainSubsystem.getKinematics(), 
                                   xPosPidController, 
@@ -88,9 +88,9 @@ public class FunkyFiveBall extends SequentialCommandGroup {
                                   drivetrainSubsystem::setWheelStates, 
                                   drivetrainSubsystem),
 
-    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem, indexerSubsystem),
+    new IntakeWithVision(intakeSubsystem, drivetrainSubsystem, photonVisionSubsystem),
 
-    new IntakeForDuration(.125, intakeSubsystem),
+    new IntakeForDuration(.125, intakeSubsystem, indexerSubsystem),
 
     new PPSwerveControllerCommand(PathPlanner.loadPath("JudgesRun2HALF", 8, 5), 
                                   drivetrainSubsystem::getOdomPose2d, 
